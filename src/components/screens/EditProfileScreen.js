@@ -57,7 +57,6 @@ const EditProfileScreen = ({navigation}) => {
       .doc(user.uid)
       .update({
         fname: userData.fname,
-        lname: userData.lname,
         about: userData.about,
         phone: userData.phone,
         country: userData.country,
@@ -311,27 +310,11 @@ const EditProfileScreen = ({navigation}) => {
           size={20}
         />
         <TextInput
-          placeholder="First Name"
+          placeholder="Full Name"
           placeholderTextColor="#666666"
           autoCorrect={false}
           value={userData ? userData.fname : ''}
           onChangeText={txt => setUserData({...userData, fname: txt})}
-          style={styles.textInput}
-        />
-      </View>
-      <View style={styles.actioncontainer}>
-        <FontAwesome
-          style={styles.icon}
-          name="user-o"
-          color="#333333"
-          size={20}
-        />
-        <TextInput
-          placeholder="Last Name"
-          placeholderTextColor="#666666"
-          value={userData ? userData.lname : ''}
-          onChangeText={txt => setUserData({...userData, lname: txt})}
-          autoCorrect={false}
           style={styles.textInput}
         />
       </View>

@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -9,7 +10,7 @@ import {
   Pressable,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {PermissionsAndroid} from 'react-native';
+import {PermissionsAndroid, ActivityIndicator} from 'react-native';
 import Contacts from 'react-native-contacts';
 import styles from '../../../styles/ContactsdataStyles';
 import {useNavigation} from '@react-navigation/native';
@@ -18,6 +19,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const ContactScreen = () => {
   const [contacts, setContacts] = useState();
   const [searchContact, setSearchContact] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // useEffect(() => {
   //   const newContacts = contacts.filter(contact =>
@@ -39,6 +41,9 @@ const ContactScreen = () => {
       Contacts.getAll()
         .then(contact => {
           setContacts(contact);
+          if (loading) {
+            setLoading(false);
+          }
 
           console.log('👌👌👌👌👌contacts', contact);
         })
@@ -78,26 +83,38 @@ const ContactScreen = () => {
         placeholderTextColor="#373D3F"
         placeholder="Search contacts"
       />
-
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={contacts}
-        keyExtractor={(item, index) => index}
-        renderItem={({item}) => (
-          <Pressable style={styles.card} onPress={() => callUser(item)}>
-            <View style={styles.textimgview}>
-              <Text style={styles.textimg}>
-                {item.displayName.charAt(0).toUpperCase() +
-                  '' +
-                  item.familyName.charAt(0).toUpperCase()}
-              </Text>
-            </View>
-            <View style={styles.usertextview}>
-              <Text style={styles.displayName}>{item.displayName}</Text>
-            </View>
-          </Pressable>
-        )}
-      />
+      {loading ? (
+        <View
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+          }}>
+          <ActivityIndicator size={45} color="#2e64e5" />
+        </View>
+      ) : (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={contacts}
+          keyExtractor={(item, index) => index}
+          onRefresh={() => getContacts()}
+          refreshing={loading}
+          renderItem={({item}) => (
+            <Pressable style={styles.card} onPress={() => callUser(item)}>
+              <View style={styles.textimgview}>
+                <Text style={styles.textimg}>
+                  {item.displayName.charAt(0).toUpperCase() +
+                    '' +
+                    item.familyName.charAt(0).toUpperCase()}
+                </Text>
+              </View>
+              <View style={styles.usertextview}>
+                <Text style={styles.displayName}>{item.displayName}</Text>
+              </View>
+            </Pressable>
+          )}
+        />
+      )}
       <Pressable style={styles.addview} onPress={addNew}>
         <MaterialCommunityIcons name="plus" size={30} color="#2e64e5" />
       </Pressable>

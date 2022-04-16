@@ -14,32 +14,31 @@ import Share from 'react-native-share';
 const PostCard = ({item, ondelete, onPress}) => {
   const {user} = useContext(AuthContext);
   const [isliked, setIsliked] = useState(false);
-  const [posts, setPosts] = useState(item.likes);
+  const [post, setPost] = useState(item.likes);
   const [userData, setUserData] = useState(null);
-  console.log('❤❤❤❤❤likes', item.likes);
+  console.log('❤❤❤❤❤likesbyuser', post);
 
   const onlike = () => {
-    const liked = isliked ? 0 : 1;
-    // setPosts({
-    //   ...posts,
-    //   likes: posts.likes + liked,
-    // });
-    // setIsliked(!isliked);
-    firestore()
-      .collection('posts')
-      .add({
-        userId: user.uid,
-        likes: liked,
-      })
-      .then(() => {
-        setIsliked({
-          likes: item.likes + liked,
-        });
-        setIsliked(!isliked);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    const liked = isliked ? -1 : 1;
+    setPost({
+      ...post,
+      likes: post.likes + liked,
+    });
+    setIsliked(!isliked);
+
+    // firestore()
+    //   .collection('posts')
+    //   .add({
+    //     userId: user.uid,
+    //     likes: post,
+    //   })
+    //   .then(() => {
+    //     setPost({...(post.likes + liked)});
+    //     setIsliked(!isliked);
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //   });
   };
 
   const getUser = async () => {
@@ -59,7 +58,7 @@ const PostCard = ({item, ondelete, onPress}) => {
 
   const ShareData = async () => {
     const ShareOptions = {
-      url: item.postImg,
+      url: item.postImg || item.postvideo,
     };
     try {
       const ShareRes = await Share.open(ShareOptions);
@@ -120,11 +119,11 @@ const PostCard = ({item, ondelete, onPress}) => {
 
         <View style={styles.InteractionWrapper}>
           <TouchableOpacity style={styles.Interaction} onPress={onlike}>
-            {isliked ? (
+            {/* {isliked ? (
               <Ionicons name="heart" size={30} color="red" />
-            ) : (
-              <Ionicons name="heart-outline" size={30} color="black" />
-            )}
+            ) : ( */}
+            <Ionicons name="heart-outline" size={30} color="black" />
+            {/* )} */}
             <Text style={styles.InteractionText}>{item.likes} Likes</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction}>

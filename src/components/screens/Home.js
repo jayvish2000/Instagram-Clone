@@ -12,7 +12,7 @@ import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storge from '@react-native-firebase/storage';
 
-const HomeScreen = ({navigation, item}) => {
+const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
@@ -27,8 +27,11 @@ const HomeScreen = ({navigation, item}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
+            // console.log('likesssssssssss', likes);
             const {
               userId,
+              userName,
+              userImg,
               post,
               postImg,
               postTime,
@@ -39,8 +42,8 @@ const HomeScreen = ({navigation, item}) => {
             list.push({
               id: doc.id,
               userId,
-              userName: 'jay',
-              userImg: 'https://wallpaper.dog/large/20481081.jpg',
+              userName,
+              userImg,
               postTime: postTime,
               post,
               postvideo,
@@ -110,10 +113,6 @@ const HomeScreen = ({navigation, item}) => {
       .catch(e => console.log('❌❌❌❌❌', e));
   };
 
-  const listHeader = () => {
-    return null;
-  };
-
   const handledelete = postId => {
     Alert.alert(
       'Delete post',
@@ -133,10 +132,6 @@ const HomeScreen = ({navigation, item}) => {
     );
   };
 
-  // const onRefresh = () => {
-  //   fetchPosts();
-  // };
-
   return (
     <View style={styles.container}>
       {loading ? (
@@ -152,8 +147,6 @@ const HomeScreen = ({navigation, item}) => {
         <View style={styles.container}>
           <FlatList
             data={posts}
-            ListHeaderComponent={listHeader}
-            ListFooterComponent={listHeader}
             onRefresh={() => fetchPosts()}
             refreshing={loading}
             renderItem={({item}) => (

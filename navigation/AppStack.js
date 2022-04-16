@@ -18,7 +18,6 @@ import ContactScreen from '../src/components/screens/ContactScreen';
 import CallingScreen from '../src/components/screens/CallingScreen';
 import CallScreen from '../src/components/screens/CallScreen';
 import IncomingCallScreen from '../src/components/screens/IncomingCallScreen';
-import ContactFormScreen from '../src/components/screens/ContactFormScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -128,11 +127,9 @@ function MessageStack({navigation}) {
         component={ChatScreen}
         options={({route}) => ({
           title: route.params.userName,
-          headerRight: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Calling')}>
-              <MaterialIcons name="add-call" size={28} color="#2e64e5" />
-            </TouchableOpacity>
-          ),
+          headerTitleStyle: {
+            color: '#2e64e5',
+          },
         })}
       />
       <Stack.Screen

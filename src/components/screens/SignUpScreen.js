@@ -28,7 +28,6 @@ const SignUpScreen = ({navigation}) => {
   const [password, setPassword] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
   const [fname, setFname] = useState();
-  const [lname, setLname] = useState();
   const [phone, setPhone] = useState();
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -100,7 +99,6 @@ const SignUpScreen = ({navigation}) => {
             .doc(auth().currentUser.uid)
             .set({
               fname: fname,
-              lname: lname,
               phone: phone,
               email: email,
               createdAt: firestore.Timestamp.fromDate(new Date()),
@@ -256,18 +254,11 @@ const SignUpScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <FormInput
-          placeholderText="First Name"
+          placeholderText="Name"
           iconType="user"
           autoCaitalize="none"
           labelValue={fname}
           onChangeText={fname => setFname(fname)}
-        />
-        <FormInput
-          placeholderText="Last Name"
-          iconType="user"
-          autoCaitalize="none"
-          labelValue={lname}
-          onChangeText={lname => setLname(lname)}
         />
         <FormInput
           keyboardType="email-address"

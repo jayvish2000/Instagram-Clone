@@ -128,13 +128,14 @@ const MessageScreen = ({navigation}) => {
       <View
         style={{
           backgroundColor: '#2e64e515',
-          borderRadius: 50 / 2,
           width: 50,
           height: 50,
-          left: '40%',
-          bottom: '5%',
+          borderRadius: 50 / 2,
           justifyContent: 'center',
           alignItems: 'center',
+          left: '87%',
+          bottom: '6%',
+          position: 'absolute',
         }}>
         <TouchableOpacity onPress={() => navigation.navigate('Contact')}>
           <MaterialCommunityIcons
