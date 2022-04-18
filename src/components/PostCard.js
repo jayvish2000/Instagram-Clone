@@ -13,32 +13,26 @@ import Share from 'react-native-share';
 
 const PostCard = ({item, ondelete, onPress}) => {
   const {user} = useContext(AuthContext);
-  const [isliked, setIsliked] = useState(false);
-  const [post, setPost] = useState(item.likes);
   const [userData, setUserData] = useState(null);
-  console.log('❤❤❤❤❤likesbyuser', post);
+  console.log('❤❤❤❤❤likes', item.likesbyusers);
 
   const onlike = () => {
-    const liked = isliked ? -1 : 1;
-    setPost({
-      ...post,
-      likes: post.likes + liked,
-    });
-    setIsliked(!isliked);
-
-    // firestore()
-    //   .collection('posts')
-    //   .add({
-    //     userId: user.uid,
-    //     likes: post,
-    //   })
-    //   .then(() => {
-    //     setPost({...(post.likes + liked)});
-    //     setIsliked(!isliked);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
+    const currentlikes = !item.likesbyusers.includes(user.uid);
+    firestore()
+      .collection('posts')
+      .doc(item.id)
+      .update({
+        likesbyusers: currentlikes
+          ? firestore.FieldValue.arrayUnion(user.uid)
+          : firestore.FieldValue.arrayRemove(user.uid),
+      })
+      .then(() => {
+        console.log('userrrrrlikse');
+        // setIsliked(!isliked);
+      })
+      .catch(er => {
+        console.log('faild', er);
+      });
   };
 
   const getUser = async () => {
@@ -87,8 +81,6 @@ const PostCard = ({item, ondelete, onPress}) => {
             <TouchableOpacity onPress={onPress}>
               <Text style={styles.UserName}>
                 {userData ? userData.fname || 'JAY' : 'JAY'}
-                {''}
-                {userData ? userData.lname || 'VISH' : 'VISH'}
               </Text>
             </TouchableOpacity>
             <Text style={styles.PostTime}>
@@ -119,12 +111,14 @@ const PostCard = ({item, ondelete, onPress}) => {
 
         <View style={styles.InteractionWrapper}>
           <TouchableOpacity style={styles.Interaction} onPress={onlike}>
-            {/* {isliked ? (
+            {item.likesbyusers.includes(user.uid) ? (
               <Ionicons name="heart" size={30} color="red" />
-            ) : ( */}
-            <Ionicons name="heart-outline" size={30} color="black" />
-            {/* )} */}
-            <Text style={styles.InteractionText}>{item.likes} Likes</Text>
+            ) : (
+              <Ionicons name="heart-outline" size={30} color="black" />
+            )}
+            <Text style={styles.InteractionText}>
+              {item.likesbyusers.length} Likes
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction}>
             <Ionicons name="md-chatbubble-outline" size={24} />

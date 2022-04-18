@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}) => {
               post,
               postImg,
               postTime,
-              likes,
+              likesbyusers,
               comments,
               postvideo,
             } = doc.data();
@@ -48,7 +48,7 @@ const HomeScreen = ({navigation}) => {
               post,
               postvideo,
               postImg,
-              likes,
+              likesbyusers,
               comments,
             });
           });
@@ -66,10 +66,12 @@ const HomeScreen = ({navigation}) => {
   useEffect(() => {
     fetchPosts();
   }, []);
+
   useEffect(() => {
     fetchPosts();
     setDeleted(false);
   }, [deleted]);
+
   const deletePost = postId => {
     firestore()
       .collection('posts')

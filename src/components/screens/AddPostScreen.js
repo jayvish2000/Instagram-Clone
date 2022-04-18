@@ -20,7 +20,7 @@ import firestore from '@react-native-firebase/firestore';
 import {AuthContext} from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
 
-const AddPostScreen = ({item}) => {
+const AddPostScreen = ({item, navigation}) => {
   const {user} = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
@@ -71,8 +71,8 @@ const AddPostScreen = ({item}) => {
         postImg: imageUrl,
         postvideo: videoUrl,
         postTime: firestore.Timestamp.fromDate(new Date()),
-        likes: null,
-        Comment: null,
+        likesbyusers: [],
+        Comment: [],
       })
       .then(() => {
         ToastAndroid.show(
@@ -80,6 +80,7 @@ const AddPostScreen = ({item}) => {
           ToastAndroid.SHORT,
         );
         setPost(post);
+        navigation.goBack();
       })
       .catch(e => {
         console.log(e);

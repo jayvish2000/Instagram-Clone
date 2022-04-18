@@ -9,12 +9,8 @@ export const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: '#fff',
-    elevation: 2,
-    marginTop: 8,
-    marginBottom: 10,
-    borderRadius: 10,
-    marginLeft: 5,
-    marginRight: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D4D4D4',
   },
   UserInfo: {
     flexDirection: 'row',

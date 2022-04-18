@@ -92,7 +92,6 @@ const ProfileScreen = ({navigation, route}) => {
         />
         <Text style={styles.userName}>
           {userData ? userData.fname || 'JAY' : 'JAY'}
-          {userData ? userData.lname || 'VISH' : 'VISH'}
         </Text>
         <Text style={styles.aboutUser}>
           {userData ? userData.about || 'details not added' : ''}

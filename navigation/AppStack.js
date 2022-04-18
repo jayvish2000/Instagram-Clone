@@ -9,8 +9,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import {View, Text, TouchableOpacity} from 'react-native';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import {View, TouchableOpacity} from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
@@ -36,18 +36,6 @@ function FeedStack({navigation}) {
             fontWeight: '600',
           },
           // headerShadowVisible: false,
-
-          headerRight: () => (
-            <View>
-              <FontAwesome5.Button
-                name="plus"
-                color="#2e64e5"
-                size={22}
-                backgroundColor="#fff"
-                onPress={() => navigation.navigate('AddPost')}
-              />
-            </View>
-          ),
         }}
       />
       <Stack.Screen
@@ -245,6 +233,29 @@ function AppStack() {
               color={color}
               size={size}
             />
+          ),
+        })}
+      />
+      <Tab.Screen
+        name="add"
+        component={AddPostScreen}
+        options={({route}) => ({
+          tabBarStyle: {display: 'none'},
+          tabBarLabel: () => null,
+          tabBarIcon: () => (
+            <View
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 50 / 2,
+                marginBottom: 40,
+                backgroundColor: '#2e64e5',
+                justifyContent: 'center',
+                alignItems: 'center',
+                elevation: 5,
+              }}>
+              <MaterialCommunityIcons name="plus" color="#fff" size={30} />
+            </View>
           ),
         })}
       />
