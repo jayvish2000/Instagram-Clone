@@ -9,15 +9,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {View, TouchableOpacity} from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
 import ContactScreen from '../src/components/screens/ContactScreen';
 import CallingScreen from '../src/components/screens/CallingScreen';
-import CallScreen from '../src/components/screens/CallScreen';
-import IncomingCallScreen from '../src/components/screens/IncomingCallScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -156,9 +153,7 @@ function ContactsStack() {
           headerShadowVisible: false,
           title: '',
         }}>
-        <Stack.Screen name="Call" component={CallScreen} />
         <Stack.Screen name="Calling" component={CallingScreen} />
-        <Stack.Screen name="Incoming" component={IncomingCallScreen} />
       </Stack.Group>
     </Stack.Navigator>
   );

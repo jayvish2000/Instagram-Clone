@@ -64,7 +64,7 @@ const PostCard = ({item, ondelete, onPress}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
+      <View key={item.id} style={styles.card}>
         <View style={styles.UserInfo}>
           <View style={styles.UserImg}>
             <Image

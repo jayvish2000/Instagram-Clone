@@ -1,41 +1,61 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useContext,
+  useLayoutEffect,
+} from 'react';
 import {View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Bubble, GiftedChat, Send} from 'react-native-gifted-chat';
+import {AuthContext} from '../../../navigation/AuthProvider';
+import firestore from '@react-native-firebase/firestore';
 
 const ChatScreen = () => {
+  const {user} = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
+  const [userData, setUserData] = useState(null);
 
+  const getUser = async () => {
+    await firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then(documentSnapshot => {
+        if (documentSnapshot.exists) {
+          setUserData(documentSnapshot.data());
+        }
+      });
+  };
   useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-      {
-        _id: 2,
-        text: 'Hello World',
-        createdAt: new Date(),
-        user: {
-          _id: 1,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
+    getUser();
   }, []);
+
+  useLayoutEffect(() => {
+    const unsubscribe = firestore()
+      .collection('chats')
+      .orderBy('createdAt', 'desc')
+      .onSnapshot(snapshot =>
+        setMessages(
+          snapshot.docs.map(doc => ({
+            _id: doc.data()._id,
+            createdAt: doc.data().createdAt.toDate(),
+            text: doc.data().text,
+            user: doc.data().user,
+          })),
+        ),
+      );
+    return unsubscribe;
+  });
+
   const onSend = useCallback((messages = []) => {
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, messages),
     );
+    const {_id, createdAt, text, user} = messages[0];
+    firestore().collection('chats').add({_id, createdAt, text, user});
   }, []);
 
   const renderBubble = props => {
@@ -54,7 +74,7 @@ const ChatScreen = () => {
       />
     );
   };
-  // #1c2134 #a1acc7
+
   const renderSend = props => {
     return (
       <Send {...props}>
@@ -62,7 +82,7 @@ const ChatScreen = () => {
           <MaterialCommunityIcons
             name="send-circle"
             size={32}
-            color="#128C7E"
+            color="#2e64e5"
           />
         </View>
       </Send>
@@ -71,7 +91,12 @@ const ChatScreen = () => {
 
   const scrollToBottomComponent = props => {
     return (
-      <FontAwesome {...props} name="angle-double-down" size={22} color="#333" />
+      <FontAwesome
+        {...props}
+        name="angle-double-down"
+        size={22}
+        color="#2e64e5"
+      />
     );
   };
 
@@ -80,7 +105,9 @@ const ChatScreen = () => {
       messages={messages}
       onSend={messages => onSend(messages)}
       user={{
-        _id: 1,
+        _id: user.uid,
+        name: userData?.fname,
+        avatar: userData?.userImg,
       }}
       renderBubble={renderBubble}
       renderSend={renderSend}

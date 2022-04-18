@@ -5,7 +5,6 @@ import ProgressiveImage from './ProgressiveImage';
 import ProgressiveVideos from './ProgressiveVideos';
 
 const UserPostData = ({item}) => {
-  console.log('video', item.postvideo);
   return (
     <View
       style={{

@@ -42,12 +42,13 @@ export const styles = StyleSheet.create({
   UserName: {
     fontSize: 14,
     fontWeight: 'bold',
+    color: '#000',
   },
   PostTime: {
     fontSize: 12,
     color: '#666',
   },
-  MessageText: {
+  about: {
     fontSize: 14,
     color: '#333333',
   },

@@ -20,8 +20,9 @@ const MixedScreen = ({route, navigation}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            const {postImg, postvideo} = doc.data();
+            const {userId, postImg, postvideo} = doc.data();
             list.push({
+              userId,
               id: doc.id,
               postImg,
               postvideo,
