@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   StyleSheet,
@@ -8,7 +7,7 @@ import {
 import React, {useState} from 'react';
 import Video from 'react-native-video';
 
-const ProgressiveVideos = ({poster,controls, source, style, ...props}) => {
+const ProgressiveVideos = ({poster, source, style, ...props}) => {
   const [paused, setPaused] = useState(false);
 
   const playPaused = () => {
@@ -24,7 +23,7 @@ const ProgressiveVideos = ({poster,controls, source, style, ...props}) => {
           style={styles.videos}
           paused={paused}
           poster={poster}
-          controls={controls}
+          
         />
       </TouchableWithoutFeedback>
     </View>

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -20,13 +19,6 @@ const ContactScreen = () => {
   const [contacts, setContacts] = useState();
   const [searchContact, setSearchContact] = useState('');
   const [loading, setLoading] = useState(true);
-
-  // useEffect(() => {
-  //   const newContacts = contacts.filter(contact =>
-  //     contact.displayName.toLowerCase().includes(searchContact.toLowerCase()),
-  //   );
-  //   setContacts(newContacts);
-  // }, [searchContact]);
   const navigation = useNavigation();
 
   useEffect(() => {

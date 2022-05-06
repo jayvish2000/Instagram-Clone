@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {StyleSheet, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import React, {useState} from 'react';
 import Video from 'react-native-video';

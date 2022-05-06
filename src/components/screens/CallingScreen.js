@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {Text, View, Pressable, Image} from 'react-native';
 import React, {useState} from 'react';
 import styles from '../../../styles/CallingStyles';
@@ -8,17 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 const CallingScreen = ({route}) => {
   const user = route?.params?.user;
-  console.log('sjjsjsjsjsjjsjs', route.params.user);
-
-  // const popimgdisplay = () => {
-  //   <Image
-  //     style={styles.img}
-  //     source={{
-  //       uri: user.thumbnailPath,
-  //     }}
-  //   />;
-  // };
-
+ 
   return (
     <View style={styles.pages}>
       <View style={styles.cameraPreview}>

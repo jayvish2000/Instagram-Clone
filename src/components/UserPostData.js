@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {View} from 'react-native';
 import React from 'react';
 import ProgressiveImage from './ProgressiveImage';
@@ -29,7 +28,7 @@ const UserPostData = ({item}) => {
         source={{uri: item.postvideo}}
         style={{width: '100%', height: 150}}
         resizeMode="cover"
-        controls={true}
+       
       />
       )}
       {item.postvideo  ? (
@@ -38,7 +37,7 @@ const UserPostData = ({item}) => {
         source={{uri: item.postvideo}}
         style={{width: '100%', height: 150}}
         resizeMode="cover"
-        controls={true}
+        
       />
       ) : (
        null

@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 import {styles} from '../../styles/Feedstyles';

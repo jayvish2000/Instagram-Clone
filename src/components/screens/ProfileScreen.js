@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {Text, View, Image, TouchableOpacity, ScrollView,FlatList} from 'react-native';
 import React, {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '../../../navigation/AuthProvider';
