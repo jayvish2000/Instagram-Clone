@@ -5,43 +5,25 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  Dimensions,
 } from 'react-native';
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 
 import FormInput from '../FormInput';
 import FormButton from '../FormButton';
 import SocialButton from '../SocialButton';
 import {AuthContext} from '../../../navigation/AuthProvider';
-import {Voximplant} from 'react-native-voximplant';
 import FormInputPassword from '../FormInputPassword';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const voximplant = Voximplant.getInstance();
-
-  useEffect(() => {
-    const connect = async () => {
-      const status = await voximplant.getClientState();
-      console.log('dddd', status);
-      if (status === Voximplant.ClientState.DISCONNECTED) {
-        await voximplant.connect();
-      }
-    };
-    connect();
-  }, []);
-
-  const {login, googleLogin, fbLogin} = useContext(AuthContext);
+  const {login, googleLogin} = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={{
-          uri: 'https://raw.githubusercontent.com/itzpradip/react-native-firebase-social-app/master/assets/rn-social-logo.png',
-        }}
-      />
+      <View style={styles.maincontainer}>
       <Text style={styles.text}>Social App</Text>
       <FormInput
         keyboardType="email-address"
@@ -58,22 +40,16 @@ const LoginScreen = ({navigation}) => {
         secureTextEntry
         onChangeText={userPassword => setPassword(userPassword)}
       />
-      <FormButton
-        buttonTitle="Sign In"
-        onPress={() => login(email, password)}
-      />
-      <TouchableOpacity style={styles.forgotbtn}>
+       <TouchableOpacity onPress={()=>navigation.navigate('ForgotPassword')} style={[styles.forgotbtn,{marginRight:4}]}>
         <Text style={styles.navbtntext}>Forgot Password?</Text>
       </TouchableOpacity>
+      <FormButton
+        buttonTitle="Login"
+        onPress={() => login(email, password)}
+      />
+     
       {Platform.OS === 'android' ? (
         <View>
-          <SocialButton
-            buttonTitle="Sign In with Facebook"
-            btntype="facebook"
-            color="#4867aa"
-            backgroundColor="#e6eaf4"
-            // onPress={() => fbLogin()}
-          />
           <SocialButton
             buttonTitle="Sign In with Google"
             btntype="google"
@@ -85,9 +61,10 @@ const LoginScreen = ({navigation}) => {
       ) : null}
       <TouchableOpacity
         onPress={() => navigation.navigate('Signup')}
-        style={styles.forgotbtn}>
+        style={[styles.forgotbtn,{justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:'15%'}]}>
         <Text style={styles.navbtntext}>Don't have an account? SignUp</Text>
       </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -96,11 +73,24 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9fafd',
+    backgroundColor: '#fff',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  maincontainer:{
+    width:Dimensions.get('window').width/1.1,
+    height:Dimensions.get('window').height/1.1,
+    backgroundColor:'#2e64e515',
+    padding:12,
+    marginTop:'10%',
+    marginBottom:'10%',
+    justifyContent:'center',
+    alignItems:'center',
+    borderRadius:25,
+    elevation:15,
+    shadowColor:'#fff'
   },
   logo: {
     height: 150,
@@ -116,10 +106,12 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   forgotbtn: {
-    marginVertical: 35,
+    justifyContent:'center',
+    alignItems:'flex-end',
+    alignSelf:'flex-end'
   },
   navbtntext: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '500',
     color: '#2e64e5',
   },

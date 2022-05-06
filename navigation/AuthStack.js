@@ -5,6 +5,7 @@ import LoginScreen from '../src/components/screens/LoginScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SignUpScreen from '../src/components/screens/SignUpScreen';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import ForgotPassword from '../src/components/screens/ForgotPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +23,9 @@ const AuthStack = () => {
       }
     });
 
-    GoogleSignin.configure();
+    GoogleSignin.configure({
+      webClientId:'66915133418-c5rspu83ko0vdceik762dc6e32v9kn22.apps.googleusercontent.com'
+    });
   }, []);
   if (isFirstLaunch === null) {
     return null;
@@ -46,6 +49,11 @@ const AuthStack = () => {
       <Stack.Screen
         name="Signup"
         component={SignUpScreen}
+        options={{header: () => null}}
+      />
+       <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
         options={{header: () => null}}
       />
     </Stack.Navigator>

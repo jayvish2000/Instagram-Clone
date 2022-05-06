@@ -8,9 +8,9 @@ import {
   ToastAndroid,
   Image,
   ActivityIndicator,
-  Pressable,
+  Pressable,Dimensions
 } from 'react-native';
-import React, {useContext, useState, useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import FormInput from '../FormInput';
 import FormButton from '../FormButton';
@@ -120,10 +120,10 @@ const SignUpScreen = ({navigation}) => {
         closeOnPressMask={true}
         customStyles={{
           wrapper: {
-            backgroundColor: '#2e64e515',
+            backgroundColor: 'transparent',
           },
           draggableIcon: {
-            backgroundColor: '#2e64e5',
+            backgroundColor: '#000',
           },
         }}
         height={240}>
@@ -132,7 +132,7 @@ const SignUpScreen = ({navigation}) => {
           style={{
             borderBottomWidth: 1,
             marginBottom: 20,
-            borderBottomColor: '#2e64e5',
+            borderBottomColor: '#D4D4D4',
           }}
         />
 
@@ -153,15 +153,16 @@ const SignUpScreen = ({navigation}) => {
                 elevation: 2,
                 height: 40,
                 width: 40,
-                backgroundColor: '#2e64e5',
+                backgroundColor: '#000',
                 justifyContent: 'center',
                 alignItems: 'center',
+                shadowColor:'#fff'
               }}>
               <MaterialCommunityIcons name="camera" size={25} color="#fff" />
             </View>
             <Text
               style={{
-                color: '#2e64e5',
+                color: '#000',
                 fontSize: 16,
                 padding: 12,
               }}>
@@ -187,9 +188,10 @@ const SignUpScreen = ({navigation}) => {
                 elevation: 2,
                 height: 40,
                 width: 40,
-                backgroundColor: '#2e64e5',
+                backgroundColor: '#000',
                 justifyContent: 'center',
                 alignItems: 'center',
+                shadowColor:'#fff'
               }}>
               <MaterialCommunityIcons
                 name="folder-image"
@@ -199,7 +201,7 @@ const SignUpScreen = ({navigation}) => {
             </View>
             <Text
               style={{
-                color: '#2e64e5',
+                color: '#000',
                 fontSize: 16,
                 padding: 12,
               }}>
@@ -209,7 +211,7 @@ const SignUpScreen = ({navigation}) => {
         </View>
       </RBSheet>
 
-      <View style={{alignItems: 'center', marginTop: 15, marginBottom: 15}}>
+      <View style={styles.maincontainer}>
         <View
           style={{
             height: 100,
@@ -296,17 +298,17 @@ const SignUpScreen = ({navigation}) => {
             <ActivityIndicator size="large" color="#2e64e5" />
           </View>
         ) : (
-          <FormButton buttonTitle="Sign Up" onPress={() => register()} />
+          <FormButton  buttonTitle="Signup" onPress={() => register()} />
         )}
 
         {Platform.OS === 'android' ? (
           <View>
-            <SocialButton
+            {/* <SocialButton
               buttonTitle="Sign In with Facebook"
               btntype="facebook"
               color="#4867aa"
               backgroundColor="#e6eaf4"
-            />
+            /> */}
             <SocialButton
               buttonTitle="Sign In with Google"
               btntype="google"
@@ -318,7 +320,7 @@ const SignUpScreen = ({navigation}) => {
 
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
-          style={styles.navbtn}>
+          style={[styles.navbtn,{marginTop:'15%'}]}>
           <Text style={styles.navbtntext}>Already have an account? SignIn</Text>
         </TouchableOpacity>
       </View>
@@ -330,13 +332,23 @@ export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f9fafd',
+    backgroundColor: '#fff',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
-
+maincontainer:{
+alignItems: 'center',
+width:Dimensions.get('window').width/1.1,
+height:Dimensions.get('window').height/1.1,
+backgroundColor:'#2e64e515',
+padding:12,
+paddingTop:'8%',
+borderRadius:25,
+elevation:15,
+shadowColor:'#fff'
+},
   text: {
     fontSize: 28,
     marginBottom: 10,
@@ -349,7 +361,7 @@ const styles = StyleSheet.create({
     marginVertical: 35,
   },
   navbtntext: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: '500',
     color: '#2e64e5',
   },
@@ -385,6 +397,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 6,
     fontSize: 18,
-    color: '#2e64e5',
+    color: '#000',
   },
 });

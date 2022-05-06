@@ -18,7 +18,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#2e64e515',
     borderRadius: 5,
     padding: 10,
-    width: '30%',
+    width: '100%',
+    marginBottom:'10%',
+    marginTop:'14%',
+    alignItems:'center',
+    alignSelf:'center'
   },
   buttonText: {
     fontSize: 15,

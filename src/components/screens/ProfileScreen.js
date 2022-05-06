@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import {Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {Text, View, Image, TouchableOpacity, ScrollView,FlatList} from 'react-native';
 import React, {useContext, useState, useEffect} from 'react';
 import {AuthContext} from '../../../navigation/AuthProvider';
 import {styles} from '../../../styles/ProfileStyles';
@@ -7,8 +7,9 @@ import firestore from '@react-native-firebase/firestore';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import VideoScreen from './VideoScreen';
-import MixedScreen from './MixedScreen';
+import UserPostDataVideo from '../UserPostDataVideo'
+import UserPostData from '../UserPostData'
+
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -65,6 +66,34 @@ const ProfileScreen = ({navigation, route}) => {
     fetchPosts();
     navigation.addListener('focus', () => setLoading(!loading));
   }, [navigation, loading]);
+
+const MixedScreen=()=>{
+  return(
+    <View style={styles.container}>
+    <FlatList
+      showsVerticalScrollIndicator={false}
+      data={posts}
+      renderItem={({item}) => <UserPostData key={item.id} item={item} />}
+      numColumns={3}
+      keyExtractor={(item, index) => index.toString()}
+    />
+  </View>
+  )
+}
+
+const VideoScreen=()=>{
+  return (
+    <View style={styles.container}>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={posts}
+        renderItem={({item}) => <UserPostDataVideo key={item.id} item={item} />}
+        numColumns={3}
+        keyExtractor={(item, index) => index.toString()}
+      />
+    </View>
+  );
+}
 
   return (
     <View style={styles.container}>
