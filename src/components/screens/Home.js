@@ -27,7 +27,7 @@ const HomeScreen = ({navigation}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            // console.log('likesssssssssss', likes);
+      
             const {
               userId,
               userName,

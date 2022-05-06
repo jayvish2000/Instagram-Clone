@@ -69,12 +69,12 @@ const ProfileScreen = ({navigation, route}) => {
 
 const MixedScreen=()=>{
   return(
-    <View style={styles.container}>
+    <View style={[styles.container,{flex:1}]}>
     <FlatList
       showsVerticalScrollIndicator={false}
       data={posts}
       renderItem={({item}) => <UserPostData key={item.id} item={item} />}
-      numColumns={3}
+      numColumns={2}
       keyExtractor={(item, index) => index.toString()}
     />
   </View>
@@ -83,7 +83,7 @@ const MixedScreen=()=>{
 
 const VideoScreen=()=>{
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{flex:1}]}>
       <FlatList
         showsVerticalScrollIndicator={false}
         data={posts}

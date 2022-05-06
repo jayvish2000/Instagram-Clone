@@ -5,6 +5,7 @@ import ProgressiveImage from './ProgressiveImage';
 import ProgressiveVideos from './ProgressiveVideos';
 
 const UserPostData = ({item}) => {
+  console.log('item',item.postvideo)
   return (
     <View
       style={{
@@ -13,7 +14,7 @@ const UserPostData = ({item}) => {
         margin: 1,
         backgroundColor: '#2e64e515',
       }}>
-      {item.postImg != null ? (
+      {item.postImg ? (
         <ProgressiveImage
           defaultImageSource={{
             uri: 'https://www.touchtaiwan.com/images/default.jpg',
@@ -24,11 +25,23 @@ const UserPostData = ({item}) => {
         />
       ) : (
         <ProgressiveVideos
-          poster={'https://www.cloudlessons.net/images/video-thumb.png'}
-          source={{uri: item.postvideo}}
-          style={{width: '100%', height: 150}}
-          resizeMode="cover"
-        />
+        poster={'https://www.cloudlessons.net/images/video-thumb.png'}
+        source={{uri: item.postvideo}}
+        style={{width: '100%', height: 150}}
+        resizeMode="cover"
+        controls={true}
+      />
+      )}
+      {item.postvideo  ? (
+        <ProgressiveVideos
+        poster={'https://www.cloudlessons.net/images/video-thumb.png'}
+        source={{uri: item.postvideo}}
+        style={{width: '100%', height: 150}}
+        resizeMode="cover"
+        controls={true}
+      />
+      ) : (
+       null
       )}
     </View>
   );

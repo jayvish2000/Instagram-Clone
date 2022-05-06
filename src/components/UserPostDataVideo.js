@@ -4,6 +4,7 @@ import React from 'react';
 import ProgressiveVideos from './ProgressiveVideos';
 
 const UserPostDataVideo = ({item}) => {
+  console.log('uiii',item)
   return (
     <View
       style={{
@@ -13,12 +14,13 @@ const UserPostDataVideo = ({item}) => {
         backgroundColor: '#2e64e515',
         marginBottom: 4,
       }}>
-      {item.postvideo != null ? (
+      {item.postvideo  ? (
         <ProgressiveVideos
           poster={'https://www.cloudlessons.net/images/video-thumb.png'}
           source={{uri: item.postvideo}}
           style={{width: '100%', height: 150}}
           resizeMode="cover"
+          controls={true}
         />
       ) : null}
     </View>

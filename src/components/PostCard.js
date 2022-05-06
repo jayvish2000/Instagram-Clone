@@ -14,7 +14,7 @@ import Share from 'react-native-share';
 const PostCard = ({item, ondelete, onPress}) => {
   const {user} = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  console.log('❤❤❤❤❤likes', item.likesbyusers);
+  // console.log('❤❤❤❤❤likes', item);
 
   const onlike = () => {
     const currentlikes = !item.likesbyusers.includes(user.uid);
@@ -106,6 +106,7 @@ const PostCard = ({item, ondelete, onPress}) => {
             playWhenInactive={false}
             source={{uri: item.postvideo}}
             resizeMode="cover"
+            controls={true}
           />
         ) : null}
 
