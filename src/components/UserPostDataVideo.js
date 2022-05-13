@@ -3,7 +3,7 @@ import React from 'react';
 import ProgressiveVideos from './ProgressiveVideos';
 
 const UserPostDataVideo = ({item}) => {
-  console.log('uiii',item)
+  // console.log('uiii',item)
   return (
     <View
       style={{

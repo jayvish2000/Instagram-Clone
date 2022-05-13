@@ -42,8 +42,7 @@
     "react-native-svg": "^12.3.0",
     "react-native-tab-view": "^3.1.1",
     "react-native-vector-icons": "^9.1.0",
-    "react-native-video": "^5.1.1",
-    "react-native-voximplant": "^1.31.0"
+    "react-native-video": "^5.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

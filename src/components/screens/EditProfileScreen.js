@@ -38,7 +38,7 @@ const EditProfileScreen = ({navigation}) => {
       .get()
       .then(documentSnapshot => {
         if (documentSnapshot.exists) {
-          console.log('User Data', documentSnapshot.data());
+          // console.log('User Data', documentSnapshot.data());
           setUserData(documentSnapshot.data());
         }
       });
@@ -296,7 +296,7 @@ const EditProfileScreen = ({navigation}) => {
         </View>
 
         <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-          {userData ? userData.fname : ''} {userData ? userData.lname : ''}
+          {userData ? userData.fname : ''} 
         </Text>
         <Text>{userData ? userData.email : ''} </Text>
       </View>

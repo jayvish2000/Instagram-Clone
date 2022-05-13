@@ -105,7 +105,7 @@ const PostCard = ({item, ondelete, onPress}) => {
             playWhenInactive={false}
             source={{uri: item.postvideo}}
             resizeMode="cover"
-            controls={true}
+            // controls={true}
           />
         ) : null}
 

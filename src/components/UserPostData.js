@@ -4,7 +4,7 @@ import ProgressiveImage from './ProgressiveImage';
 import ProgressiveVideos from './ProgressiveVideos';
 
 const UserPostData = ({item}) => {
-  console.log('item',item.postvideo)
+  // console.log('item',item)
   return (
     <View
       style={{
@@ -23,13 +23,7 @@ const UserPostData = ({item}) => {
           resizeMode="cover"
         />
       ) : (
-        <ProgressiveVideos
-        poster={'https://www.cloudlessons.net/images/video-thumb.png'}
-        source={{uri: item.postvideo}}
-        style={{width: '100%', height: 150}}
-        resizeMode="cover"
-       
-      />
+       null
       )}
       {item.postvideo  ? (
         <ProgressiveVideos

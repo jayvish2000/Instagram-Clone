@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {AuthContext} from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 
-const MessageScreen = ({navigation}) => {
+const MessageScreen = ({navigation,route}) => {
   const {user} = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   console.log('userData', userData);
@@ -13,10 +13,11 @@ const MessageScreen = ({navigation}) => {
   const getUser = async () => {
     await firestore()
       .collection('users')
+      // .where('userId', '==', route.params ? route.params.userId : user.uid)
       .doc(user.uid)
       .get()
       .then(documentSnapshot => {
-        console.log('cod', documentSnapshot);
+        // console.log('cod', documentSnapshot.data());
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data());
         }

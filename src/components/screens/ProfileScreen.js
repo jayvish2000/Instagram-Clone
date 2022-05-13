@@ -29,13 +29,14 @@ const ProfileScreen = ({navigation, route}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            const {userId, postImg} = doc.data();
+            const {userId, postImg,postvideo} = doc.data();
             list.push({
               id: doc.id,
               userId,
               userName: 'jay',
               userImg: 'https://wallpaper.dog/large/20481081.jpg',
               postImg,
+              postvideo
             });
           });
         });
