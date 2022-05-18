@@ -15,7 +15,7 @@ const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-console.log("idddd",posts)
+// console.log("idddd",posts)
   const fetchPosts = async () => {
     try {
       const list = [];
@@ -77,7 +77,7 @@ console.log("idddd",posts)
       .doc(postId)
       .get()
       .then(documentSnapshot => {
-        console.log("postid",documentSnapshot.data())
+        // console.log("postid",documentSnapshot.data())
         if (documentSnapshot.exists) {
           const {posts} = documentSnapshot.data();
 

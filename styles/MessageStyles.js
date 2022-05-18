@@ -34,8 +34,7 @@ export const styles = StyleSheet.create({
     width: 300,
   },
   UserInfoText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     marginBottom: 5,
     marginRight: 20,
   },

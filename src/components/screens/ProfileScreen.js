@@ -18,7 +18,7 @@ const ProfileScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
 
-  console.log("roureee",route)
+  // console.log("roureee",route)
 
   const fetchPosts = async () => {
     try {
@@ -76,7 +76,7 @@ const MixedScreen=()=>{
       showsVerticalScrollIndicator={false}
       data={posts}
       renderItem={({item}) => <UserPostData key={item.id} item={item} />}
-      numColumns={2}
+      numColumns={3}
       keyExtractor={(item, index) => index.toString()}
     />
   </View>
