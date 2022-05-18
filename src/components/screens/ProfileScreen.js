@@ -18,6 +18,8 @@ const ProfileScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
 
+  console.log("roureee",route)
+
   const fetchPosts = async () => {
     try {
       const list = [];
