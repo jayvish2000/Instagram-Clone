@@ -29,9 +29,7 @@ const AddPostScreen = ({item, navigation}) => {
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
-      width: 320,
-      height: 280,
-      // cropping: true,
+      cropping: true,
     }).then(image => {
       // console.log(image);
       const imageUrl = Platform.OS === 'ios' ? image.sourceURL : image.path;

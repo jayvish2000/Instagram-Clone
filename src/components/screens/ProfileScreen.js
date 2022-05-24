@@ -1,19 +1,19 @@
-import {Text, View, Image, TouchableOpacity, ScrollView,FlatList} from 'react-native';
-import React, {useContext, useState, useEffect} from 'react';
-import {AuthContext} from '../../../navigation/AuthProvider';
-import {styles} from '../../../styles/ProfileStyles';
+import { Text, View, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { AuthContext } from '../../../navigation/AuthProvider';
+import { styles } from '../../../styles/ProfileStyles';
 import firestore from '@react-native-firebase/firestore';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UserPostDataVideo from '../UserPostDataVideo'
 import UserPostData from '../UserPostData'
 
 
 const Tab = createMaterialTopTabNavigator();
 
-const ProfileScreen = ({navigation, route}) => {
-  const {user, logout} = useContext(AuthContext);
+const ProfileScreen = ({ navigation, route }) => {
+  const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
@@ -31,7 +31,7 @@ const ProfileScreen = ({navigation, route}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-            const {userId, postImg,postvideo} = doc.data();
+            const { userId, postImg, postvideo } = doc.data();
             list.push({
               id: doc.id,
               userId,
@@ -69,33 +69,33 @@ const ProfileScreen = ({navigation, route}) => {
     navigation.addListener('focus', () => setLoading(!loading));
   }, [navigation, loading]);
 
-const MixedScreen=()=>{
-  return(
-    <View style={[styles.container,{flex:1}]}>
-    <FlatList
-      showsVerticalScrollIndicator={false}
-      data={posts}
-      renderItem={({item}) => <UserPostData key={item.id} item={item} />}
-      numColumns={3}
-      keyExtractor={(item, index) => index.toString()}
-    />
-  </View>
-  )
-}
+  const MixedScreen = () => {
+    return (
+      <View style={[styles.container, { flex: 1 }]}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={posts}
+          renderItem={({ item }) => <UserPostData key={item.id} item={item} />}
+          numColumns={3}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    )
+  }
 
-const VideoScreen=()=>{
-  return (
-    <View style={[styles.container,{flex:1}]}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={posts}
-        renderItem={({item}) => <UserPostDataVideo key={item.id} item={item} />}
-        numColumns={3}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </View>
-  );
-}
+  const VideoScreen = () => {
+    return (
+      <View style={[styles.container, { flex: 1 }]}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={posts}
+          renderItem={({ item }) => <UserPostDataVideo key={item.id} item={item} />}
+          numColumns={3}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -112,7 +112,7 @@ const VideoScreen=()=>{
           source={{
             uri: userData
               ? userData.userImg ||
-                'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
+              'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
               : 'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg',
           }}
         />
@@ -128,7 +128,7 @@ const VideoScreen=()=>{
             <>
               <TouchableOpacity
                 style={styles.userBtn}
-                // onPress={() => navigation.navigate('Chats')}
+              // onPress={() => navigation.navigate('Chats')}
               >
                 <Text style={styles.userBtnTxt}>Message</Text>
               </TouchableOpacity>
@@ -143,7 +143,15 @@ const VideoScreen=()=>{
                 onPress={() => navigation.navigate('EditProfile')}>
                 <Text style={styles.userBtnTxt}>Edit</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
+              <TouchableOpacity style={styles.userBtn} onPress={() => {
+                firestore().collection('users')
+                  .doc(user.uid)
+                  .update({
+                    status: firestore.FieldValue.serverTimestamp()
+                  }).then(() => {
+                    logout()
+                  })
+              }}>
                 <Text style={styles.userBtnTxt}>Logout</Text>
               </TouchableOpacity>
             </>
@@ -165,19 +173,24 @@ const VideoScreen=()=>{
         </View>
       </View>
 
-      <View style={{width: '100%', height: '70%'}}>
+      <View style={{ width: '100%', height: '70%' }}>
         <Tab.Navigator
           screenOptions={{
             tabBarActiveTintColor: '#2e64e5',
             headerShown: false,
-            tabBarInactiveTintColor: '#949494',
+            tabBarInactiveTintColor: '#949494', tabBarIndicatorStyle: {
+              width: 0, height: 0
+            },
+            tabBarStyle: {
+              shadowColor: '#fff', marginBottom: 1
+            }
           }}>
           <Tab.Screen
             name="Image"
             component={MixedScreen}
             options={{
               tabBarLabel: () => null,
-              tabBarIcon: ({color}) => (
+              tabBarIcon: ({ color }) => (
                 <Fontisto name="nav-icon-grid" color={color} size={20} />
               ),
             }}
@@ -187,7 +200,7 @@ const VideoScreen=()=>{
             component={VideoScreen}
             options={{
               tabBarLabel: () => null,
-              tabBarIcon: ({color}) => (
+              tabBarIcon: ({ color }) => (
                 <Icon name="md-play-circle-outline" color={color} size={25} />
               ),
             }}

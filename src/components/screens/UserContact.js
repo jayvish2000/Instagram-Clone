@@ -1,14 +1,14 @@
 import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
-import { styles } from '../../../styles/MessageStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
+import { styles } from '../../../styles/MessageStyles';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const MessageScreen = ({ navigation }) => {
+const UserContact = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  // console.log("dddd", userData)
+
   const getUser = async () => {
     try {
       const list = [];
@@ -30,7 +30,6 @@ const MessageScreen = ({ navigation }) => {
               fname,
               userImg,
               status
-
             });
           });
         })
@@ -64,7 +63,6 @@ const MessageScreen = ({ navigation }) => {
                         : 'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg',
                     }}
                   />
-
                 </View>
                 <View style={styles.TextSection}>
                   <View style={styles.UserInfoText}>
@@ -77,36 +75,14 @@ const MessageScreen = ({ navigation }) => {
                     Hi ! there I am using Social chat app
                   </Text>
                 </View>
-
               </View>
             </TouchableOpacity>
 
           }
         />
       </View>
-      <View
-        style={{
-          backgroundColor: '#2e64e515',
-          width: 50,
-          height: 50,
-          borderRadius: 50 / 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-          left: '80%',
-          top: '88%',
-          position: 'absolute',
-
-        }}>
-        <TouchableOpacity onPress={() => navigation.navigate('User')}>
-          <MaterialCommunityIcons
-            name="message-text-outline"
-            size={30}
-            color="#2e64e5"
-          />
-        </TouchableOpacity>
-      </View>
     </View>
-  );
-};
+  )
+}
 
-export default MessageScreen;
+export default UserContact

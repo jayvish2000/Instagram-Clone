@@ -2,15 +2,14 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    //   justifyContent: 'center',
-    alignItems: 'center',
-    paddingLeft: 16,
-    paddingRight: 16,
+    flex: 1,    
     backgroundColor: '#ffffff',
   },
   Card: {
     width: '100%',
+    alignItems: 'center',
+    paddingLeft: 5,
+    paddingRight: 5,
   },
   UserInfo: {
     flexDirection: 'row',
@@ -41,7 +40,7 @@ export const styles = StyleSheet.create({
   UserName: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#2e64e5',
   },
   PostTime: {
     fontSize: 12,

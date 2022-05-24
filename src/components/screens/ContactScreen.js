@@ -46,7 +46,7 @@ const ContactScreen = () => {
   };
   const callUser = user => {
     navigation.navigate('Calling', {user});
-    console.log('ssaajatkkk😊😊😊😊😊', user);
+    // console.log('ssaajatkkk😊😊😊😊😊', user);
   };
   const newPerson = {
     emailAddresses: [

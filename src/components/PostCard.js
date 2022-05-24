@@ -4,11 +4,10 @@ import {styles} from '../../styles/Feedstyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {AuthContext} from '../../navigation/AuthProvider';
 import moment from 'moment';
-import ProgressiveImage from './ProgressiveImage';
 import firestore from '@react-native-firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import ProgressiveVideo from './ProgressiveVideo';
 import Share from 'react-native-share';
+import { ProgressiveImage, ProgressiveVideo } from './ProgressiveData';
 
 const PostCard = ({item, ondelete, onPress}) => {
   const {user} = useContext(AuthContext);
@@ -102,7 +101,7 @@ const PostCard = ({item, ondelete, onPress}) => {
         {item.postvideo != null ? (
           <ProgressiveVideo
             poster="https://www.cloudlessons.net/images/video-thumb.png"
-            playWhenInactive={false}
+            style={{width: '100%', height: 200}}
             source={{uri: item.postvideo}}
             resizeMode="cover"
             // controls={true}

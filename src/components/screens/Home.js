@@ -9,7 +9,7 @@ import React, {useEffect, useState} from 'react';
 import {styles} from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
-import storge from '@react-native-firebase/storage';
+import storage from '@react-native-firebase/storage';
 
 const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState(null);
@@ -82,8 +82,8 @@ const HomeScreen = ({navigation}) => {
           const {posts} = documentSnapshot.data();
 
           if (posts != null) {
-            const storageRef = storge().refFromURL(posts);
-            const filesRef = storge().ref(storageRef.fullPath);
+            const storageRef = storage().refFromURL(posts);
+            const filesRef = storage().ref(storageRef.fullPath);
 
             filesRef
               .delete()

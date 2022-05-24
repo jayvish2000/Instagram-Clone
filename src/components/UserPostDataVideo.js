@@ -1,6 +1,6 @@
 import {View} from 'react-native';
 import React from 'react';
-import ProgressiveVideos from './ProgressiveVideos';
+import { ProgressiveVideo } from './ProgressiveData';
 
 const UserPostDataVideo = ({item}) => {
   // console.log('uiii',item)
@@ -14,7 +14,7 @@ const UserPostDataVideo = ({item}) => {
         marginBottom: 4,
       }}>
       {item.postvideo  ? (
-        <ProgressiveVideos
+        <ProgressiveVideo
           poster={'https://www.cloudlessons.net/images/video-thumb.png'}
           source={{uri: item.postvideo}}
           style={{width: '100%', height: 150}}

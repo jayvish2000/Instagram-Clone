@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../src/components/screens/Home';
 import MessageScreen from '../src/components/screens/MessageScreen';
 import ProfileScreen from '../src/components/screens/ProfileScreen';
@@ -9,17 +9,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {View, TouchableOpacity} from 'react-native';
+import { View, TouchableOpacity,Text } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
 import ContactScreen from '../src/components/screens/ContactScreen';
 import CallingScreen from '../src/components/screens/CallingScreen';
+import UserContact from '../src/components/screens/UserContact';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function FeedStack({navigation}) {
+function FeedStack({ navigation }) {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -63,7 +64,7 @@ function FeedStack({navigation}) {
                   name="arrow-back"
                   color="#2e64e5"
                   size={22}
-                  // backgroundColor="#2e64e515"
+                // backgroundColor="#2e64e515"
                 />
               </TouchableOpacity>
               {/* <Text style={{color: '#2e64e5', fontSize: 18, fontWeight: '500'}}>
@@ -91,14 +92,20 @@ function FeedStack({navigation}) {
     </Stack.Navigator>
   );
 }
-function MessageStack({navigation}) {
+function MessageStack({ navigation,route }) {
+
+  console.log("route",route.params)
   return (
     <Stack.Navigator initialRouteName="Messages">
       <Stack.Screen
         name="Messages"
         component={MessageScreen}
         options={{
-          title: '',
+          headerShadowVisible:false,
+          title: 'Social App', 
+          headerTitleStyle: {
+            color: '#2e64e5'
+          },
 
           headerLeft: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Social App')}>
@@ -110,11 +117,21 @@ function MessageStack({navigation}) {
       <Stack.Screen
         name="Chats"
         component={ChatScreen}
-        options={({route}) => ({
-          title: route.params.userName,
+        options={({ route }) => ({
+          headerTitle:()=>(
+            <View style={{flexDirection:'column'}}>
+            <Text style={{fontSize:18,fontWeight:'500',color:"#2e64e5"}}>{route.params.userName}</Text>
+            <Text style={{fontSize:12,fontWeight:'400',color:"#2e64e5"}}>{route.params.status}</Text>
+            </View>
+          ),
           headerTitleStyle: {
             color: '#2e64e5',
           },
+          // headerLeft: () => (
+          //   <TouchableOpacity onPress={() => navigation.navigate('Messages',{userName:route.params.userId})}>
+          //     <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
+          //   </TouchableOpacity>
+          // ),
         })}
       />
       <Stack.Screen
@@ -122,6 +139,26 @@ function MessageStack({navigation}) {
         component={ContactScreen}
         options={() => ({
           title: '',
+          
+        })}
+      />
+      <Stack.Screen
+        name="User"
+        component={UserContact}
+        options={() => ({
+          title: 'Social App',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: '#fff',
+          },
+          headerTitleStyle: {
+            color: '#2e64e5'
+          },
+           headerLeft: () => (
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
+            </TouchableOpacity>
+          ),
         })}
       />
       <Stack.Screen
@@ -139,7 +176,7 @@ function MessageStack({navigation}) {
   );
 }
 
-function ContactsStack() {
+function ContactsStack({navigation}) {
   return (
     <Stack.Navigator
       initialRouteName="Contacts"
@@ -151,7 +188,15 @@ function ContactsStack() {
         screenOptions={{
           headerShown: true,
           headerShadowVisible: false,
-          title: '',
+          title: 'Social App',headerTitleStyle: {
+            color: '#2e64e5'
+          },
+          
+          // headerLeft: () => (
+          //   <TouchableOpacity onPress={() => navigation.replaceS('Calling')}>
+          //     <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
+          //   </TouchableOpacity>
+          // ),
         }}>
         <Stack.Screen name="Calling" component={CallingScreen} />
       </Stack.Group>
@@ -164,32 +209,24 @@ function ProfileStack() {
       <Stack.Screen
         name="EditProfile"
         component={EditProfileScreen}
-        options={({route}) => ({
-          headerShown: false,
+        options={({ route }) => ({
           headerShadowVisible: false,
         })}
       />
       <Stack.Screen
         name="Profiles"
         component={ProfileScreen}
-        options={{headerShown: true, title: ''}}
+        options={{
+          headerShadowVisible: false, title: 'Social App', headerTitleStyle: {
+            color: '#2e64e5'
+          }
+        }}
       />
     </Stack.Navigator>
   );
 }
 
 function AppStack() {
-  // const getTabBarVisibility = route => {
-  //   const routeName = route.state
-  //     ? route.state.routes[route.state.index].name
-  //     : '';
-
-  //   if (routeName === 'Chats') {
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
   return (
     <Tab.Navigator
       screenOptions={{
@@ -208,7 +245,7 @@ function AppStack() {
         component={FeedStack}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
               name="home-outline"
               color={color}
@@ -220,9 +257,9 @@ function AppStack() {
       <Tab.Screen
         name="Messages"
         component={MessageStack}
-        options={({route}) => ({
-          tabBarStyle: {display: 'none'},
-          tabBarIcon: ({color, size}) => (
+        options={({ route }) => ({
+          tabBarStyle: { display: 'none' },
+          tabBarIcon: ({ color, size }) => (
             <Ionicons
               name="chatbox-ellipses-outline"
               color={color}
@@ -234,8 +271,8 @@ function AppStack() {
       <Tab.Screen
         name="add"
         component={AddPostScreen}
-        options={({route}) => ({
-          tabBarStyle: {display: 'none'},
+        options={({ route }) => ({
+          tabBarStyle: { display: 'none' },
           tabBarLabel: () => null,
           tabBarIcon: () => (
             <View
@@ -257,9 +294,9 @@ function AppStack() {
       <Tab.Screen
         name="Contact"
         component={ContactsStack}
-        options={({route}) => ({
-          tabBarStyle: {display: 'none'},
-          tabBarIcon: ({color, size}) => (
+        options={({ route }) => ({
+          tabBarStyle: { display: 'none' },
+          tabBarIcon: ({ color, size }) => (
             <AntDesign name="contacts" color={color} size={size} />
           ),
         })}
@@ -269,7 +306,7 @@ function AppStack() {
         component={ProfileStack}
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" color={color} size={size} />
           ),
         }}

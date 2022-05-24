@@ -7,9 +7,9 @@ import {
   ToastAndroid,
   Image,
   ActivityIndicator,
-  Pressable,Dimensions
+  Pressable, Dimensions
 } from 'react-native';
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import FormInput from '../FormInput';
 import FormButton from '../FormButton';
@@ -22,7 +22,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import auth from '@react-native-firebase/auth';
 import FormInputPassword from '../FormInputPassword';
 
-const SignUpScreen = ({navigation}) => {
+const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
@@ -45,14 +45,14 @@ const SignUpScreen = ({navigation}) => {
 
     setUploading(true);
 
-    const storageRef = storage().ref(`photos/${filename}`);
+    const storageRef = storage().ref(`photos/users/${filename}`);
     const task = storageRef.putFile(uploadUri);
 
     try {
       await task;
 
       const url = await storageRef.getDownloadURL();
-
+      // console.log('urlsignup', url)
       setUploading(false);
       setImage(image);
 
@@ -68,7 +68,6 @@ const SignUpScreen = ({navigation}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then(image => {
-      console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUri);
     });
@@ -81,14 +80,13 @@ const SignUpScreen = ({navigation}) => {
       cropping: true,
       compressImageQuality: 0.1,
     }).then(image => {
-      console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUri);
     });
   };
   const register = async () => {
     let imgUrl = await uploadImage();
-
+   
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
@@ -97,14 +95,15 @@ const SignUpScreen = ({navigation}) => {
             .collection('users')
             .doc(auth().currentUser.uid)
             .set({
+              uid: auth().currentUser.uid,
               fname: fname,
               phone: phone,
               email: email,
               createdAt: firestore.Timestamp.fromDate(new Date()),
               userImg: imgUrl,
+              status: "online"
             });
         });
-      console.log('success');
       ToastAndroid.show('Registration successfull', ToastAndroid.SHORT);
     } catch (e) {
       console.log(e);
@@ -135,7 +134,7 @@ const SignUpScreen = ({navigation}) => {
           }}
         />
 
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             style={{
               flex: 1,
@@ -155,7 +154,7 @@ const SignUpScreen = ({navigation}) => {
                 backgroundColor: '#000',
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowColor:'#fff'
+                shadowColor: '#fff'
               }}>
               <MaterialCommunityIcons name="camera" size={25} color="#fff" />
             </View>
@@ -169,7 +168,7 @@ const SignUpScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             style={{
               flex: 1,
@@ -190,7 +189,7 @@ const SignUpScreen = ({navigation}) => {
                 backgroundColor: '#000',
                 justifyContent: 'center',
                 alignItems: 'center',
-                shadowColor:'#fff'
+                shadowColor: '#fff'
               }}>
               <MaterialCommunityIcons
                 name="folder-image"
@@ -228,7 +227,7 @@ const SignUpScreen = ({navigation}) => {
                   uri: image,
                 }}
                 style={styles.imgbg}
-                imageStyle={{borderRadius: 50}}
+                imageStyle={{ borderRadius: 50 }}
               />
             ) : (
               <Image
@@ -236,7 +235,7 @@ const SignUpScreen = ({navigation}) => {
                   uri: 'https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png',
                 }}
                 style={styles.imgbg}
-                imageStyle={{borderRadius: 50}}
+                imageStyle={{ borderRadius: 50 }}
               />
             )}
             <View
@@ -297,7 +296,7 @@ const SignUpScreen = ({navigation}) => {
             <ActivityIndicator size="large" color="#2e64e5" />
           </View>
         ) : (
-          <FormButton  buttonTitle="Signup" onPress={() => register()} />
+          <FormButton buttonTitle="Signup" onPress={() => register()} />
         )}
 
         {Platform.OS === 'android' ? (
@@ -319,7 +318,7 @@ const SignUpScreen = ({navigation}) => {
 
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
-          style={[styles.navbtn,{marginTop:'15%'}]}>
+          style={[styles.navbtn, { marginTop: '15%' }]}>
           <Text style={styles.navbtntext}>Already have an account? SignIn</Text>
         </TouchableOpacity>
       </View>
@@ -337,17 +336,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-maincontainer:{
-alignItems: 'center',
-width:Dimensions.get('window').width/1.1,
-height:Dimensions.get('window').height/1.1,
-backgroundColor:'#2e64e515',
-padding:12,
-paddingTop:'8%',
-borderRadius:25,
-elevation:15,
-shadowColor:'#fff'
-},
+  maincontainer: {
+    alignItems: 'center',
+    width: Dimensions.get('window').width / 1.1,
+    height: Dimensions.get('window').height / 1.1,
+    backgroundColor: '#2e64e515',
+    padding: 12,
+    paddingTop: '8%',
+    borderRadius: 25,
+    elevation: 15,
+    shadowColor: '#fff'
+  },
   text: {
     fontSize: 28,
     marginBottom: 10,
@@ -378,7 +377,7 @@ shadowColor:'#fff'
     borderRadius: 5,
     backgroundColor: '#fff',
   },
-  icon: {paddingLeft: 8, backgroundColor: '#fff'},
+  icon: { paddingLeft: 8, backgroundColor: '#fff' },
   textInput: {
     flex: 1,
     padding: 10,
