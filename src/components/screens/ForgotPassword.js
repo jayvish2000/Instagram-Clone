@@ -1,36 +1,42 @@
-import { StyleSheet, Text, View ,Dimensions} from 'react-native'
-import React,{useContext,useState} from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../../navigation/AuthProvider'
 import FormInput from '../FormInput'
 import FormButton from '../FormButton'
 
-const ForgotPassword = ({navigation}) => {
-    const [email, setEmail] = useState()
-    const {forgotpassword}=useContext(AuthContext)
+const ForgotPassword = ({ navigation }) => {
+  const [email, setEmail] = useState()
+  const { forgotpassword } = useContext(AuthContext)
 
   return (
     <View style={styles.container}>
-        <View style={styles.maincontainer}>
       <View style={styles.formcontainer}>
-      <Text style={styles.text}>Rest Your Email Password</Text>
-      <FormInput
-        keyboardType="email-address"
-        placeholderText="Enter Your Email"
-        iconType="user"
-        autoCaitalize="none"
-        labelValue={email}
-        onChangeText={userEmail => setEmail(userEmail)}
-      />    
-       <FormButton 
-        buttonTitle="Rest Password"
-        onPress={() => forgotpassword(email)}
-      />
-       <FormButton
-        buttonTitle="Go Back"
-        onPress={()=>navigation.navigate("Login")}
-      />
+        <Text style={styles.text}>Trouble with logging in?</Text>
+        <Text style={[styles.text, { fontSize: 14, color: '#c0c0c0', fontWeight: '400' }]}>
+          Enter your email address and we'll send
+          you a link to rest your password.
+        </Text>
+        <FormInput
+          keyboardType="email-address"
+          placeholderText="Enter Your Email"
+          iconType="user"
+          autoCaitalize="none"
+          labelValue={email}
+          onChangeText={userEmail => setEmail(userEmail)}
+        />
       </View>
-     </View>
+      <View style={{ justifyContent: 'center', alignItems: 'center', width: '100%', padding: 20 }}>
+        <TouchableOpacity
+          onPress={() => forgotpassword(email)}
+          style={styles.resttbtn}>
+          <Text style={styles.navbtntext}>Send Link</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Login')}
+          style={{ justifyContent: 'center', alignItems: 'center', marginTop: '5%' }}>
+          <Text style={[styles.navbtntext, { color: '#3897f0', fontWeight: '500' }]}>Go Back</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -38,32 +44,36 @@ const ForgotPassword = ({navigation}) => {
 export default ForgotPassword
 
 const styles = StyleSheet.create({
-container:{
-    alignItems:'center',
-    flex:1,
-    backgroundColor:'#fff',
-    justifyContent:'center'
-},
-maincontainer:{
-    padding:12,
-    width:Dimensions.get('window').width/1.1,
-    height:Dimensions.get('window').height/1.1,
-    backgroundColor:'#2e64e515', 
-    marginTop:'10%',
-    marginBottom:'10%',
-    borderRadius:25,
-    elevation:15,
-    shadowColor:'#fff'
-},
-formcontainer:{
-    justifyContent:'center',
-    alignItems:'center',
-    marginTop:'20%'
-},
-text:{
-    fontSize:18,
-    fontWeight:'bold',
-    color:'#2e64e5',
-    marginBottom:'40%'
-}
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+
+  },
+  formcontainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
+    marginBottom: '8%',
+    alignSelf: 'center'
+  },
+  resttbtn: {
+    width: '100%',
+    backgroundColor: '#3897f0',
+    height: '22%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 3
+  },
+  navbtntext: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '500'
+  }
 })

@@ -8,7 +8,7 @@ import firestore from '@react-native-firebase/firestore';
 const MessageScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  // console.log("dddd", userData)
+  console.log("yt", userData)
   const getUser = async () => {
     try {
       const list = [];
@@ -22,15 +22,16 @@ const MessageScreen = ({ navigation }) => {
               userId,
               fname,
               userImg,
-              status
+              status,
+              about
             } = doc.data();
             list.push({
               id: doc.id,
               userId,
               fname,
               userImg,
-              status
-
+              status,
+              about
             });
           });
         })
@@ -69,12 +70,11 @@ const MessageScreen = ({ navigation }) => {
                 <View style={styles.TextSection}>
                   <View style={styles.UserInfoText}>
                     <Text style={styles.UserName}>
-                      {' '}
                       {userData ? item.fname : 'JAY'}
                     </Text>
                   </View>
                   <Text style={styles.about}>
-                    Hi ! there I am using Social chat app
+                    {userData ? item.about : 'Hi ! There I am using Insta clone'}
                   </Text>
                 </View>
 
@@ -83,27 +83,6 @@ const MessageScreen = ({ navigation }) => {
 
           }
         />
-      </View>
-      <View
-        style={{
-          backgroundColor: '#2e64e515',
-          width: 50,
-          height: 50,
-          borderRadius: 50 / 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-          left: '80%',
-          top: '88%',
-          position: 'absolute',
-
-        }}>
-        <TouchableOpacity onPress={() => navigation.navigate('User')}>
-          <MaterialCommunityIcons
-            name="message-text-outline"
-            size={30}
-            color="#2e64e5"
-          />
-        </TouchableOpacity>
       </View>
     </View>
   );

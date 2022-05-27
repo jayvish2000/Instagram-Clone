@@ -5,17 +5,17 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {styles} from '../../../styles/Feedstyles';
+import React, { useEffect, useState } from 'react';
+import { styles } from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-// console.log("idddd",posts)
+
   const fetchPosts = async () => {
     try {
       const list = [];
@@ -26,11 +26,10 @@ const HomeScreen = ({navigation}) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-      
+
             const {
               userId,
-              userName,
-              userImg,
+              email,
               post,
               postImg,
               postTime,
@@ -41,8 +40,7 @@ const HomeScreen = ({navigation}) => {
             list.push({
               id: doc.id,
               userId,
-              userName,
-              userImg,
+              email,
               postTime: postTime,
               post,
               postvideo,
@@ -79,7 +77,7 @@ const HomeScreen = ({navigation}) => {
       .then(documentSnapshot => {
         // console.log("postid",documentSnapshot.data())
         if (documentSnapshot.exists) {
-          const {posts} = documentSnapshot.data();
+          const { posts } = documentSnapshot.data();
 
           if (posts != null) {
             const storageRef = storage().refFromURL(posts);
@@ -130,7 +128,7 @@ const HomeScreen = ({navigation}) => {
           onPress: () => deletePost(postId),
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   };
 
@@ -151,12 +149,12 @@ const HomeScreen = ({navigation}) => {
             data={posts}
             onRefresh={() => fetchPosts()}
             refreshing={loading}
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <PostCard
                 item={item}
                 ondelete={handledelete}
                 onPress={() =>
-                  navigation.navigate('HomeProfile', {userId: item.userId})
+                  navigation.navigate('HomeProfile', { userId: item.userId, email: item.email })
                 }
               />
             )}

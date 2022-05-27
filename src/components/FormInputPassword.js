@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#fafafa',
   },
   iconstyle: {
     padding: 8,

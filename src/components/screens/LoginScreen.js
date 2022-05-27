@@ -5,26 +5,27 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  Dimensions,
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 
 import FormInput from '../FormInput';
 import FormButton from '../FormButton';
 import SocialButton from '../SocialButton';
-import {AuthContext} from '../../../navigation/AuthProvider';
+import { AuthContext } from '../../../navigation/AuthProvider';
 import FormInputPassword from '../FormInputPassword';
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const {login, googleLogin} = useContext(AuthContext);
+  const { login, googleLogin } = useContext(AuthContext);
 
   return (
     <View style={styles.container}>
-      <View style={styles.maincontainer}>
-      <Text style={styles.text}>Social App</Text>
+      <Image style={{ width: '60%', height: '10%', alignSelf: 'center', marginBottom: '8%' }}
+        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1280px-Instagram_logo.svg.png' }} />
       <FormInput
         keyboardType="email-address"
         placeholderText="Email"
@@ -40,31 +41,52 @@ const LoginScreen = ({navigation}) => {
         secureTextEntry
         onChangeText={userPassword => setPassword(userPassword)}
       />
-       <TouchableOpacity onPress={()=>navigation.navigate('ForgotPassword')} style={[styles.forgotbtn,{marginRight:4}]}>
+      <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={[styles.forgotbtn, { marginRight: 4 }]}>
         <Text style={styles.navbtntext}>Forgot Password?</Text>
       </TouchableOpacity>
       <FormButton
         buttonTitle="Login"
         onPress={() => login(email, password)}
       />
-     
+      <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+
+        <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
+
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+      </View>
       {Platform.OS === 'android' ? (
         <View>
           <SocialButton
-            buttonTitle="Sign In with Google"
+            buttonTitle="Log In with Google"
             btntype="google"
-            color="#de4d41"
-            backgroundColor="#f5e7ea"
-            onPress={() => googleLogin()}
+            color="#fff"
+            bgcolor="#de4d41"
+            backgroundColor="#de4d41"
+          // onPress={() => googleLogin()}
+          />
+          <SocialButton
+            buttonTitle="Log In with Facebook"
+            btntype="facebook"
+            color="#fff"
+            bgcolor="#3897f0"
+            backgroundColor="#3897f0"
+          // onPress={() => googleLogin()}
           />
         </View>
       ) : null}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Signup')}
-        style={[styles.forgotbtn,{justifyContent:'center',alignItems:'center',alignSelf:'center',marginTop:'15%'}]}>
-        <Text style={styles.navbtntext}>Don't have an account? SignUp</Text>
-      </TouchableOpacity>
+
+      <View style={{ flexDirection: 'row', marginTop:'30%'}}>
+        <Text style={styles.navbtntext}>
+          Don't have an account?
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Signup')}
+          style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
+          <Text style={[styles.navbtntext, { color: '#9b9b9b',marginLeft:4 }]}>SignUp</Text>
+        </TouchableOpacity>
       </View>
+
     </View>
   );
 };
@@ -78,19 +100,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-  },
-  maincontainer:{
-    width:Dimensions.get('window').width/1.1,
-    height:Dimensions.get('window').height/1.1,
-    backgroundColor:'#2e64e515',
-    padding:12,
-    marginTop:'10%',
-    marginBottom:'10%',
-    justifyContent:'center',
-    alignItems:'center',
-    borderRadius:25,
-    elevation:15,
-    shadowColor:'#fff'
   },
   logo: {
     height: 150,
@@ -106,13 +115,13 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   forgotbtn: {
-    justifyContent:'center',
-    alignItems:'flex-end',
-    alignSelf:'flex-end'
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    alignSelf: 'flex-end'
   },
   navbtntext: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#2e64e5',
+    color: '#c9c9c9',
   },
 });

@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
   UserName: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#2e64e5',
+    color: '#000',
   },
   PostTime: {
     fontSize: 12,
@@ -48,6 +48,6 @@ export const styles = StyleSheet.create({
   },
   about: {
     fontSize: 14,
-    color: '#333333',
+    color: '#9b9b9b',
   },
 });

@@ -7,20 +7,20 @@ import {
   TouchableOpacity,
   ToastAndroid,
   ActivityIndicator,
-  ScrollView,
+  ScrollView, Dimensions
 } from 'react-native';
-import React, {useState, useContext} from 'react';
-import {styles} from '../../../styles/AddPostStyles';
+import React, { useState, useContext } from 'react';
+import { styles } from '../../../styles/AddPostStyles';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
-import {AuthContext} from '../../../navigation/AuthProvider';
+import { AuthContext } from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
 
-const AddPostScreen = ({item, navigation}) => {
-  const {user} = useContext(AuthContext);
+const AddPostScreen = ({ item, navigation }) => {
+  const { user } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -31,7 +31,6 @@ const AddPostScreen = ({item, navigation}) => {
     ImagePicker.openCamera({
       cropping: true,
     }).then(image => {
-      // console.log(image);
       const imageUrl = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUrl);
     });
@@ -64,12 +63,13 @@ const AddPostScreen = ({item, navigation}) => {
       .collection('posts')
       .add({
         userId: user.uid,
+        email: user.email,
         post: post,
         postImg: imageUrl,
         postvideo: videoUrl,
         postTime: firestore.Timestamp.fromDate(new Date()),
         likesbyusers: [],
-        Comment: [],
+        Comment: []
       })
       .then(() => {
         ToastAndroid.show(
@@ -109,7 +109,7 @@ const AddPostScreen = ({item, navigation}) => {
       );
       setTransferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
+        100,
       );
     });
 
@@ -123,7 +123,7 @@ const AddPostScreen = ({item, navigation}) => {
         'Image has been uploaded successfully',
         ToastAndroid.SHORT,
       );
-      setImage(image);
+      setImage(url);
       return url;
     } catch (e) {
       console.log(e);
@@ -157,7 +157,7 @@ const AddPostScreen = ({item, navigation}) => {
     task.on('state_changed', taskSnapshot => {
       setTransferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
+        100,
       );
     });
 
@@ -180,27 +180,19 @@ const AddPostScreen = ({item, navigation}) => {
   };
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        backgroundColor: '#ECE5DD',
-      }}>
+    <View style={styles.container}>
       <View style={styles.InputWrapper}>
         {image != null ? (
-          <View style={{width: 180, height: 200, aspectRatio: 1 * 1.4}}>
-            <Image style={styles.imageWrapper} source={{uri: image}} />
+          <View style={{ width: '100%', height: '70%' }}>
+            <Image style={styles.imageWrapper} source={{ uri: image }} />
           </View>
         ) : (
           <Video
-            style={{width: '100%', height: 220}}
-            source={{uri: video}}
-            resizeMode="cover"
+            style={{ width: '100%', height: '70%' }}
+            source={{ uri: video }}
+            resizeMode='contain'
           />
         )}
-
         <TextInput
           style={styles.Inputfield}
           placeholder="What's on your mind?"
@@ -211,7 +203,7 @@ const AddPostScreen = ({item, navigation}) => {
         />
         {uploading ? (
           <View style={styles.StatusWrapper}>
-            <Text style={{fontSize: 15, color: '#2e64e5', fontWeight: '500'}}>
+            <Text style={{ fontSize: 15, color: '#2e64e5', fontWeight: '500' }}>
               {transferred} % Completed
             </Text>
             <ActivityIndicator size="large" color="#2e64e5" />
@@ -241,7 +233,7 @@ const AddPostScreen = ({item, navigation}) => {
           <Icon name="md-videocam-sharp" style={styles.actionButtonIcon} />
         </ActionButton.Item>
       </ActionButton>
-    </ScrollView>
+    </View>
   );
 };
 

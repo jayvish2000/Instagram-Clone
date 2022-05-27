@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     // alignItems: 'center',
-    backgroundColor: '#2e64e515',
+    backgroundColor: '#f6f7f9',
   },
   card: {
     backgroundColor: '#fff',
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   UserName: {
     fontSize: 15,
     fontWeight: 'bold',
-    color: '#2e64e5',
+    color: '#000',
   },
   UserInfoText: {
     flexDirection: 'column',

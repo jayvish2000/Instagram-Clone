@@ -15,13 +15,13 @@ import storage from '@react-native-firebase/storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Video from 'react-native-video';
-import { run } from 'jest';
 
 const ChatScreen = ({ route }) => {
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
   const [userData, setUserData] = useState(null);
   const [image, setImage] = useState(null);
+  const [camera, setCamera] = useState(null);
   const [video, setVideo] = useState(null);
   const [transferred, setTransferred] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -109,7 +109,7 @@ const ChatScreen = ({ route }) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#2e64e5',
+            backgroundColor: '#8a3ab9',
             borderRadius: 15,
           },
           left: {
@@ -137,13 +137,18 @@ const ChatScreen = ({ route }) => {
     } if (video && text && onSend) {
       onSend({ text, video }, true);
     }
+    else if (camera && !text && onSend) {
+      onSend({ camera }, true);
+    } if (camera && text && onSend) {
+      onSend({ text, camera }, true);
+    }
     else {
       return false;
     }
   }
 
   const customSend = ({ onSend, text, sendButtonProps, ...sendProps }) => {
-    if (!image == '' || !text == '' || !video == '') {
+    if (!image == '' || !text == '' || !video == '' || !camera == '') {
       return (
         <Send containerStyle={{ justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}
           {...sendProps}
@@ -169,6 +174,7 @@ const ChatScreen = ({ route }) => {
 
   const renderMessageImage = (props) => {
     const { image } = props.currentMessage
+    console.log('Cameraimage', props.currentMessage.camera)
     return (
       <ImageBackground
         source={{ uri: image }}
@@ -182,6 +188,7 @@ const ChatScreen = ({ route }) => {
 
   const renderMessageVideo = (props) => {
     const { video } = props.currentMessage
+    console.log('CameraVideo', props.currentMessage)
     return (
       <Pressable onPress={playPaused} style={{ width: Dimensions.get('window').width / 1.4, height: Dimensions.get('window').height / 4.5, marginTop: '8%', justifyContent: 'center', alignItems: 'center' }}>
         <Video style={{ height: Dimensions.get('window').height / 4.5 }}
@@ -234,7 +241,8 @@ const ChatScreen = ({ route }) => {
 
   const uploadCameraImage = async () => {
     await ImagePicker.openCamera({
-      cropping: true,
+      // cropping: true,
+      mediaType: 'any'
     }).then(async (imguri) => {
       const imageUri = Platform.OS === 'ios' ? imguri.sourceURL : imguri.path;
 
@@ -249,8 +257,8 @@ const ChatScreen = ({ route }) => {
       try {
         await task
         const url = await storageRef.getDownloadURL();
-        // console.log('urlsignup', url)
-        setImage(url)
+        console.log('CameraUrl', url)
+        setCamera(url)
       } catch (e) {
         console.log(e)
       }

@@ -1,9 +1,9 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    backgroundColor: '#2e64e515',
+    backgroundColor: '#fff',
     // justifyContent: 'center',
     // alignItems: 'center',
   },
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     marginBottom: 6,
   },
   userBtn: {
-    borderColor: '#2e64e5',
+    borderColor: '#ECECEC',
     borderWidth: 2,
     borderRadius: 3,
     paddingVertical: 8,
@@ -42,7 +42,9 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   userBtnTxt: {
-    color: '#2e64e5',
+    color: '#000',
+    fontSize: 16,
+    fontWeight: '500'
   },
   userInfoWrapper: {
     flexDirection: 'row',
@@ -55,13 +57,14 @@ export const styles = StyleSheet.create({
   },
   userInfoTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '500',
     marginBottom: 5,
     textAlign: 'center',
+    color: '#000'
   },
   userInfoSubTitle: {
     fontSize: 12,
-    color: '#666',
+    color: '#000',
     textAlign: 'center',
   },
 });

@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, useState, useRef} from 'react';
+import React, { useEffect, useContext, useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -10,21 +10,22 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import {styles} from '../../../styles/EditProfileStyles';
+import { styles } from '../../../styles/EditProfileStyles';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo'
 import FormButton from '../FormButton';
 import ImagePicker from 'react-native-image-crop-picker';
-import {AuthContext} from '../../../navigation/AuthProvider';
+import { AuthContext } from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-const EditProfileScreen = ({navigation}) => {
-  const {user} = useContext(AuthContext);
+const EditProfileScreen = ({ navigation }) => {
+  const { user } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
@@ -32,13 +33,12 @@ const EditProfileScreen = ({navigation}) => {
   const refRBSheet = useRef();
 
   const getUser = async () => {
-    const currentUser = await firestore()
+    await firestore()
       .collection('users')
       .doc(user.uid)
       .get()
       .then(documentSnapshot => {
         if (documentSnapshot.exists) {
-          // console.log('User Data', documentSnapshot.data());
           setUserData(documentSnapshot.data());
         }
       });
@@ -63,12 +63,7 @@ const EditProfileScreen = ({navigation}) => {
         userImg: imgUrl,
       })
       .then(() => {
-        // console.log('User Updated!');
-
-        ToastAndroid.show(
-          'Your profile has been updated successfully',
-          ToastAndroid.SHORT,
-        );
+        navigation.navigate('Profile')
       });
   };
 
@@ -90,13 +85,9 @@ const EditProfileScreen = ({navigation}) => {
     const task = storageRef.putFile(uploadUri);
 
     task.on('state_changed', taskSnapshot => {
-      // console.log(
-      //   `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
-      // );
-
       setTransferred(
         Math.round(taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) *
-          100,
+        100,
       );
     });
 
@@ -124,7 +115,6 @@ const EditProfileScreen = ({navigation}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then(image => {
-      // console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUri);
     });
@@ -137,7 +127,6 @@ const EditProfileScreen = ({navigation}) => {
       cropping: true,
       compressImageQuality: 0.1,
     }).then(image => {
-      // console.log(image);
       const imageUri = Platform.OS === 'ios' ? image.sourceURL : image.path;
       setImage(imageUri);
     });
@@ -145,22 +134,20 @@ const EditProfileScreen = ({navigation}) => {
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Profiles')}
-        style={{
-          borderRadius: 25,
-          marginTop: 5,
-          padding: 5,
-          elevation: 5,
-          width: 50,
-          height: 50,
-          backgroundColor: '#fff',
-          marginLeft: 5,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <MaterialIcons name="arrow-back" size={34} color="black" />
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+          <Entypo name='cross' color="#000" size={30} />
+        </TouchableOpacity>
+        {uploading ? (
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="small" color="#3897f1" />
+          </View>
+        ) : (
+          <TouchableOpacity onPress={handleUpdate}>
+            <Entypo name='check' color="#3897f1" size={30} />
+          </TouchableOpacity>
+        )}
+      </View>
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -183,7 +170,7 @@ const EditProfileScreen = ({navigation}) => {
           }}
         />
 
-        <View style={{flexDirection: 'row', backgroundColor: '#fff'}}>
+        <View style={{ flexDirection: 'row', backgroundColor: '#fff' }}>
           <TouchableOpacity
             style={{
               flex: 1,
@@ -217,7 +204,7 @@ const EditProfileScreen = ({navigation}) => {
             </Text>
           </TouchableOpacity>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             style={{
               flex: 1,
@@ -257,7 +244,7 @@ const EditProfileScreen = ({navigation}) => {
         </View>
       </RBSheet>
 
-      <View style={{alignItems: 'center'}}>
+      <View style={{ alignItems: 'center', marginTop: 14 }}>
         <View
           style={{
             height: 100,
@@ -272,12 +259,12 @@ const EditProfileScreen = ({navigation}) => {
                 uri: image
                   ? image
                   : userData
-                  ? userData.userImg ||
+                    ? userData.userImg ||
                     'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'
-                  : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
+                    : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
               }}
               style={styles.imgbg}
-              imageStyle={{borderRadius: 50}}
+              imageStyle={{ borderRadius: 50 }}
             />
             <View
               style={{
@@ -290,15 +277,17 @@ const EditProfileScreen = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <MaterialIcons name="add-circle" size={25} color="#2e64e5" />
+              <MaterialIcons name="add-circle" size={25} color="#3897f1" />
             </View>
           </TouchableOpacity>
         </View>
 
-        <Text style={{marginTop: 10, fontSize: 18, fontWeight: 'bold'}}>
-          {userData ? userData.fname : ''} 
+        <Text style={{ marginTop: 10, fontSize: 18, fontWeight: 'bold', color: '#000' }}>
+          {userData ? userData.fname : ''}
         </Text>
-        <Text>{userData ? userData.email : ''} </Text>
+        <Text style={{ marginTop: 5, fontSize: 14, fontWeight: '500', color: '#000' }}>
+          {userData ? userData.email : ''}
+        </Text>
       </View>
 
       <View style={styles.actioncontainer}>
@@ -308,12 +297,13 @@ const EditProfileScreen = ({navigation}) => {
           color="#333333"
           size={20}
         />
+        <View style={[styles.divider, { padding: 5 }]} />
         <TextInput
           placeholder="Full Name"
           placeholderTextColor="#666666"
           autoCorrect={false}
           value={userData ? userData.fname : ''}
-          onChangeText={txt => setUserData({...userData, fname: txt})}
+          onChangeText={txt => setUserData({ ...userData, fname: txt })}
           style={styles.textInput}
         />
       </View>
@@ -324,14 +314,14 @@ const EditProfileScreen = ({navigation}) => {
           color="#333333"
           size={20}
         />
-
+        <View style={{ borderRightWidth: 1, height: '110%', padding: 4 }} />
         <TextInput
           multiline
           numberOfLines={2}
           placeholder="Tell Us Something About Yourself"
           placeholderTextColor="#666666"
           value={userData ? userData.about : ''}
-          onChangeText={txt => setUserData({...userData, about: txt})}
+          onChangeText={txt => setUserData({ ...userData, about: txt })}
           autoCorrect={true}
           style={styles.textInput}
         />
@@ -339,6 +329,7 @@ const EditProfileScreen = ({navigation}) => {
 
       <View style={styles.actioncontainer}>
         <Feather style={styles.icon} name="phone" color="#333333" size={20} />
+        <View style={{ borderRightWidth: 1, height: '110%', padding: 4 }} />
         <TextInput
           placeholder="Phone"
           placeholderTextColor="#666666"
@@ -346,7 +337,7 @@ const EditProfileScreen = ({navigation}) => {
           autoCorrect={false}
           maxLength={10}
           value={userData ? userData.phone : ''}
-          onChangeText={txt => setUserData({...userData, phone: txt})}
+          onChangeText={txt => setUserData({ ...userData, phone: txt })}
           style={styles.textInput}
         />
       </View>
@@ -358,12 +349,13 @@ const EditProfileScreen = ({navigation}) => {
           color="#333333"
           size={20}
         />
+        <View style={{ borderRightWidth: 1, height: '110%', padding: 5 }} />
         <TextInput
           placeholder="Country"
           placeholderTextColor="#666666"
           autoCorrect={false}
           value={userData ? userData.country : ''}
-          onChangeText={txt => setUserData({...userData, country: txt})}
+          onChangeText={txt => setUserData({ ...userData, country: txt })}
           style={styles.textInput}
         />
       </View>
@@ -374,31 +366,17 @@ const EditProfileScreen = ({navigation}) => {
           color="#333333"
           size={20}
         />
+        <View style={{ borderRightWidth: 1, height: '110%', padding: 4 }} />
         <TextInput
           placeholder="City"
           placeholderTextColor="#666666"
           autoCorrect={false}
           value={userData ? userData.city : ''}
-          onChangeText={txt => setUserData({...userData, city: txt})}
+          onChangeText={txt => setUserData({ ...userData, city: txt })}
           style={styles.textInput}
         />
       </View>
-      {uploading ? (
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 15, color: '#2e64e5', fontWeight: '500'}}>
-            {transferred} % Completed
-          </Text>
-          <ActivityIndicator size="large" color="#2e64e5" />
-        </View>
-      ) : (
-        <View
-          style={{
-            alignItems: 'center',
-            marginTop: 15,
-          }}>
-          <FormButton buttonTitle="Update" onPress={handleUpdate} />
-        </View>
-      )}
+
     </ScrollView>
   );
 };

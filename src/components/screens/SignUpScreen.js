@@ -7,7 +7,8 @@ import {
   ToastAndroid,
   Image,
   ActivityIndicator,
-  Pressable, Dimensions
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native';
 import React, { useState, useRef } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -86,7 +87,7 @@ const SignUpScreen = ({ navigation }) => {
   };
   const register = async () => {
     let imgUrl = await uploadImage();
-   
+
     try {
       await auth()
         .createUserWithEmailAndPassword(email, password)
@@ -101,7 +102,8 @@ const SignUpScreen = ({ navigation }) => {
               email: email,
               createdAt: firestore.Timestamp.fromDate(new Date()),
               userImg: imgUrl,
-              status: "online"
+              status: "online",
+              follow: []
             });
         });
       ToastAndroid.show('Registration successfull', ToastAndroid.SHORT);
@@ -209,117 +211,131 @@ const SignUpScreen = ({ navigation }) => {
         </View>
       </RBSheet>
 
-      <View style={styles.maincontainer}>
-        <View
-          style={{
-            height: 100,
-            width: 100,
-            borderRadius: 50,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => refRBSheet.current.open()}>
-            {image ? (
-              <Image
-                source={{
-                  uri: image,
-                }}
-                style={styles.imgbg}
-                imageStyle={{ borderRadius: 50 }}
-              />
-            ) : (
-              <Image
-                source={{
-                  uri: 'https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png',
-                }}
-                style={styles.imgbg}
-                imageStyle={{ borderRadius: 50 }}
-              />
-            )}
-            <View
-              style={{
-                bottom: '25%',
-                left: '75%',
-                backgroundColor: '#fff',
-                width: 26,
-                height: 26,
-                borderRadius: 26 / 2,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <MaterialIcons name="add-circle" size={25} color="#2e64e5" />
-            </View>
-          </TouchableOpacity>
-        </View>
-        <FormInput
-          placeholderText="Name"
-          iconType="user"
-          autoCaitalize="none"
-          labelValue={fname}
-          onChangeText={fname => setFname(fname)}
-        />
-        <FormInput
-          keyboardType="email-address"
-          placeholderText="Email"
-          iconType="user"
-          autoCaitalize="none"
-          labelValue={email}
-          onChangeText={userEmail => setEmail(userEmail)}
-        />
 
-        <FormInput
-          placeholderText="Phone"
-          iconType="phone"
-          autoCaitalize="none"
-          value={phone}
-          onChangeText={phone => setPhone(phone)}
-        />
-
-        <FormInputPassword
-          placeholderText="Password"
-          iconType="lock"
-          labelValue={password}
-          secureTextEntry
-          onChangeText={userPassword => setPassword(userPassword)}
-        />
-        <FormInputPassword
-          placeholderText="ConfirmPassword"
-          iconType="lock"
-          labelValue={confirmpassword}
-          secureTextEntry
-          onChangeText={userPassword => setConfirmPassword(userPassword)}
-        />
-        {uploading ? (
-          <View style={styles.StatusWrapper}>
-            <ActivityIndicator size="large" color="#2e64e5" />
-          </View>
-        ) : (
-          <FormButton buttonTitle="Signup" onPress={() => register()} />
-        )}
-
-        {Platform.OS === 'android' ? (
-          <View>
-            {/* <SocialButton
-              buttonTitle="Sign In with Facebook"
-              btntype="facebook"
-              color="#4867aa"
-              backgroundColor="#e6eaf4"
-            /> */}
-            <SocialButton
-              buttonTitle="Sign In with Google"
-              btntype="google"
-              color="#de4d41"
-              backgroundColor="#f5e7ea"
+      <View
+        style={{
+          height: 100,
+          width: 100,
+          borderRadius: 50,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => refRBSheet.current.open()}>
+          {image ? (
+            <Image
+              source={{
+                uri: image,
+              }}
+              style={styles.imgbg}
+              imageStyle={{ borderRadius: 50 }}
             />
+          ) : (
+            <Image
+              source={{
+                uri: 'https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png',
+              }}
+              style={styles.imgbg}
+              imageStyle={{ borderRadius: 50 }}
+            />
+          )}
+          <View
+            style={{
+              bottom: '25%',
+              left: '75%',
+              backgroundColor: '#fff',
+              width: 26,
+              height: 26,
+              borderRadius: 26 / 2,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <MaterialIcons name="add-circle" size={25} color="#2e64e5" />
           </View>
-        ) : null}
+        </TouchableOpacity>
+      </View>
+      <FormInput
+        placeholderText="Name"
+        iconType="user"
+        autoCaitalize="none"
+        labelValue={fname}
+        onChangeText={fname => setFname(fname)}
+      />
+      <FormInput
+        keyboardType="email-address"
+        placeholderText="Email"
+        iconType="user"
+        autoCaitalize="none"
+        labelValue={email}
+        onChangeText={userEmail => setEmail(userEmail)}
+      />
 
+      <FormInput
+        placeholderText="Phone"
+        iconType="phone"
+        autoCaitalize="none"
+        value={phone}
+        onChangeText={phone => setPhone(phone)}
+      />
+
+      <FormInputPassword
+        placeholderText="Password"
+        iconType="lock"
+        labelValue={password}
+        secureTextEntry
+        onChangeText={userPassword => setPassword(userPassword)}
+      />
+      <FormInputPassword
+        placeholderText="ConfirmPassword"
+        iconType="lock"
+        labelValue={confirmpassword}
+        secureTextEntry
+        onChangeText={userPassword => setConfirmPassword(userPassword)}
+      />
+      {uploading ? (
+        <View style={styles.StatusWrapper}>
+          <ActivityIndicator size="large" color="#2e64e5" />
+        </View>
+      ) : (
+        <FormButton buttonTitle="Signup" onPress={() => register()} />
+      )}
+      <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+
+        <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
+
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+      </View>
+      {Platform.OS === 'android' ? (
+        <View>
+          <SocialButton
+            buttonTitle="Log In with Google"
+            btntype="google"
+            color="#fff"
+            bgcolor="#de4d41"
+            backgroundColor="#de4d41"
+          // onPress={() => googleLogin()}
+          />
+          <SocialButton
+            buttonTitle="Log In with Facebook"
+            btntype="facebook"
+            color="#fff"
+            bgcolor="#3897f0"
+            backgroundColor="#3897f0"
+          // onPress={() => googleLogin()}
+          />
+        </View>
+      ) : null}
+
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={styles.navbtntext}>
+          Have an account?
+        </Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
-          style={[styles.navbtn, { marginTop: '15%' }]}>
-          <Text style={styles.navbtntext}>Already have an account? SignIn</Text>
+          style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
+          <Text style={[styles.navbtntext, { color: '#9bc7f6', marginLeft: 4 }]}>Log in</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -336,17 +352,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  maincontainer: {
-    alignItems: 'center',
-    width: Dimensions.get('window').width / 1.1,
-    height: Dimensions.get('window').height / 1.1,
-    backgroundColor: '#2e64e515',
-    padding: 12,
-    paddingTop: '8%',
-    borderRadius: 25,
-    elevation: 15,
-    shadowColor: '#fff'
-  },
   text: {
     fontSize: 28,
     marginBottom: 10,
@@ -361,7 +366,7 @@ const styles = StyleSheet.create({
   navbtntext: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#2e64e5',
+    color: '#949fa7',
   },
   actioncontainer: {
     flexDirection: 'row',

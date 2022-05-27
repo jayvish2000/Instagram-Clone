@@ -17,8 +17,10 @@ const ProfileScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
+  const [userFollowing, setUserFollowing] = useState(null)
 
-  // console.log("roureee",route)
+  console.log("userData", userFollowing)
+
 
   const fetchPosts = async () => {
     try {
@@ -35,8 +37,6 @@ const ProfileScreen = ({ navigation, route }) => {
             list.push({
               id: doc.id,
               userId,
-              userName: 'jay',
-              userImg: 'https://wallpaper.dog/large/20481081.jpg',
               postImg,
               postvideo
             });
@@ -97,6 +97,60 @@ const ProfileScreen = ({ navigation, route }) => {
     );
   }
 
+  const Follow = () => {
+    const docid = userFollowing.id > user.uid ? user.uid + "-" + userFollowing.id : userFollowing.id + "-" + user.uid
+    // const currentfollower = !userFollowing.follow.includes(user.uid);
+
+    firestore()
+      .collection('users')
+      .doc(route.params.userId)
+      .update({
+        follow:
+          firestore.FieldValue.arrayUnion(user.uid)
+        // : firestore.FieldValue.arrayRemove(user.uid),
+      })
+      .then(() => {
+        console.log("follow")
+      }).catch((e) => {
+        console.log(e)
+      })
+  }
+
+  const UnFollow = () => {
+    firestore()
+      .collection('users')
+      .doc(route.params ? route.params.userId : user.uid)
+      .update({
+        follow: firestore.FieldValue.arrayRemove(user.uid)
+      })
+      .then(() => {
+        console.log("Unfollow")
+      }).catch((e) => {
+        console.log(e)
+      })
+  }
+
+  const UserFollowing = async () => {
+    
+    await firestore()
+      .collection('users')
+      .where("uid", "!=", user.uid)
+      .get()
+      .then(documentSnapshot => {
+        documentSnapshot.forEach(doc => {
+          const data = doc.data();
+          setUserFollowing(data)
+        });
+
+      })
+
+  };
+
+  useEffect(() => {
+    UserFollowing();
+    navigation.addListener('focus', () => setLoading(!loading));
+  }, [navigation, loading]);
+
   return (
     <View style={styles.container}>
       <View
@@ -111,29 +165,36 @@ const ProfileScreen = ({ navigation, route }) => {
           style={styles.userImg}
           source={{
             uri: userData
-              ? userData.userImg ||
+              ? userData.userImg :
               'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
-              : 'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg',
+
           }}
         />
         <Text style={styles.userName}>
-          {userData ? userData.fname || 'JAY' : 'JAY'}
+          {userData ? userData.fname : ''}
         </Text>
         <Text style={styles.aboutUser}>
-          {userData ? userData.about || 'details not added' : ''}
+          {userData ? userData.about : ''}
         </Text>
 
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
               <TouchableOpacity
-                style={styles.userBtn}
-              // onPress={() => navigation.navigate('Chats')}
+                style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
+                onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}
               >
-                <Text style={styles.userBtnTxt}>Message</Text>
+                <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Message</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn}>
-                <Text style={styles.userBtnTxt}>Follow</Text>
+              {userData?.follow ?
+                <TouchableOpacity onPress={Follow} style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}>
+                  <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Follow</Text>
+                </TouchableOpacity>
+                :
+                null
+              }
+              <TouchableOpacity onPress={UnFollow} style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}>
+                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Following</Text>
               </TouchableOpacity>
             </>
           ) : (
@@ -141,10 +202,11 @@ const ProfileScreen = ({ navigation, route }) => {
               <TouchableOpacity
                 style={styles.userBtn}
                 onPress={() => navigation.navigate('EditProfile')}>
-                <Text style={styles.userBtnTxt}>Edit</Text>
+                <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.userBtn} onPress={() => {
-                firestore().collection('users')
+                firestore()
+                  .collection('users')
                   .doc(user.uid)
                   .update({
                     status: firestore.FieldValue.serverTimestamp()
@@ -163,27 +225,51 @@ const ProfileScreen = ({ navigation, route }) => {
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>3323</Text>
+            {userData?.follow ?
+              <Text style={styles.userInfoTitle}>
+                {userData.follow.length} </Text> :
+              <Text style={styles.userInfoTitle}>0</Text>}
             <Text style={styles.userInfoSubTitle}>Followers</Text>
           </View>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>21</Text>
+            {route.params ?
+              <>
+                {userData?.follow ?
+                  <Text style={styles.userInfoTitle}>
+                    {userData.follow.length} </Text>
+                  :
+                  <Text style={styles.userInfoTitle}>0</Text>
+                }
+              </>
+              :
+              <>
+                {userFollowing?.follow ?
+                  <Text style={styles.userInfoTitle}>
+                    {userFollowing.follow.length} </Text>
+                  :
+                  <Text style={styles.userInfoTitle}>0</Text>
+                }
+              </>
+            }
             <Text style={styles.userInfoSubTitle}>Following</Text>
           </View>
+
         </View>
       </View>
 
       <View style={{ width: '100%', height: '70%' }}>
         <Tab.Navigator
           screenOptions={{
-            tabBarActiveTintColor: '#2e64e5',
+            tabBarActiveTintColor: '#000',
             headerShown: false,
-            tabBarInactiveTintColor: '#949494', tabBarIndicatorStyle: {
-              width: 0, height: 0
+            tabBarInactiveTintColor: '#949494',
+            tabBarIndicatorStyle: {
+              width: '50%', height: 1, backgroundColor: '#000'
             },
             tabBarStyle: {
-              shadowColor: '#fff', marginBottom: 1
-            }
+              shadowColor: '#fff', marginBottom: 1,
+            },
+
           }}>
           <Tab.Screen
             name="Image"

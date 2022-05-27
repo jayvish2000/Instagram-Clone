@@ -1,277 +1,83 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../src/components/screens/Home';
 import MessageScreen from '../src/components/screens/MessageScreen';
 import ProfileScreen from '../src/components/screens/ProfileScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { View, TouchableOpacity,Text } from 'react-native';
+import { View, TouchableOpacity, Text, Image } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
-import ContactScreen from '../src/components/screens/ContactScreen';
-import CallingScreen from '../src/components/screens/CallingScreen';
-import UserContact from '../src/components/screens/UserContact';
+import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../navigation/AuthProvider';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function FeedStack({ navigation }) {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Social App"
-        component={HomeScreen}
-        options={{
-          headerTitleAlign: 'center',
-          headerTitleStyle: {
-            color: '#2e64e5',
-            fontSize: 18,
-            fontWeight: '600',
-          },
-          // headerShadowVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="AddPost"
-        component={AddPostScreen}
-        options={{
-          title: '',
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: '#fff',
-            shadowColor: '#fff',
-          },
-          // headerShadowVisible: false,
-          headerBackTitle: false,
-          headerLeft: () => (
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                flex: 1,
+function TabBar({ navigation }) {
+  const [userProfile, setUserProfile] = useState(null)
 
-                alignItems: 'center',
-                marginRight: 18,
-              }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Social App')}>
-                <MaterialIcons
-                  name="arrow-back"
-                  color="#2e64e5"
-                  size={22}
-                // backgroundColor="#2e64e515"
-                />
-              </TouchableOpacity>
-              {/* <Text style={{color: '#2e64e5', fontSize: 18, fontWeight: '500'}}>
-                Post
-              </Text> */}
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="HomeProfile"
-        component={ProfileScreen}
-        options={{
-          title: '',
-          headerTitleAlign: 'center',
+  const { user } = useContext(AuthContext);
 
-          headerBackTitle: false,
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Social App')}>
-              <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-function MessageStack({ navigation,route }) {
+  const getuserProfile = async () => {
+    await firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then(documentSnapshot => {
+        setUserProfile(documentSnapshot.data())
+      })
+  }
 
-  console.log("route",route.params)
-  return (
-    <Stack.Navigator initialRouteName="Messages">
-      <Stack.Screen
-        name="Messages"
-        component={MessageScreen}
-        options={{
-          headerShadowVisible:false,
-          title: 'Social App', 
-          headerTitleStyle: {
-            color: '#2e64e5'
-          },
+  useEffect(() => {
+    getuserProfile()
+  }, [])
 
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.navigate('Social App')}>
-              <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
-            </TouchableOpacity>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="Chats"
-        component={ChatScreen}
-        options={({ route }) => ({
-          headerTitle:()=>(
-            <View style={{flexDirection:'column'}}>
-            <Text style={{fontSize:18,fontWeight:'500',color:"#2e64e5"}}>{route.params.userName}</Text>
-            <Text style={{fontSize:12,fontWeight:'400',color:"#2e64e5"}}>{route.params.status}</Text>
-            </View>
-          ),
-          headerTitleStyle: {
-            color: '#2e64e5',
-          },
-          // headerLeft: () => (
-          //   <TouchableOpacity onPress={() => navigation.navigate('Messages',{userName:route.params.userId})}>
-          //     <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
-          //   </TouchableOpacity>
-          // ),
-        })}
-      />
-      <Stack.Screen
-        name="Contact"
-        component={ContactScreen}
-        options={() => ({
-          title: '',
-          
-        })}
-      />
-      <Stack.Screen
-        name="User"
-        component={UserContact}
-        options={() => ({
-          title: 'Social App',
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-          headerTitleStyle: {
-            color: '#2e64e5'
-          },
-           headerLeft: () => (
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
-            </TouchableOpacity>
-          ),
-        })}
-      />
-      <Stack.Screen
-        name="Calling"
-        component={CallingScreen}
-        options={() => ({
-          title: '',
-          headerShadowVisible: false,
-          headerStyle: {
-            backgroundColor: '#fff',
-          },
-        })}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function ContactsStack({navigation}) {
-  return (
-    <Stack.Navigator
-      initialRouteName="Contacts"
-      screenOptions={{
-        headerShown: false,
-      }}>
-      <Stack.Screen name="Contacts" component={ContactScreen} />
-      <Stack.Group
-        screenOptions={{
-          headerShown: true,
-          headerShadowVisible: false,
-          title: 'Social App',headerTitleStyle: {
-            color: '#2e64e5'
-          },
-          
-          // headerLeft: () => (
-          //   <TouchableOpacity onPress={() => navigation.replaceS('Calling')}>
-          //     <MaterialIcons name="arrow-back" color="#2e64e5" size={22} />
-          //   </TouchableOpacity>
-          // ),
-        }}>
-        <Stack.Screen name="Calling" component={CallingScreen} />
-      </Stack.Group>
-    </Stack.Navigator>
-  );
-}
-function ProfileStack() {
-  return (
-    <Stack.Navigator initialRouteName="Profiles">
-      <Stack.Screen
-        name="EditProfile"
-        component={EditProfileScreen}
-        options={({ route }) => ({
-          headerShadowVisible: false,
-        })}
-      />
-      <Stack.Screen
-        name="Profiles"
-        component={ProfileScreen}
-        options={{
-          headerShadowVisible: false, title: 'Social App', headerTitleStyle: {
-            color: '#2e64e5'
-          }
-        }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function AppStack() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#2e64e5',
-        headerShown: false,
+        tabBarActiveTintColor: '#000',
+        tabBarInactiveTintColor: '#949494',
         tabBarStyle: {
           height: 52,
+          shadowColor: '#fff'
         },
-
         tabBarLabelStyle: {
           marginBottom: 10,
         },
       }}>
       <Tab.Screen
         name="Home"
-        component={FeedStack}
+        component={HomeScreen}
         options={{
-          tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size }) => (
+          title: '',
+          headerShown: true,
+          headerLeft: () => (
+            <Image style={{ width: 100, height: 40, resizeMode: 'cover', marginLeft: 10 }}
+              source={require('../src/images/Insta.png')} />
+          ),
+
+          headerRight: () => (
+            <AntDesign style={{ padding: '4%' }} name='message1' size={25} color="#000" onPress={() => navigation.navigate('Messages')} />
+          ),
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
             <MaterialCommunityIcons
-              name="home-outline"
+              name={focused ? "home" : "home-outline"}
               color={color}
-              size={size}
+              size={30}
             />
           ),
         }}
       />
       <Tab.Screen
-        name="Messages"
-        component={MessageStack}
-        options={({ route }) => ({
-          tabBarStyle: { display: 'none' },
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons
-              name="chatbox-ellipses-outline"
-              color={color}
-              size={size}
-            />
-          ),
-        })}
-      />
-      <Tab.Screen
         name="add"
         component={AddPostScreen}
         options={({ route }) => ({
+          title: '',
           tabBarStyle: { display: 'none' },
           tabBarLabel: () => null,
           tabBarIcon: () => (
@@ -281,7 +87,7 @@ function AppStack() {
                 width: 50,
                 borderRadius: 50 / 2,
                 marginBottom: 40,
-                backgroundColor: '#2e64e5',
+                backgroundColor: '#3897f1',
                 justifyContent: 'center',
                 alignItems: 'center',
                 elevation: 5,
@@ -289,29 +95,100 @@ function AppStack() {
               <MaterialCommunityIcons name="plus" color="#fff" size={30} />
             </View>
           ),
-        })}
-      />
-      <Tab.Screen
-        name="Contact"
-        component={ContactsStack}
-        options={({ route }) => ({
-          tabBarStyle: { display: 'none' },
-          tabBarIcon: ({ color, size }) => (
-            <AntDesign name="contacts" color={color} size={size} />
+          headerLeft: () => (
+            <AntDesign style={{ padding: '4%' }} name='arrowleft' size={25} color="#000" onPress={() => navigation.navigate('Home')} />
           ),
         })}
       />
       <Tab.Screen
         name="Profile"
-        component={ProfileStack}
+        component={ProfileScreen}
         options={{
-          tabBarLabel: 'Profile',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="person-outline" color={color} size={size} />
+          title: userProfile?.email,
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
+            <View style={{ backgroundColor: focused ? '#000' : "#fff", width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
+              <Image style={{ width: 30, height: 30, borderRadius: 15 }} source={{ uri: userProfile?.userImg }} />
+            </View>
           ),
         }}
       />
     </Tab.Navigator>
-  );
+  )
+}
+
+function AppStack({ navigation }) {
+  const [userProfile, setUserProfile] = useState(null)
+
+  const { user } = useContext(AuthContext);
+
+  const getuserProfile = async () => {
+    await firestore()
+      .collection('users')
+      .doc(user.uid)
+      .get()
+      .then(documentSnapshot => {
+        setUserProfile(documentSnapshot.data())
+      })
+  }
+
+  useEffect(() => {
+    getuserProfile()
+  }, [])
+
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Tab' component={TabBar} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="AddPost"
+        component={AddPostScreen}
+        options={{
+          title: '',
+        }}
+      />
+      <Stack.Screen
+        name="HomeProfile"
+        component={ProfileScreen}
+        options={({ route }) => ({
+          title: route.params.email,
+          headerTitleAlign: 'left',
+        })}
+      />
+      <Stack.Screen
+        name="Messages"
+        component={MessageScreen}
+        options={{
+          headerShadowVisible: false,
+          title: userProfile?.email,
+          headerTitleStyle: {
+            color: '#000'
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Chats"
+        component={ChatScreen}
+        options={({ route }) => ({
+          headerTitle: () => (
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: "#2e64e5" }}>{route.params.userName}</Text>
+              <Text style={{ fontSize: 12, fontWeight: '400', color: "#2e64e5" }}>{route.params.status}</Text>
+            </View>
+          ),
+          headerTitleStyle: {
+            color: '#2e64e5',
+          },
+        })}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfileScreen}
+        options={({ route }) => ({
+          headerShadowVisible: false,
+          headerShown: false
+        })}
+      />
+    </Stack.Navigator>
+  )
 }
 export default AppStack;

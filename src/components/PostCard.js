@@ -25,7 +25,7 @@ const PostCard = ({item, ondelete, onPress}) => {
           : firestore.FieldValue.arrayRemove(user.uid),
       })
       .then(() => {
-        console.log('userrrrrlikse');
+        // console.log('userrrrrlikse');
         // setIsliked(!isliked);
       })
       .catch(er => {
