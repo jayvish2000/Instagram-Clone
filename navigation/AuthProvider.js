@@ -32,7 +32,7 @@ export const AuthProvider = ({children}) => {
            
             const googlecredential = auth.GoogleAuthProvider.credential(idToken);
             const userdata= await auth().signInWithCredential(googlecredential) 
-            // console.log('users',userdata)
+            console.log('users',userdata)
           } catch (e) {
             console.log(e);
           }

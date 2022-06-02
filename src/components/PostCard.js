@@ -1,18 +1,17 @@
-import {View, Text, Image, TouchableOpacity, ScrollView} from 'react-native';
-import React, {useState, useContext, useEffect} from 'react';
-import {styles} from '../../styles/Feedstyles';
+import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { styles } from '../../styles/Feedstyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {AuthContext} from '../../navigation/AuthProvider';
+import { AuthContext } from '../../navigation/AuthProvider';
 import moment from 'moment';
 import firestore from '@react-native-firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Share from 'react-native-share';
 import { ProgressiveImage, ProgressiveVideo } from './ProgressiveData';
 
-const PostCard = ({item, ondelete, onPress}) => {
-  const {user} = useContext(AuthContext);
+const PostCard = ({ item, ondelete, onPress }) => {
+  const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  // console.log('❤❤❤❤❤likes', item);
 
   const onlike = () => {
     const currentlikes = !item.likesbyusers.includes(user.uid);
@@ -70,7 +69,7 @@ const PostCard = ({item, ondelete, onPress}) => {
               source={{
                 uri: userData
                   ? userData.userImg ||
-                    'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
+                  'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
                   : 'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg',
               }}
             />
@@ -93,18 +92,18 @@ const PostCard = ({item, ondelete, onPress}) => {
             defaultImageSource={{
               uri: 'https://www.touchtaiwan.com/images/default.jpg',
             }}
-            source={{uri: item.postImg}}
-            style={{width: '100%', height: 300}}
+            source={{ uri: item.postImg }}
+            style={{ width: '100%', height: 300 }}
             resizeMode="cover"
           />
         ) : null}
         {item.postvideo != null ? (
           <ProgressiveVideo
             poster="https://www.cloudlessons.net/images/video-thumb.png"
-            style={{width: '100%', height: 200}}
-            source={{uri: item.postvideo}}
+            style={{ width: '100%', height: 200 }}
+            source={{ uri: item.postvideo }}
             resizeMode="cover"
-            // controls={true}
+          // controls={true}
           />
         ) : null}
 

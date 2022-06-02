@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UserPostDataVideo from '../UserPostDataVideo'
 import UserPostData from '../UserPostData'
-
+import auth from '@react-native-firebase/auth'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -17,10 +17,10 @@ const ProfileScreen = ({ navigation, route }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
-  const [userFollowing, setUserFollowing] = useState(null)
+  const [follow, setFollow] = useState(null);
 
-  console.log("userData", userFollowing)
 
+  console.log("followingtrue", follow)
 
   const fetchPosts = async () => {
     try {
@@ -55,8 +55,7 @@ const ProfileScreen = ({ navigation, route }) => {
     await firestore()
       .collection('users')
       .doc(route.params ? route.params.userId : user.uid)
-      .get()
-      .then(documentSnapshot => {
+      .onSnapshot(documentSnapshot => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data());
         }
@@ -97,59 +96,37 @@ const ProfileScreen = ({ navigation, route }) => {
     );
   }
 
-  const Follow = () => {
-    const docid = userFollowing.id > user.uid ? user.uid + "-" + userFollowing.id : userFollowing.id + "-" + user.uid
-    // const currentfollower = !userFollowing.follow.includes(user.uid);
+  const onfollow = () => {
+    const currentfollower = !userData.follower.includes(route.params ? route.params.userId : user.uid);
+    const currentfollowing = !userData.following.includes(route.params ? route.params.userId : user.uid);
 
-    firestore()
+    const following = firestore()
       .collection('users')
-      .doc(route.params.userId)
-      .update({
-        follow:
-          firestore.FieldValue.arrayUnion(user.uid)
-        // : firestore.FieldValue.arrayRemove(user.uid),
-      })
-      .then(() => {
-        console.log("follow")
-      }).catch((e) => {
-        console.log(e)
-      })
+      .doc(user.uid)
+
+    const follower = firestore()
+      .collection('users')
+      .doc(userData.uid)
+
+    const batch = firestore().batch()
+    batch.update(follower, { follower: currentfollower ? firestore.FieldValue.arrayUnion(user.uid) : firestore.FieldValue.arrayRemove(route.params ? route.params.userId : user.uid) })
+    batch.update(following, { following: currentfollowing ? firestore.FieldValue.arrayUnion(userData.uid) : firestore.FieldValue.arrayRemove(userData.uid) })
+    batch.commit();
   }
 
-  const UnFollow = () => {
+  const getfollower = () => {
     firestore()
       .collection('users')
       .doc(route.params ? route.params.userId : user.uid)
-      .update({
-        follow: firestore.FieldValue.arrayRemove(user.uid)
+      .onSnapshot((snapshot) => {
+        console.log('snpp', snapshot.data())
+        setFollow(snapshot.data())
       })
-      .then(() => {
-        console.log("Unfollow")
-      }).catch((e) => {
-        console.log(e)
-      })
+
   }
-
-  const UserFollowing = async () => {
-    
-    await firestore()
-      .collection('users')
-      .where("uid", "!=", user.uid)
-      .get()
-      .then(documentSnapshot => {
-        documentSnapshot.forEach(doc => {
-          const data = doc.data();
-          setUserFollowing(data)
-        });
-
-      })
-
-  };
-
   useEffect(() => {
-    UserFollowing();
-    navigation.addListener('focus', () => setLoading(!loading));
-  }, [navigation, loading]);
+    getfollower()
+  }, [])
 
   return (
     <View style={styles.container}>
@@ -182,20 +159,30 @@ const ProfileScreen = ({ navigation, route }) => {
             <>
               <TouchableOpacity
                 style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
-                onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}
-              >
+                onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
                 <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Message</Text>
               </TouchableOpacity>
-              {userData?.follow ?
-                <TouchableOpacity onPress={Follow} style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}>
-                  <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Follow</Text>
-                </TouchableOpacity>
-                :
-                null
-              }
-              <TouchableOpacity onPress={UnFollow} style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}>
-                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Following</Text>
-              </TouchableOpacity>
+              <>
+                {route.params.userId ?
+                  <>
+                    {userData?.follower.includes(user.uid) ?
+                      <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
+                        onPress={onfollow}>
+                        <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
+                      </TouchableOpacity>
+                      :
+                      <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
+                        onPress={onfollow}>
+                        <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
+                      </TouchableOpacity>
+
+                    }
+                  </>
+                  :
+                  null
+
+                }
+              </>
             </>
           ) : (
             <>
@@ -225,30 +212,48 @@ const ProfileScreen = ({ navigation, route }) => {
             <Text style={styles.userInfoSubTitle}>Posts</Text>
           </View>
           <View style={styles.userInfoItem}>
-            {userData?.follow ?
-              <Text style={styles.userInfoTitle}>
-                {userData.follow.length} </Text> :
-              <Text style={styles.userInfoTitle}>0</Text>}
-            <Text style={styles.userInfoSubTitle}>Followers</Text>
-          </View>
-          <View style={styles.userInfoItem}>
             {route.params ?
               <>
-                {userData?.follow ?
-                  <Text style={styles.userInfoTitle}>
-                    {userData.follow.length} </Text>
+                {follow?.follower ?
+                  <Text style={styles.userInfoTitle}>{follow?.follower.length}</Text>
                   :
                   <Text style={styles.userInfoTitle}>0</Text>
                 }
               </>
               :
               <>
-                {userFollowing?.follow ?
-                  <Text style={styles.userInfoTitle}>
-                    {userFollowing.follow.length} </Text>
-                  :
-                  <Text style={styles.userInfoTitle}>0</Text>
+                {user.uid ?
+                  <>
+                    {follow?.follower ?
+                      <Text style={styles.userInfoTitle}>{follow?.follower.length}</Text>
+                      :
+                      <Text style={styles.userInfoTitle}>0</Text>
+                    }
+                  </>
+                  : null
                 }
+              </>
+            }
+
+            <Text style={styles.userInfoSubTitle}>Follower</Text>
+          </View>
+          <View style={styles.userInfoItem}>
+            {route.params ?
+              <>
+                {route.params ?
+                  <>
+                    {follow?.following ?
+                      <Text style={styles.userInfoTitle}>{follow?.following.length}</Text>
+                      :
+                      <Text style={styles.userInfoTitle}>0</Text>
+                    }
+                  </>
+                  : null
+                }
+              </>
+              :
+              <>
+                <Text style={styles.userInfoTitle}>{follow?.following.length}</Text>
               </>
             }
             <Text style={styles.userInfoSubTitle}>Following</Text>
@@ -293,7 +298,7 @@ const ProfileScreen = ({ navigation, route }) => {
           />
         </Tab.Navigator>
       </View>
-    </View>
+    </View >
   );
 };
 

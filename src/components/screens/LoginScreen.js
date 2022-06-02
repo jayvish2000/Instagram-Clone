@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
             color="#fff"
             bgcolor="#de4d41"
             backgroundColor="#de4d41"
-          // onPress={() => googleLogin()}
+            // onPress={() => googleLogin()}
           />
           <SocialButton
             buttonTitle="Log In with Facebook"
@@ -76,14 +76,14 @@ const LoginScreen = ({ navigation }) => {
         </View>
       ) : null}
 
-      <View style={{ flexDirection: 'row', marginTop:'30%'}}>
+      <View style={{ flexDirection: 'row', marginTop: '30%' }}>
         <Text style={styles.navbtntext}>
           Don't have an account?
         </Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Signup')}
           style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
-          <Text style={[styles.navbtntext, { color: '#9b9b9b',marginLeft:4 }]}>SignUp</Text>
+          <Text style={[styles.navbtntext, { color: '#9b9b9b', marginLeft: 4 }]}>SignUp</Text>
         </TouchableOpacity>
       </View>
 

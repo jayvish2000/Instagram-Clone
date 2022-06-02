@@ -103,7 +103,8 @@ const SignUpScreen = ({ navigation }) => {
               createdAt: firestore.Timestamp.fromDate(new Date()),
               userImg: imgUrl,
               status: "online",
-              follow: []
+              follower: [],
+              following: []
             });
         });
       ToastAndroid.show('Registration successfull', ToastAndroid.SHORT);
