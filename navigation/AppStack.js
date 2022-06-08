@@ -6,7 +6,7 @@ import MessageScreen from '../src/components/screens/MessageScreen';
 import ProfileScreen from '../src/components/screens/ProfileScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
@@ -14,6 +14,7 @@ import EditProfileScreen from '../src/components/screens/EditProfileScreen';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../navigation/AuthProvider';
 import CommentScreen from '../src/components/screens/CommentScreen';
+import moment from 'moment';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -105,7 +106,12 @@ function TabBar({ navigation }) {
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: userProfile?.email,
+          headerTitle: () => (
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <Ionicons name='lock-closed-outline' size={20} color='#000' />
+              <Text style={{ fontSize: 16, fontWeight: '500', color: '#000', marginLeft: 4 }}>{userProfile?.email}</Text>
+            </View>
+          ),
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
             <View style={{ backgroundColor: focused ? '#000' : "#fff", width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
@@ -151,8 +157,11 @@ function AppStack({ navigation }) {
         name="HomeProfile"
         component={ProfileScreen}
         options={({ route }) => ({
-          title: route.params.email,
-          headerTitleAlign: 'left',
+          headerTitle: () => (
+            <View style={{ justifyContent: 'center' }}>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: "#000" }}>{route.params.email}</Text>
+            </View>
+          ),
         })}
       />
       <Stack.Screen
@@ -172,8 +181,8 @@ function AppStack({ navigation }) {
         options={({ route }) => ({
           headerTitle: () => (
             <View style={{ flexDirection: 'column' }}>
-              <Text style={{ fontSize: 18, fontWeight: '500', color: "#2e64e5" }}>{route.params.userName}</Text>
-              <Text style={{ fontSize: 12, fontWeight: '400', color: "#2e64e5" }}>{route.params.status}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: "#000" }}>{route.params.userName}</Text>
+              <Text style={{ fontSize: 12, fontWeight: '400', color: "#9b9b9b" }}>{moment(route.params.status).calendar()}</Text>
             </View>
           ),
           headerTitleStyle: {
@@ -193,7 +202,7 @@ function AppStack({ navigation }) {
         name="comments"
         component={CommentScreen}
         options={({ route }) => ({
-
+          title: 'Comment'
         })}
       />
     </Stack.Navigator>

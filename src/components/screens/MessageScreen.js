@@ -23,7 +23,9 @@ const MessageScreen = ({ navigation }) => {
               fname,
               userImg,
               status,
-              about
+              about,
+              follower,
+              following
             } = doc.data();
             list.push({
               id: doc.id,
@@ -31,11 +33,15 @@ const MessageScreen = ({ navigation }) => {
               fname,
               userImg,
               status,
-              about
+              about,
+              follower,
+              following
             });
+
           });
+          setUserData(list)
         })
-      setUserData(list)
+
     } catch (e) {
       console.log(e)
     }
@@ -74,7 +80,7 @@ const MessageScreen = ({ navigation }) => {
                     </Text>
                   </View>
                   <Text style={styles.about}>
-                    {userData ? item.about : 'Hi ! There I am using Insta clone'}
+                    {userData ? item.about || 'Hi ! There I am using Insta clone' : 'Hi ! There I am using Insta clone'}
                   </Text>
                 </View>
 

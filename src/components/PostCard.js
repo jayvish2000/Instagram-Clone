@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState, useContext, useEffect } from 'react';
 import { styles } from '../../styles/Feedstyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,7 +13,9 @@ import { useNavigation } from '@react-navigation/native';
 const PostCard = ({ item, ondelete, onPress }) => {
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  console.log("item", item)
+  const [comments, setComments] = useState(null)
+
+  console.log("comm", comments)
   const navigation = useNavigation()
 
   const onlike = () => {
@@ -61,6 +63,38 @@ const PostCard = ({ item, ondelete, onPress }) => {
     }
   };
 
+  const getcomment = async () => {
+    const list = [];
+    await
+      firestore()
+        .collection("posts")
+        .doc(item.id)
+        .collection('comments')
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach(doc => {
+            const { commentbyusers, comment } = doc.data()
+            list.push({
+              commentbyusers, comment
+            })
+            setComments(list)
+          })
+        })
+  }
+
+  useEffect(() => {
+    getcomment()
+  }, [])
+
+  const renderComment = () => {
+    return (
+      <FlatList horizontal={true}
+        data={comments}
+        renderItem={({ item }) =>
+          <Text style={styles.InteractionText}>{Object.keys(item.comment)[0].length}</Text>
+        } />
+    )
+  }
   return (
     <View style={styles.container}>
       <View key={item.id} style={styles.card}>
@@ -122,11 +156,8 @@ const PostCard = ({ item, ondelete, onPress }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
             <Ionicons name="md-chatbubble-outline" size={24} />
-            {/* {comments.comment ?
-              <Text style={styles.InteractionText}>{comments.comment}</Text>
-              : <Text style={styles.InteractionText}>0</Text>} */}
-            {/* <Text style={styles.InteractionText}>{comments.commentbyusers && comments.commentbyusers[0] && comments.commentbyusers[0].length}</Text> */}
-            <Text style={styles.InteractionText}>comments</Text>
+            {renderComment()}
+            <Text style={styles.InteractionText}>Comments</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={ShareData}>
             <MaterialCommunityIcons name="share" size={28} />

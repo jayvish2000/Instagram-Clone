@@ -2,6 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, Image } from 'react-
 import React, { useState, useEffect, useContext } from 'react'
 import firestore from '@react-native-firebase/firestore'
 import { AuthContext } from '../../../navigation/AuthProvider';
+import { Styles } from '../../../styles/commentStyles'
 
 const CommentScreen = ({ route }) => {
     const { user } = useContext(AuthContext);
@@ -62,31 +63,31 @@ const CommentScreen = ({ route }) => {
     }, [])
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#fff' }}>
-            <View style={{ justifyContent: 'center', flex: 1, paddingTop: 8, paddingLeft: 8 }}>
+        <View style={Styles.container}>
+            <View style={Styles.card}>
                 <FlatList
                     data={comments}
                     renderItem={({ item }) =>
-                        <View style={{ flex: 1, justifyContent: 'flex-start', flexDirection: 'row' }}>
-                            <View style={{ flexDirection: 'row', marginRight: 8, marginBottom: 15 }}>
-                                <Image style={{ width: 40, height: 40, borderRadius: 20 }} source={{ uri: item.userimg }} />
-                                <Text style={{ fontSize: 16, fontWeight: '400', color: '#000', marginLeft: 6, }}>{item.name}</Text>
+                        <View style={Styles.userinfocontainer}>
+                            <View style={Styles.userinfo}>
+                                <Image style={Styles.userImg} source={{ uri: item.userimg }} />
+                                <Text style={Styles.userName}>{item.name}</Text>
                             </View>
-                            <Text style={{ fontSize: 14, fontWeight: '400', color: '#9b9b9b', marginTop: 4, marginBottom: 4, maxWidth: '70%' }}>{item.comment}</Text>
+                            <Text style={Styles.commentext}>{item.comment}</Text>
                         </View>
                     }
                 />
             </View>
-            <View style={{ width: '100%', justifyContent: 'center', backgroundColor: '#fff', padding: 8, flexDirection: 'row', alignItems: 'center' }}>
-                <TextInput style={{ width: '90%', height: 40, backgroundColor: '#ECECEC', borderRadius: 24, paddingLeft: 12 }}
+            <View style={Styles.maincontainer}>
+                <TextInput style={Styles.textinput}
                     placeholder={user.email}
                     // placeholderTextColor="#242526"
                     multiline={true}
                     value={comment}
                     onChangeText={(comment) => setcomment(comment)}
                 />
-                <TouchableOpacity style={{ marginLeft: 4 }} onPress={onSendComment}>
-                    <Text style={{ color: '#3897f1', fontSize: 15, fontWeight: '500' }}>post</Text>
+                <TouchableOpacity style={Styles.btn} onPress={onSendComment}>
+                    <Text style={Styles.btntxt}>post</Text>
                 </TouchableOpacity>
             </View>
         </View>

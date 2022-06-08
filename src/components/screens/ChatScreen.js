@@ -174,7 +174,6 @@ const ChatScreen = ({ route }) => {
 
   const renderMessageImage = (props) => {
     const { image } = props.currentMessage
-    console.log('Cameraimage', props.currentMessage.camera)
     return (
       <ImageBackground
         source={{ uri: image }}
@@ -188,7 +187,6 @@ const ChatScreen = ({ route }) => {
 
   const renderMessageVideo = (props) => {
     const { video } = props.currentMessage
-    console.log('CameraVideo', props.currentMessage)
     return (
       <Pressable onPress={playPaused} style={{ width: Dimensions.get('window').width / 1.4, height: Dimensions.get('window').height / 4.5, marginTop: '8%', justifyContent: 'center', alignItems: 'center' }}>
         <Video style={{ height: Dimensions.get('window').height / 4.5 }}
@@ -381,7 +379,6 @@ const ChatScreen = ({ route }) => {
         placeholder={image || video ? "Add Caption" : "Type a message..."}
         scrollToBottomComponent={scrollToBottomComponent}
         alwaysShowSend={true}
-        // isTyping={true}
         renderActions={() => (
           <View>
             <RBSheet

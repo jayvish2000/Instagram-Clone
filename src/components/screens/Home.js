@@ -15,34 +15,8 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-  const [comments, setComments] = useState(null)
-  console.log("user", comments)
-  // console.log("user", posts)
-  const getcomment = async () => {
-    const list = [];
-    await
-      firestore()
-        .collection("posts")
-        .doc(posts.id)
-        .collection('comments')
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach(doc => {
-            const { commentbyusers, comment, email, name, userimg } = doc.data()
-            list.push({
-              commentbyusers, comment, email, name, userimg
-            })
-            setComments(list)
-            console.log("item", list)
-          })
-        })
-  }
 
-  useEffect(() => {
-    getcomment()
-  }, [])
-
-
+  console.log("user", posts)
   const fetchPosts = async () => {
     try {
       const list = [];
@@ -61,8 +35,7 @@ const HomeScreen = ({ navigation }) => {
               postImg,
               postTime,
               likesbyusers,
-              postvideo,
-              commentbyusers
+              postvideo
             } = doc.data();
             list.push({
               id: doc.id,
@@ -72,8 +45,7 @@ const HomeScreen = ({ navigation }) => {
               post,
               postvideo,
               postImg,
-              likesbyusers,
-              commentbyusers
+              likesbyusers
             });
           });
         });
@@ -187,14 +159,7 @@ const HomeScreen = ({ navigation }) => {
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}
           />
-          <FlatList
-            data={comments}
-            renderItem={({ item }) => (
-              console.log("item", item)
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
+
         </View>
       )}
     </View>

@@ -19,9 +19,6 @@ const ProfileScreen = ({ navigation, route }) => {
   const [userData, setUserData] = useState(null);
   const [follow, setFollow] = useState(null);
 
-
-  console.log("followingtrue", follow)
-
   const fetchPosts = async () => {
     try {
       const list = [];
@@ -119,7 +116,6 @@ const ProfileScreen = ({ navigation, route }) => {
       .collection('users')
       .doc(route.params ? route.params.userId : user.uid)
       .onSnapshot((snapshot) => {
-        console.log('snpp', snapshot.data())
         setFollow(snapshot.data())
       })
 

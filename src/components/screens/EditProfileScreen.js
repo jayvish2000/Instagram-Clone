@@ -17,7 +17,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo'
-import FormButton from '../FormButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
