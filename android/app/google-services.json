@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "66915133418-n6tmmp2b37ro7ti504u0ftmeq12n6s6v.apps.googleusercontent.com",
+          "client_id": "66915133418-ieuhhr0dsaig2lacle2tvns8giurm7aq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.sociallogin",
-            "certificate_hash": "da199620a67f372f4e4f948930b1f545d6d75f2d"
+            "certificate_hash": "04af4e060544d00d9546a00a1f676f3ee963d1fa"
           }
         },
         {

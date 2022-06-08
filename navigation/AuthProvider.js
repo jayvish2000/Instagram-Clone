@@ -1,18 +1,18 @@
-import React, {createContext, useState} from 'react';
+import React, { createContext, useState } from 'react';
 import auth, { firebase } from '@react-native-firebase/auth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {ToastAndroid} from 'react-native'
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { ToastAndroid } from 'react-native'
 
 
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
 
   return (
-    
+
     <AuthContext.Provider
       value={{
         user,
@@ -27,24 +27,23 @@ export const AuthProvider = ({children}) => {
 
         googleLogin: async () => {
           try {
-            await GoogleSignin.hasPlayServices();
-            const  idToken= await GoogleSignin.signIn();
-           
-            const googlecredential = auth.GoogleAuthProvider.credential(idToken);
-            const userdata= await auth().signInWithCredential(googlecredential) 
-            console.log('users',userdata)
+            const { idToken } = await GoogleSignin.signIn()
+            const googleCradential = auth.GoogleAuthProvider.credential(idToken)
+            console.log('google', googleCradential)
+            await auth().signInWithCredential(googleCradential)
           } catch (e) {
-            console.log(e);
+            console.log(e)
           }
+
         },
-        forgotpassword: async(email)=>{
-             try{
-            firebase.auth().sendPasswordResetEmail(email).then(()=>{                
-              ToastAndroid.show(`Please check your email :${email}`, ToastAndroid.LONG,)              
+        forgotpassword: async (email) => {
+          try {
+            firebase.auth().sendPasswordResetEmail(email).then(() => {
+              ToastAndroid.show(`Please check your email :${email}`, ToastAndroid.LONG,)
             })
-             }catch(e){
-             console.log(e)
-             }
+          } catch (e) {
+            console.log(e)
+          }
         },
         logout: async () => {
           try {
@@ -55,6 +54,6 @@ export const AuthProvider = ({children}) => {
         },
       }}>
       {children}
-    </AuthContext.Provider>
+    </AuthContext.Provider >
   );
 };

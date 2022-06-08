@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
             color="#fff"
             bgcolor="#de4d41"
             backgroundColor="#de4d41"
-            // onPress={() => googleLogin()}
+            onPress={() => googleLogin()}
           />
           <SocialButton
             buttonTitle="Log In with Facebook"

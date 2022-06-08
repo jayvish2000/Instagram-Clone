@@ -63,13 +63,11 @@ const AddPostScreen = ({ item, navigation }) => {
       .collection('posts')
       .add({
         userId: user.uid,
-        email: user.email,
         post: post,
         postImg: imageUrl,
         postvideo: videoUrl,
         postTime: firestore.Timestamp.fromDate(new Date()),
-        likesbyusers: [],
-        Comment: []
+        likesbyusers: []
       })
       .then(() => {
         ToastAndroid.show(

@@ -13,6 +13,7 @@ import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../navigation/AuthProvider';
+import CommentScreen from '../src/components/screens/CommentScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -186,6 +187,13 @@ function AppStack({ navigation }) {
         options={({ route }) => ({
           headerShadowVisible: false,
           headerShown: false
+        })}
+      />
+      <Stack.Screen
+        name="comments"
+        component={CommentScreen}
+        options={({ route }) => ({
+
         })}
       />
     </Stack.Navigator>

@@ -8,10 +8,13 @@ import firestore from '@react-native-firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Share from 'react-native-share';
 import { ProgressiveImage, ProgressiveVideo } from './ProgressiveData';
+import { useNavigation } from '@react-navigation/native';
 
 const PostCard = ({ item, ondelete, onPress }) => {
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
+  console.log("item", item)
+  const navigation = useNavigation()
 
   const onlike = () => {
     const currentlikes = !item.likesbyusers.includes(user.uid);
@@ -24,8 +27,7 @@ const PostCard = ({ item, ondelete, onPress }) => {
           : firestore.FieldValue.arrayRemove(user.uid),
       })
       .then(() => {
-        // console.log('userrrrrlikse');
-        // setIsliked(!isliked);
+        console.log('userrrrrlikse');
       })
       .catch(er => {
         console.log('faild', er);
@@ -118,9 +120,13 @@ const PostCard = ({ item, ondelete, onPress }) => {
               {item.likesbyusers.length} Likes
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Interaction}>
+          <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
             <Ionicons name="md-chatbubble-outline" size={24} />
-            <Text style={styles.InteractionText}>{item.comments} Comments</Text>
+            {/* {comments.comment ?
+              <Text style={styles.InteractionText}>{comments.comment}</Text>
+              : <Text style={styles.InteractionText}>0</Text>} */}
+            {/* <Text style={styles.InteractionText}>{comments.commentbyusers && comments.commentbyusers[0] && comments.commentbyusers[0].length}</Text> */}
+            <Text style={styles.InteractionText}>comments</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={ShareData}>
             <MaterialCommunityIcons name="share" size={28} />

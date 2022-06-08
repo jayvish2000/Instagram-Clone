@@ -15,6 +15,33 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
+  const [comments, setComments] = useState(null)
+  console.log("user", comments)
+  // console.log("user", posts)
+  const getcomment = async () => {
+    const list = [];
+    await
+      firestore()
+        .collection("posts")
+        .doc(posts.id)
+        .collection('comments')
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach(doc => {
+            const { commentbyusers, comment, email, name, userimg } = doc.data()
+            list.push({
+              commentbyusers, comment, email, name, userimg
+            })
+            setComments(list)
+            console.log("item", list)
+          })
+        })
+  }
+
+  useEffect(() => {
+    getcomment()
+  }, [])
+
 
   const fetchPosts = async () => {
     try {
@@ -34,8 +61,8 @@ const HomeScreen = ({ navigation }) => {
               postImg,
               postTime,
               likesbyusers,
-              comments,
               postvideo,
+              commentbyusers
             } = doc.data();
             list.push({
               id: doc.id,
@@ -46,7 +73,7 @@ const HomeScreen = ({ navigation }) => {
               postvideo,
               postImg,
               likesbyusers,
-              comments,
+              commentbyusers
             });
           });
         });
@@ -75,7 +102,6 @@ const HomeScreen = ({ navigation }) => {
       .doc(postId)
       .get()
       .then(documentSnapshot => {
-        // console.log("postid",documentSnapshot.data())
         if (documentSnapshot.exists) {
           const { posts } = documentSnapshot.data();
 
@@ -157,6 +183,14 @@ const HomeScreen = ({ navigation }) => {
                   navigation.navigate('HomeProfile', { userId: item.userId, email: item.email })
                 }
               />
+            )}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+          <FlatList
+            data={comments}
+            renderItem={({ item }) => (
+              console.log("item", item)
             )}
             keyExtractor={item => item.id}
             showsVerticalScrollIndicator={false}

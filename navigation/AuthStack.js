@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, { useState, useEffect } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import OnboardingScreen from '../src/components/screens/OnboardingScreen';
 import LoginScreen from '../src/components/screens/LoginScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SignUpScreen from '../src/components/screens/SignUpScreen';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import ForgotPassword from '../src/components/screens/ForgotPassword';
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +24,8 @@ const AuthStack = () => {
     });
 
     GoogleSignin.configure({
-      webClientId:'66915133418-c5rspu83ko0vdceik762dc6e32v9kn22.apps.googleusercontent.com'
+      webClientId: '66915133418-c5rspu83ko0vdceik762dc6e32v9kn22.apps.googleusercontent.com',
+      offlineAccess: true
     });
   }, []);
   if (isFirstLaunch === null) {
@@ -39,22 +40,22 @@ const AuthStack = () => {
       <Stack.Screen
         name="Onboarding"
         component={OnboardingScreen}
-        options={{header: () => null}}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{header: () => null}}
+        options={{ header: () => null }}
       />
       <Stack.Screen
         name="Signup"
         component={SignUpScreen}
-        options={{header: () => null}}
+        options={{ header: () => null }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ForgotPassword"
         component={ForgotPassword}
-        options={{header: () => null}}
+        options={{ header: () => null }}
       />
     </Stack.Navigator>
   );
