@@ -21,13 +21,13 @@ export const Styles = StyleSheet.create({
     },
     userinfocontainer: {
         flex: 1,
-        justifyContent: 'flex-start',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginBottom:8
     },
     userinfo: {
+        justifyContent: 'flex-start',
         flexDirection: 'row',
-        marginRight: 8,
-        marginBottom: 15
+        alignItems:'flex-start'
     },
     userImg: {
         width: 40,
@@ -42,11 +42,10 @@ export const Styles = StyleSheet.create({
 
     },
     commentext: {
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: '400',
-        color: '#000',
-        marginTop: 4,
-        marginBottom: 4,
+        color: '#9b9b9b',
+        marginLeft: 6,
         maxWidth: '70%'
     },
     textinput: {

@@ -72,8 +72,9 @@ const CommentScreen = ({ route }) => {
                             <View style={Styles.userinfo}>
                                 <Image style={Styles.userImg} source={{ uri: item.userimg }} />
                                 <Text style={Styles.userName}>{item.name}</Text>
+                                <Text style={Styles.commentext}>{item.comment}</Text>
                             </View>
-                            <Text style={Styles.commentext}>{item.comment}</Text>
+                           
                         </View>
                     }
                 />

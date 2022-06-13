@@ -73,9 +73,9 @@ const PostCard = ({ item, ondelete, onPress }) => {
         .get()
         .then((snapshot) => {
           snapshot.forEach(doc => {
-            const { commentbyusers, comment } = doc.data()
+            const {  comment } = doc.data()
             list.push({
-              commentbyusers, comment
+               comment
             })
             setComments(list)
           })
@@ -157,6 +157,9 @@ const PostCard = ({ item, ondelete, onPress }) => {
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
             <Ionicons name="md-chatbubble-outline" size={24} />
             {renderComment()}
+            {/* <Text style={styles.InteractionText}>
+            {count('comment')}
+            </Text> */}
             <Text style={styles.InteractionText}>Comments</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={ShareData}>
