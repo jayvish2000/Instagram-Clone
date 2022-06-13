@@ -54,7 +54,6 @@ const SignUpScreen = ({ navigation }) => {
       await task;
 
       const url = await storageRef.getDownloadURL();
-      // console.log('urlsignup', url)
       setUploading(false);
       setImage(image);
 
@@ -87,11 +86,6 @@ const SignUpScreen = ({ navigation }) => {
     });
   };
   const register = async () => {
-    // if (fname != "", email != "", phone != "", password != "", confirmpassword != "") {
-    //   Alert.alert('please fill all the details')
-    // } else {
-    //   return true
-    // }
     let imgUrl = await uploadImage();
 
     try {

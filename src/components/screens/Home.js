@@ -15,8 +15,7 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-
-  console.log("user", posts)
+  
   const fetchPosts = async () => {
     try {
       const list = [];
