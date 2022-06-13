@@ -9,7 +9,6 @@ import {
   ScrollView
 } from 'react-native';
 import React, { useContext, useState } from 'react';
-
 import FormInput from '../FormInput';
 import FormButton from '../FormButton';
 import SocialButton from '../SocialButton';
@@ -83,7 +82,7 @@ const LoginScreen = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Signup')}
           style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
-          <Text style={[styles.navbtntext, { color: '#9b9b9b', marginLeft: 4 }]}>SignUp</Text>
+          <Text style={[styles.navbtntext, { color: '#9b9b9b', marginLeft: 4 }]}>Signup</Text>
         </TouchableOpacity>
       </View>
 

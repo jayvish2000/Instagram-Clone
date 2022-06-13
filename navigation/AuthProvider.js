@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
           try {
             const { idToken } = await GoogleSignin.signIn()
             const googleCradential = auth.GoogleAuthProvider.credential(idToken)
-            console.log('google', googleCradential)
+            // console.log('google', googleCradential)
             await auth().signInWithCredential(googleCradential)
           } catch (e) {
             console.log(e)

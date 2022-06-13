@@ -7,10 +7,9 @@ import {
   ToastAndroid,
   Image,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView
+  Alert
 } from 'react-native';
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import FormInput from '../FormInput';
 import FormButton from '../FormButton';
@@ -22,8 +21,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import auth from '@react-native-firebase/auth';
 import FormInputPassword from '../FormInputPassword';
+import { AuthContext } from '../../../navigation/AuthProvider';
 
 const SignUpScreen = ({ navigation }) => {
+  const { googleLogin } = useContext(AuthContext);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [confirmpassword, setConfirmPassword] = useState();
@@ -86,6 +87,11 @@ const SignUpScreen = ({ navigation }) => {
     });
   };
   const register = async () => {
+    // if (fname != "", email != "", phone != "", password != "", confirmpassword != "") {
+    //   Alert.alert('please fill all the details')
+    // } else {
+    //   return true
+    // }
     let imgUrl = await uploadImage();
 
     try {
@@ -316,7 +322,7 @@ const SignUpScreen = ({ navigation }) => {
             color="#fff"
             bgcolor="#de4d41"
             backgroundColor="#de4d41"
-          // onPress={() => googleLogin()}
+            onPress={() => googleLogin()}
           />
           <SocialButton
             buttonTitle="Log In with Facebook"

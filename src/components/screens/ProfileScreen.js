@@ -9,6 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import UserPostDataVideo from '../UserPostDataVideo'
 import UserPostData from '../UserPostData'
 import auth from '@react-native-firebase/auth'
+import moment from 'moment';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -94,9 +95,10 @@ const ProfileScreen = ({ navigation, route }) => {
   }
 
   const onfollow = () => {
-    const currentfollower = !userData.follower.includes(route.params ? route.params.userId : user.uid);
-    const currentfollowing = !userData.following.includes(route.params ? route.params.userId : user.uid);
-
+    const currentfollower = !userData.follower.includes(user.uid);
+    const currentfollowing = !userData.following.includes(route.params.userId);
+    console.log("currentfollowing", currentfollowing)
+    console.log("currentfollower", currentfollower)
     const following = firestore()
       .collection('users')
       .doc(user.uid)
@@ -106,8 +108,8 @@ const ProfileScreen = ({ navigation, route }) => {
       .doc(userData.uid)
 
     const batch = firestore().batch()
-    batch.update(follower, { follower: currentfollower ? firestore.FieldValue.arrayUnion(user.uid) : firestore.FieldValue.arrayRemove(route.params ? route.params.userId : user.uid) })
-    batch.update(following, { following: currentfollowing ? firestore.FieldValue.arrayUnion(userData.uid) : firestore.FieldValue.arrayRemove(userData.uid) })
+    batch.update(follower, { follower: currentfollower ? firestore.FieldValue.arrayUnion(user.uid) : firestore.FieldValue.arrayRemove(user.uid) })
+    batch.update(following, { following: currentfollowing ? firestore.FieldValue.arrayUnion(route.params ? route.params.userId : user.uid) : firestore.FieldValue.arrayRemove(userData.uid) })
     batch.commit();
   }
 
