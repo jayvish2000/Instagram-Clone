@@ -8,8 +8,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UserPostDataVideo from '../UserPostDataVideo'
 import UserPostData from '../UserPostData'
-import auth from '@react-native-firebase/auth'
-import moment from 'moment';
 
 const Tab = createMaterialTopTabNavigator();
 
