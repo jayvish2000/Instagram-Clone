@@ -94,9 +94,8 @@ const ProfileScreen = ({ navigation, route }) => {
 
   const onfollow = () => {
     const currentfollower = !userData.follower.includes(user.uid);
-    const currentfollowing = !userData.following.includes(route.params.userId);
-    console.log("currentfollowing", currentfollowing)
-    console.log("currentfollower", currentfollower)
+    const currentfollowing = !userData.follower.includes( user.uid);
+
     const following = firestore()
       .collection('users')
       .doc(user.uid)
@@ -107,7 +106,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
     const batch = firestore().batch()
     batch.update(follower, { follower: currentfollower ? firestore.FieldValue.arrayUnion(user.uid) : firestore.FieldValue.arrayRemove(user.uid) })
-    batch.update(following, { following: currentfollowing ? firestore.FieldValue.arrayUnion(route.params ? route.params.userId : user.uid) : firestore.FieldValue.arrayRemove(userData.uid) })
+    batch.update(following, { following: currentfollowing ? firestore.FieldValue.arrayUnion(userData.uid) : firestore.FieldValue.arrayRemove(userData.uid) })
     batch.commit();
   }
 
