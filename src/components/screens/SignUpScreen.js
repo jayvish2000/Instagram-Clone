@@ -86,6 +86,26 @@ const SignUpScreen = ({ navigation }) => {
     });
   };
   const register = async () => {
+    const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+
+    if (!fname) {
+      ToastAndroid.show('Please enter name', ToastAndroid.SHORT)
+    }  else if (!phone) {
+      ToastAndroid.show('Please enter phone number', ToastAndroid.SHORT)
+    } else if (phone.lengt<10) {
+      ToastAndroid.show('Phone number should be 10 digits', ToastAndroid.SHORT)
+    } else if (!strongRegex.test(email)) {
+      ToastAndroid.show('Invailed email', ToastAndroid.SHORT)
+    } else if (!password && !confirmpassword) {
+      ToastAndroid.show(' please enter Password ', ToastAndroid.SHORT)
+    } else if (password.length < 6) {
+      ToastAndroid.show('Password should be at least 6 characters', ToastAndroid.SHORT)
+    } if (password !== confirmpassword) {
+      ToastAndroid.show('Password does"t match', ToastAndroid.SHORT)
+    } else {
+      return false;
+    }
+
     let imgUrl = await uploadImage();
 
     try {

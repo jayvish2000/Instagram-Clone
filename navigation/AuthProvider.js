@@ -18,6 +18,17 @@ export const AuthProvider = ({ children }) => {
         user,
         setUser,
         login: async (email, password) => {
+          const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+
+          if (!strongRegex.test(email)) {
+            ToastAndroid.show('Invailed email or password', ToastAndroid.SHORT)
+          } else if (!password ) {
+            ToastAndroid.show('Invailed  password', ToastAndroid.SHORT)
+          }
+          else {
+            return false;
+          }
+
           try {
             await auth().signInWithEmailAndPassword(email, password);
           } catch (e) {
