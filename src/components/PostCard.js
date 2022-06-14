@@ -15,7 +15,7 @@ const PostCard = ({ item, ondelete, onPress }) => {
   const [userData, setUserData] = useState(null);
   const [comments, setComments] = useState(null)
 
-  console.log("comm", comments)
+  console.log("comm", comments?.length)
   const navigation = useNavigation()
 
   const onlike = () => {
@@ -65,17 +65,17 @@ const PostCard = ({ item, ondelete, onPress }) => {
 
   const getcomment = async () => {
     const list = [];
+
     await
       firestore()
         .collection("posts")
         .doc(item.id)
         .collection('comments')
-        .get()
-        .then((snapshot) => {
+        .onSnapshot((snapshot) => {
           snapshot.forEach(doc => {
-            const {  comment } = doc.data()
+            const { comment } = doc.data()
             list.push({
-               comment
+              comment
             })
             setComments(list)
           })
@@ -86,15 +86,6 @@ const PostCard = ({ item, ondelete, onPress }) => {
     getcomment()
   }, [])
 
-  const renderComment = () => {
-    return (
-      <FlatList horizontal={true}
-        data={comments}
-        renderItem={({ item }) =>
-          <Text style={styles.InteractionText}>{Object.keys(item.comment)[0].length}</Text>
-        } />
-    )
-  }
   return (
     <View style={styles.container}>
       <View key={item.id} style={styles.card}>
@@ -156,10 +147,10 @@ const PostCard = ({ item, ondelete, onPress }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
             <Ionicons name="md-chatbubble-outline" size={24} />
-            {renderComment()}
-            {/* <Text style={styles.InteractionText}>
-            {count('comment')}
-            </Text> */}
+            {/* {renderComment()} */}
+            <Text style={styles.InteractionText}>
+              {comments?.length}
+            </Text>
             <Text style={styles.InteractionText}>Comments</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={ShareData}>
