@@ -1,9 +1,7 @@
 import React, { createContext, useState } from 'react';
 import auth, { firebase } from '@react-native-firebase/auth';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { ToastAndroid } from 'react-native'
-
-
 
 export const AuthContext = createContext();
 
@@ -18,21 +16,25 @@ export const AuthProvider = ({ children }) => {
         user,
         setUser,
         login: async (email, password) => {
-          const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
-
-          if (!strongRegex.test(email)) {
-            ToastAndroid.show('Invailed email or password', ToastAndroid.SHORT)
-          } else if (!password ) {
-            ToastAndroid.show('Invailed  password', ToastAndroid.SHORT)
-          }
-          else {
-            return false;
-          }
-
-          try {
-            await auth().signInWithEmailAndPassword(email, password);
-          } catch (e) {
-            console.log(e);
+          if (email && password) {
+            try {
+              await auth().signInWithEmailAndPassword(email, password);
+            } catch (error) {
+              if (error.code === 'auth/invalid-email') {
+                ToastAndroid.show('Invalid email address', ToastAndroid.SHORT)
+              } else if (error.code === 'auth/user-not-found') {
+                ToastAndroid.show('User not found', ToastAndroid.SHORT)
+              } else if (error.code === 'auth/wrong-password') {
+                ToastAndroid.show('Invalid password', ToastAndroid.SHORT)
+              } else if (error.code === 'auth/network-request-failed') {
+                ToastAndroid.show('Network request failed', ToastAndroid.SHORT)
+              }
+              else {
+                console.log(error);
+              }
+            }
+          } else {
+            ToastAndroid.show('Please enter email and password ', ToastAndroid.SHORT)
           }
         },
 
@@ -40,21 +42,39 @@ export const AuthProvider = ({ children }) => {
           try {
             const { idToken } = await GoogleSignin.signIn()
             const googleCradential = auth.GoogleAuthProvider.credential(idToken)
-            // console.log('google', googleCradential)
+            console.log('google', googleCradential)
             await auth().signInWithCredential(googleCradential)
-          } catch (e) {
-            console.log(e)
+          } catch (error) {
+            if (error) {
+              ToastAndroid.show('Network error', ToastAndroid.SHORT)
+            } else {
+              console.log(error);
+            }
           }
 
         },
         forgotpassword: async (email) => {
-          try {
-            firebase.auth().sendPasswordResetEmail(email).then(() => {
-              ToastAndroid.show(`Please check your email :${email}`, ToastAndroid.LONG,)
-            })
-          } catch (e) {
-            console.log(e)
+          if (email) {
+            try {
+              firebase.auth().sendPasswordResetEmail(email).then(() => {
+                ToastAndroid.show(`Please check your email :${email}`, ToastAndroid.LONG,)
+              })
+            } catch (error) {
+              if (error.code === 'auth/invalid-email') {
+                ToastAndroid.show('Invalid email address', ToastAndroid.SHORT)
+              } else if (error.code === 'auth/user-not-found') {
+                ToastAndroid.show('User not found', ToastAndroid.SHORT)
+              } else if (error.code === 'auth/network-request-failed') {
+                ToastAndroid.show('Network request failed', ToastAndroid.SHORT)
+              }
+              else {
+                console.log(error);
+              }
+            }
+          } else {
+            ToastAndroid.show('please enter your email address', ToastAndroid.SHORT)
           }
+
         },
         logout: async () => {
           try {

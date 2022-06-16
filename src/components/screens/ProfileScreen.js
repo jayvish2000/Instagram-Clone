@@ -187,14 +187,14 @@ const ProfileScreen = ({ navigation, route }) => {
                 <Text style={styles.userBtnTxt}>Edit Profile</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.userBtn} onPress={() => {
-                // firestore()
-                //   .collection('users')
-                //   .doc(user.uid)
-                //   .update({
-                //     status: firestore.FieldValue.serverTimestamp()
-                //   }).then(() => {
+                firestore()
+                  .collection('users')
+                  .doc(user.uid)
+                  .update({
+                    status: firestore.FieldValue.serverTimestamp()
+                  }).then(() => {
                     logout()
-                  // })
+                  })
               }}>
                 <Text style={styles.userBtnTxt}>Logout</Text>
               </TouchableOpacity>

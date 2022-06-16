@@ -5,7 +5,7 @@ import FormInput from '../FormInput'
 import FormButton from '../FormButton'
 
 const ForgotPassword = ({ navigation }) => {
-  const [email, setEmail] = useState()
+  const [email, setEmail] = useState('')
   const { forgotpassword } = useContext(AuthContext)
 
   return (

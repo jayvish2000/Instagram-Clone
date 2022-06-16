@@ -3,30 +3,19 @@ import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { windowHeight } from '../../utils/Dimensions';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const SocialButton = ({
-  buttonTitle,
-  btntype,
-  color,
-  backgroundColor,
-  bgcolor,
-  ...rest
-}) => {
-  let bgColor = backgroundColor;
-
+const SocialButton = ({ onPress }) => {
   return (
-    <TouchableOpacity
-      style={[styles.butttonConatiner, { backgroundColor: bgColor }]}
-      {...rest}>
-      <View style={[styles.iconWrapper, { backgroundColor: bgcolor }]}>
+    <TouchableOpacity activeOpacity={0.8} style={styles.butttonConatiner} onPress={onPress}>
+      <View style={styles.iconWrapper}>
         <FontAwesome
           style={styles.icon}
-          name={btntype}
+          name="google"
           size={22}
-          color={color}
+          color="#fff"
         />
       </View>
-      <View style={[styles.btnTextWrapper, { backgroundColor: bgcolor }]}>
-        <Text style={[styles.buttonText, { color: color }]}>{buttonTitle}</Text>
+      <View style={styles.btnTextWrapper}>
+        <Text style={styles.buttonText}>Log In with Google</Text>
       </View>
     </TouchableOpacity>
   );
@@ -38,7 +27,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 10,
     height: windowHeight / 18,
-    backgroundColor: '#2e64e5',
+    backgroundColor: '#de4d41',
     padding: 7,
     alignItems: 'center',
     justifyContent: 'center',
@@ -57,11 +46,11 @@ const styles = StyleSheet.create({
   btnTextWrapper: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    // color: '#ffffff',
+    color: '#fff',
   },
 });

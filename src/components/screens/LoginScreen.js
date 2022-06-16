@@ -16,8 +16,8 @@ import { AuthContext } from '../../../navigation/AuthProvider';
 import FormInputPassword from '../FormInputPassword';
 
 const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const { login, googleLogin } = useContext(AuthContext);
 
@@ -57,20 +57,7 @@ const LoginScreen = ({ navigation }) => {
       {Platform.OS === 'android' ? (
         <View>
           <SocialButton
-            buttonTitle="Log In with Google"
-            btntype="google"
-            color="#fff"
-            bgcolor="#de4d41"
-            backgroundColor="#de4d41"
             onPress={() => googleLogin()}
-          />
-          <SocialButton
-            buttonTitle="Log In with Facebook"
-            btntype="facebook"
-            color="#fff"
-            bgcolor="#3897f0"
-            backgroundColor="#3897f0"
-          // onPress={() => googleLogin()}
           />
         </View>
       ) : null}

@@ -25,11 +25,11 @@ import { AuthContext } from '../../../navigation/AuthProvider';
 
 const SignUpScreen = ({ navigation }) => {
   const { googleLogin } = useContext(AuthContext);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState();
-  const [fname, setFname] = useState();
-  const [phone, setPhone] = useState();
+  const [fname, setFname] = useState('');
+  const [phone, setPhone] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const refRBSheet = useRef();
@@ -86,51 +86,49 @@ const SignUpScreen = ({ navigation }) => {
     });
   };
   const register = async () => {
-    const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+    // const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
+    // let imgUrl = await uploadImage();
 
-    if (!fname) {
-      ToastAndroid.show('Please enter name', ToastAndroid.SHORT)
-    }  else if (!phone) {
-      ToastAndroid.show('Please enter phone number', ToastAndroid.SHORT)
-    } else if (phone.lengt<10) {
-      ToastAndroid.show('Phone number should be 10 digits', ToastAndroid.SHORT)
-    } else if (!strongRegex.test(email)) {
-      ToastAndroid.show('Invailed email', ToastAndroid.SHORT)
-    } else if (!password && !confirmpassword) {
-      ToastAndroid.show(' please enter Password ', ToastAndroid.SHORT)
-    } else if (password.length < 6) {
-      ToastAndroid.show('Password should be at least 6 characters', ToastAndroid.SHORT)
-    } if (password !== confirmpassword) {
-      ToastAndroid.show('Password does"t match', ToastAndroid.SHORT)
+    if (fname && email && phone && (password === confirmpassword)) {
+      let imgUrl = await uploadImage();
+      try {
+        await auth()
+          .createUserWithEmailAndPassword(email, password)
+          .then(() => {
+            firestore()
+              .collection('users')
+              .doc(auth().currentUser.uid)
+              .set({
+                uid: auth().currentUser.uid,
+                fname: fname,
+                phone: phone,
+                email: email,
+                createdAt: firestore.Timestamp.fromDate(new Date()),
+                userImg: imgUrl,
+                status: "online",
+                follower: [],
+                following: []
+              });
+          });
+        ToastAndroid.show('Registration successfull', ToastAndroid.SHORT);
+      } catch (error) {
+        if (error.code === 'auth/email-already-in-use') {
+          ToastAndroid.show('User already exists', ToastAndroid.SHORT);
+        } else if (error.code === 'auth/invalid-email') {
+          ToastAndroid.show('Invalid email address', ToastAndroid.SHORT);
+        }else if (error.code === 'auth/weak-password') {
+          ToastAndroid.show('Password should be at least 6 characters', ToastAndroid.SHORT);
+        }else if (error.code === 'auth/network-request-failed') {
+          ToastAndroid.show('Network request failed', ToastAndroid.SHORT)
+        } else {
+          console.log(error)
+        }
+      }
+
     } else {
-      return false;
+      ToastAndroid.show('Please fill all data', ToastAndroid.SHORT);
     }
 
-    let imgUrl = await uploadImage();
-
-    try {
-      await auth()
-        .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-          firestore()
-            .collection('users')
-            .doc(auth().currentUser.uid)
-            .set({
-              uid: auth().currentUser.uid,
-              fname: fname,
-              phone: phone,
-              email: email,
-              createdAt: firestore.Timestamp.fromDate(new Date()),
-              userImg: imgUrl,
-              status: "online",
-              follower: [],
-              following: []
-            });
-        });
-      ToastAndroid.show('Registration successfull', ToastAndroid.SHORT);
-    } catch (e) {
-      console.log(e);
-    }
   };
 
   return (
@@ -255,7 +253,7 @@ const SignUpScreen = ({ navigation }) => {
           ) : (
             <Image
               source={{
-                uri: 'https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png',
+                uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
               }}
               style={styles.imgbg}
               imageStyle={{ borderRadius: 50 }}
@@ -272,7 +270,7 @@ const SignUpScreen = ({ navigation }) => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <MaterialIcons name="add-circle" size={25} color="#2e64e5" />
+            <MaterialIcons name="add-circle" size={25} color="#3897f1" />
           </View>
         </TouchableOpacity>
       </View>
@@ -323,28 +321,13 @@ const SignUpScreen = ({ navigation }) => {
       )}
       <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
         <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
-
         <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
-
         <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
       </View>
       {Platform.OS === 'android' ? (
         <View>
           <SocialButton
-            buttonTitle="Log In with Google"
-            btntype="google"
-            color="#fff"
-            bgcolor="#de4d41"
-            backgroundColor="#de4d41"
             onPress={() => googleLogin()}
-          />
-          <SocialButton
-            buttonTitle="Log In with Facebook"
-            btntype="facebook"
-            color="#fff"
-            bgcolor="#3897f0"
-            backgroundColor="#3897f0"
-          // onPress={() => googleLogin()}
           />
         </View>
       ) : null}
@@ -356,7 +339,7 @@ const SignUpScreen = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
           style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
-          <Text style={[styles.navbtntext, { color: '#9bc7f6', marginLeft: 4 }]}>Log in</Text>
+          <Text style={[styles.navbtntext, { color: '#3897f1', marginLeft: 4 }]}>Log in</Text>
         </TouchableOpacity>
       </View>
     </View>
