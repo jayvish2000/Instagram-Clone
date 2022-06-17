@@ -1,16 +1,16 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useState, useEffect, useContext } from 'react'
 import styles from '../../../styles/LCFStyles'
 import firestore from '@react-native-firebase/firestore'
 import { AuthContext } from '../../../navigation/AuthProvider';
 
-const LikeCommentFollowerScreen = () => {
+const LikeCommentFollowerScreen = ({ navigation }) => {
     const { user } = useContext(AuthContext);
     const [follower, setFollower] = useState([])
     const [comment, setComment] = useState([])
     const [like, setLike] = useState([])
 
-    console.log("like", like)
+    console.log("comment", comment)
 
     const fetchFollower = async () => {
         await firestore()
@@ -48,23 +48,31 @@ const LikeCommentFollowerScreen = () => {
                                 setLike(snapshot.data())
                             }).catch(e => console.log(e))
                     })
+                    firestore()
+                        .collection('posts')
+                        .doc(doc.id)
+                        .collection('comments')
+                        .get()
+                        .then((snapshot) => {
+                            snapshot.docs.forEach((doc) => {
+                                const { commentbyusers } = doc.data()
+                                firestore()
+                                    .collection('users')
+                                    .doc(commentbyusers)
+                                    .get()
+                                    .then((snapshot) => {
+                                        setComment(snapshot.data())
+                                    })
+                            })
+                        })
                 })
 
             }).catch(e => console.log(e))
     }
 
-    const fetchcomment = async () => {
-        await firestore()
-            .collection('posts')
-            .where('userId', '==', user.uid)
-
-
-    }
-
     useEffect(async () => {
         fetchFollower()
         fetchLike()
-        fetchcomment()
     }, [])
 
     const likecurrentuserpost = () => {
@@ -103,11 +111,31 @@ const LikeCommentFollowerScreen = () => {
         )
     }
 
+    const commentcurrentuserpost = () => {
+        return (
+            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: comment.uid, email: comment.email })}>
+                <View style={styles.usercontainer}>
+                    <Image style={styles.userimg} source={{ uri: comment.userImg }} />
+                    <View style={styles.textmaincontainer}>
+                        <Text style={styles.username}>
+                            {comment.fname}
+                        </Text>
+                        <Text style={styles.userabout}>
+                            comment on your post.
+                        </Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <View style={styles.container}>
             {followcurrentuser()}
             <View style={{ width: '100%', height: '1%' }} />
             {likecurrentuserpost()}
+            <View style={{ width: '100%', height: '1%' }} />
+            {commentcurrentuserpost()}
         </View>
     )
 }

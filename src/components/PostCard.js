@@ -15,7 +15,6 @@ const PostCard = ({ item, ondelete, onPress }) => {
   const [userData, setUserData] = useState(null);
   const [comments, setComments] = useState(null)
 
-  console.log("comm", comments?.length)
   const navigation = useNavigation()
 
   const onlike = () => {

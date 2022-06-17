@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import firestore from '@react-native-firebase/firestore'
 import { AuthContext } from '../../../navigation/AuthProvider';
 import { Styles } from '../../../styles/commentStyles'
+import auth from '@react-native-firebase/auth';
 
 const CommentScreen = ({ route }) => {
     const { user } = useContext(AuthContext);
@@ -17,15 +18,16 @@ const CommentScreen = ({ route }) => {
                 .doc(route.params)
                 .collection('comments')
                 .add({
+                    uid: auth().currentUser.uid,
                     name: userinfo.fname,
                     email: userinfo.email,
                     commentbyusers: userinfo.uid,
                     userimg: userinfo.userImg,
                     comment,
                     createAt: new Date()
-                }).then(() =>
+                }).then(() => {
                     console.log('sshhs')
-                ).catch(e => console.log(e))
+                }).catch(e => console.log(e))
     }
 
     const getcomment = async () => {
@@ -74,7 +76,7 @@ const CommentScreen = ({ route }) => {
                                 <Text style={Styles.userName}>{item.name}</Text>
                                 <Text style={Styles.commentext}>{item.comment}</Text>
                             </View>
-                           
+
                         </View>
                     }
                 />
