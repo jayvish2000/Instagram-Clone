@@ -7,7 +7,7 @@ import ProfileScreen from '../src/components/screens/ProfileScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, TouchableOpacity, Text, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
@@ -15,6 +15,8 @@ import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../navigation/AuthProvider';
 import CommentScreen from '../src/components/screens/CommentScreen';
 import moment from 'moment';
+import SearchScreen from '../src/components/screens/SearchScreen';
+import LikeCommentFollowerScreen from '../src/components/screens/LikeCommentFollowerScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -63,7 +65,10 @@ function TabBar({ navigation }) {
           ),
 
           headerRight: () => (
-            <AntDesign style={{ padding: '4%' }} name='message1' size={25} color="#000" onPress={() => navigation.navigate('Messages')} />
+            <View style={{ flexDirection: 'row' }}>
+              <AntDesign style={{ padding: '4%' }} name='plussquareo' size={25} color="#000" onPress={() => navigation.navigate('AddPost')} />
+              <AntDesign style={{ padding: '4%' }} name='message1' size={25} color="#000" onPress={() => navigation.navigate('Messages')} />
+            </View>
           ),
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
@@ -75,7 +80,21 @@ function TabBar({ navigation }) {
           ),
         }}
       />
-      <Tab.Screen
+      <Tab.Screen name='Search' component={SearchScreen}
+        options={({ route }) => ({
+          title: "",
+          headerShown: false,
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "search" : "search-outline"}
+              color={color}
+              size={30}
+            />
+          ),
+        })}
+      />
+      {/* <Tab.Screen
         name="add"
         component={AddPostScreen}
         options={({ route }) => ({
@@ -100,6 +119,21 @@ function TabBar({ navigation }) {
           headerLeft: () => (
             <AntDesign style={{ padding: '4%' }} name='arrowleft' size={25} color="#000" onPress={() => navigation.navigate('Home')} />
           ),
+        })}
+      /> */}
+      <Tab.Screen name="LCF" component={LikeCommentFollowerScreen}
+        options={({ route }) => ({
+          title: "Activity",
+          headerShown: true,
+          headerShadowVisible: true,
+          tabBarLabel: () => null,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons
+              name={focused ? "heart" : "heart-outline"}
+              color={color}
+              size={30}
+            />
+          )
         })}
       />
       <Tab.Screen

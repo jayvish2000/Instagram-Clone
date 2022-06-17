@@ -24,7 +24,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
       await firestore()
         .collection('posts')
-        .where('userId', '==', route.params ? route.params.userId : user.uid)
+        .where('userId', '==', route.params ? route.params.userId || route.params.uid : user.uid)
         .orderBy('postTime', 'desc')
         .get()
         .then(querySnapshot => {
@@ -48,14 +48,18 @@ const ProfileScreen = ({ navigation, route }) => {
   };
 
   const getUser = async () => {
+    try{
     await firestore()
       .collection('users')
-      .doc(route.params ? route.params.userId : user.uid)
+      .doc(route.params ? route.params.userId || route.params.uid : user.uid)
       .onSnapshot(documentSnapshot => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data());
         }
       });
+    }catch(e){
+      console.log(e)
+    }
   };
 
   useEffect(() => {
@@ -94,7 +98,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
   const onfollow = () => {
     const currentfollower = !userData.follower.includes(user.uid);
-    const currentfollowing = !userData.follower.includes( user.uid);
+    const currentfollowing = !userData.follower.includes(user.uid);
 
     const following = firestore()
       .collection('users')
@@ -111,13 +115,16 @@ const ProfileScreen = ({ navigation, route }) => {
   }
 
   const getfollower = () => {
-    firestore()
-      .collection('users')
-      .doc(route.params ? route.params.userId : user.uid)
-      .onSnapshot((snapshot) => {
-        setFollow(snapshot.data())
-      })
-
+    try {
+      firestore()
+        .collection('users')
+        .doc(route.params ? route.params.userId || route.params.uid : user.uid)
+        .onSnapshot((snapshot) => {
+          setFollow(snapshot.data())
+        })
+    } catch (e) {
+      console.log(e)
+    }
   }
   useEffect(() => {
     getfollower()
@@ -158,7 +165,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Message</Text>
               </TouchableOpacity>
               <>
-                {route.params.userId ?
+                {route.params.userId || route.params.uid ?
                   <>
                     {userData?.follower.includes(user.uid) ?
                       <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
@@ -229,7 +236,6 @@ const ProfileScreen = ({ navigation, route }) => {
                 }
               </>
             }
-
             <Text style={styles.userInfoSubTitle}>Follower</Text>
           </View>
           <View style={styles.userInfoItem}>
