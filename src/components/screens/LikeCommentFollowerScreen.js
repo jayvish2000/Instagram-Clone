@@ -9,7 +9,8 @@ const LikeCommentFollowerScreen = () => {
     const [follower, setFollower] = useState([])
     const [comment, setComment] = useState([])
     const [like, setLike] = useState([])
-    console.log("follower", follower)
+
+    console.log("like", like)
 
     const fetchFollower = async () => {
         await firestore()
@@ -30,12 +31,62 @@ const LikeCommentFollowerScreen = () => {
             }).catch(e => console.log(e))
     }
 
+    const fetchLike = async () => {
+        await firestore()
+            .collection('posts')
+            .where('userId', '==', user.uid)
+            .get()
+            .then((documentSnapshot) => {
+                documentSnapshot.docs.forEach((doc) => {
+                    const { likesbyusers } = doc.data()
+                    likesbyusers.map((item) => {
+                        firestore()
+                            .collection('users')
+                            .doc(item)
+                            .get()
+                            .then((snapshot) => {
+                                setLike(snapshot.data())
+                            }).catch(e => console.log(e))
+                    })
+                })
+
+            }).catch(e => console.log(e))
+    }
+
+    const fetchcomment = async () => {
+        await firestore()
+            .collection('posts')
+            .where('userId', '==', user.uid)
+
+
+    }
+
     useEffect(async () => {
         fetchFollower()
+        fetchLike()
+        fetchcomment()
     }, [])
 
-    return (
-        <View style={styles.container}>
+    const likecurrentuserpost = () => {
+        return (
+            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: like.uid, email: like.email })}>
+                <View style={styles.usercontainer}>
+                    <Image style={styles.userimg} source={{ uri: like.userImg }} />
+                    <View style={styles.textmaincontainer}>
+                        <Text style={styles.username}>
+                            {like.fname}
+                        </Text>
+                        <Text style={styles.userabout}>
+                            like your story or post.
+                        </Text>
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    const followcurrentuser = () => {
+        return (
             <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: follower.uid, email: follower.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: follower.userImg }} />
@@ -49,6 +100,14 @@ const LikeCommentFollowerScreen = () => {
                     </View>
                 </View>
             </TouchableOpacity>
+        )
+    }
+
+    return (
+        <View style={styles.container}>
+            {followcurrentuser()}
+            <View style={{ width: '100%', height: '1%' }} />
+            {likecurrentuserpost()}
         </View>
     )
 }
