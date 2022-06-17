@@ -34,6 +34,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '300',
         color: '#242526'
+    },
+    postimg:{
+        width: 40,
+        height: 40,  
     }
 })
 

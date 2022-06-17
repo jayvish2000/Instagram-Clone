@@ -9,8 +9,8 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
     const [follower, setFollower] = useState([])
     const [comment, setComment] = useState([])
     const [like, setLike] = useState([])
-
-    console.log("comment", comment)
+    const [post, setPosts] = useState([])
+const [commentmsg,setCommentmsg]=useState([])
 
     const fetchFollower = async () => {
         await firestore()
@@ -38,6 +38,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
             .get()
             .then((documentSnapshot) => {
                 documentSnapshot.docs.forEach((doc) => {
+                    console.log("like", doc.data())
                     const { likesbyusers } = doc.data()
                     likesbyusers.map((item) => {
                         firestore()
@@ -55,6 +56,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
                         .get()
                         .then((snapshot) => {
                             snapshot.docs.forEach((doc) => {
+                               setCommentmsg(doc.data())
                                 const { commentbyusers } = doc.data()
                                 firestore()
                                     .collection('users')
@@ -80,14 +82,15 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: like.uid, email: like.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: like.userImg }} />
-                    <View style={styles.textmaincontainer}>
+                    <View style={[styles.textmaincontainer, { width: 260 }]}>
                         <Text style={styles.username}>
                             {like.fname}
                         </Text>
                         <Text style={styles.userabout}>
-                            like your story or post.
+                            like your post.
                         </Text>
                     </View>
+                    {/* <Image style={styles.postimg} source={{ uri: post.postImg }} /> */}
                 </View>
             </TouchableOpacity>
         )
@@ -98,7 +101,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: follower.uid, email: follower.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: follower.userImg }} />
-                    <View style={styles.textmaincontainer}>
+                    <View style={[styles.textmaincontainer,{width:260}]}>
                         <Text style={styles.username}>
                             {follower.fname}
                         </Text>
@@ -116,7 +119,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
             <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: comment.uid, email: comment.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: comment.userImg }} />
-                    <View style={styles.textmaincontainer}>
+                    <View style={[styles.textmaincontainer,{width:260}]}>
                         <Text style={styles.username}>
                             {comment.fname}
                         </Text>
@@ -124,6 +127,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
                             comment on your post.
                         </Text>
                     </View>
+                    {/* <Image style={styles.userimg} source={{ uri: commentmsg.userImg }} /> */}
                 </View>
             </TouchableOpacity>
         )
