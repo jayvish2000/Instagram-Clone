@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { windowHeight } from '../../utils/Dimensions';
+import { Text, TouchableOpacity, StyleSheet, View,Dimensions } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
+const height =Dimensions.get('window').height
 
 const SocialButton = ({ onPress }) => {
   return (
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   butttonConatiner: {
     width: '100%',
     marginTop: 10,
-    height: windowHeight / 18,
+    height: height / 18,
     backgroundColor: '#de4d41',
     padding: 7,
     alignItems: 'center',

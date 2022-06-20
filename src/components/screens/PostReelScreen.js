@@ -68,8 +68,7 @@ const PostReelScreen = ({ item, navigation }) => {
         reelImg: imageUrl,
         reelvideo: videoUrl,
         reelTime: firestore.Timestamp.fromDate(new Date()),
-        likesbyusers: [],
-        commentbyuser:[]
+        likesbyusers: []
       })
       .then(() => {
         ToastAndroid.show(

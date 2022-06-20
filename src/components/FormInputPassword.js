@@ -1,8 +1,11 @@
-import {View, TextInput, StyleSheet, Pressable} from 'react-native';
+import {View, TextInput, StyleSheet, Pressable,Dimensions} from 'react-native';
 import React, {useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {windowWidth, windowHeight} from '../../utils/Dimensions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const height =Dimensions.get('window').height
+const width = Dimensions.get('window').width
 
 const FormInputPassword = ({
   iconType,
@@ -52,7 +55,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 10,
     width: '100%',
-    height: windowHeight / 18,
+    height: height / 18,
     borderRadius: 3,
     borderColor: '#ccc',
     borderWidth: 1,
@@ -81,8 +84,8 @@ const styles = StyleSheet.create({
     padding: 10,
     marginTop: 5,
     marginBottom: 10,
-    width: windowWidth / 1.5,
-    height: windowHeight / 15,
+    width: width / 1.5,
+    height: height / 15,
     fontSize: 16,
     borderRadius: 8,
     borderWidth: 1,

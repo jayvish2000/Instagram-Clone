@@ -86,8 +86,6 @@ const SignUpScreen = ({ navigation }) => {
     });
   };
   const register = async () => {
-    // const strongRegex = new RegExp("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$");
-    // let imgUrl = await uploadImage();
 
     if (fname && email && phone && (password === confirmpassword)) {
       let imgUrl = await uploadImage();

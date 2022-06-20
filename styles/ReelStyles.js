@@ -74,12 +74,26 @@ const styles = StyleSheet.create({
         padding: 4
     },
     comment: {
-        fontSize: 16,
-        fontWeight: '400',
-        color: '#000'
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#000',
+        marginLeft: '5%'
     },
-    commentextinput: {
-        width: '93%',
+    followbtn: {
+        width: width / 7,
+        height: height / 34,
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 3,
+        borderWidth: 1,
+        borderColor: '#fff',
+        marginLeft: '3%'
+    },
+    btntext: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#fff'
     }
 })
 

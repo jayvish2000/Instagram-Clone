@@ -7,7 +7,7 @@ import auth from '@react-native-firebase/auth';
 
 const CommentScreen = ({ route }) => {
     const { user } = useContext(AuthContext);
-    const [comment, setcomment] = useState('')
+    const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
     const [userinfo, setUserInfo] = useState()
 
@@ -87,7 +87,7 @@ const CommentScreen = ({ route }) => {
                     // placeholderTextColor="#242526"
                     multiline={true}
                     value={comment}
-                    onChangeText={(comment) => setcomment(comment)}
+                    onChangeText={(comment) => setComment(comment)}
                 />
                 <TouchableOpacity style={Styles.btn} onPress={onSendComment}>
                     <Text style={Styles.btntxt}>post</Text>

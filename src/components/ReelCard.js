@@ -1,13 +1,16 @@
-import { View, TouchableOpacity, Dimensions, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Dimensions, Text, Image, TextInput, FlatList } from 'react-native';
 import React, { useRef, useEffect, useState, useContext } from 'react';
 import Video from 'react-native-video';
 import styles from '../../styles/ReelStyles';
+import { Styles } from '../../styles/commentStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
 import Share from 'react-native-share';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import auth from '@react-native-firebase/auth';
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -16,7 +19,14 @@ const ReelCard = ({ currindex, item, index }) => {
     const { user } = useContext(AuthContext);
     const navigation = useNavigation()
     const [users, setUser] = useState(null)
+    const [comment, setComment] = useState('')
+    const [comments, setComments] = useState([])
+    const [userinfo, setUserInfo] = useState()
+    const [follow, setFollow] = useState(null);
     const videoRef = useRef(null)
+    const refRBSheet = useRef();
+
+    console.log("fololl", follow)
 
     const onBuffer = (e) => {
         console.log("buffering", e)
@@ -70,6 +80,59 @@ const ReelCard = ({ currindex, item, index }) => {
             });
     }
 
+    const onComment = async () => {
+        await
+            firestore()
+                .collection("reels")
+                .doc(item.id)
+                .collection('comments')
+                .add({
+                    uid: auth().currentUser.uid,
+                    name: userinfo.fname,
+                    email: userinfo.email,
+                    commentbyusers: userinfo.uid,
+                    userimg: userinfo.userImg,
+                    comment,
+                    createAt: new Date()
+                }).then(() => {
+                    console.log('sshhs')
+                }).catch(e => console.log(e))
+    }
+
+    const getcomment = async () => {
+        await
+            firestore()
+                .collection("reels")
+                .doc(item.id)
+                .collection('comments')
+                .get()
+                .then((snapshot) => {
+                    let comment = snapshot.docs.map(doc => {
+                        const data = doc.data();
+                        return { ...data }
+                    })
+                    setComments(comment)
+                })
+                .catch(e => console.log(e))
+    }
+
+    useEffect(() => {
+        getcomment()
+    }, [])
+
+    useEffect(() => {
+        try {
+            firestore()
+                .collection('users')
+                .doc(user.uid)
+                .onSnapshot((snap) => {
+                    setUserInfo(snap.data())
+                })
+        } catch (e) {
+            console.log(e)
+        }
+    }, [])
+
     const ShareData = async () => {
         const ShareOptions = {
             url: item.reelImg || item.reelvideo,
@@ -81,6 +144,41 @@ const ReelCard = ({ currindex, item, index }) => {
             console.log('❌❌❌err', er);
         }
     };
+
+    const onfollow = () => {
+        const currentfollower = !users.follower.includes(user.uid);
+        const currentfollowing = !users.follower.includes(user.uid);
+
+        const following = firestore()
+            .collection('users')
+            .doc(user.uid)
+
+        const follower = firestore()
+            .collection('users')
+            .doc(users.uid)
+
+        const batch = firestore().batch()
+        batch.update(follower, { follower: currentfollower ? firestore.FieldValue.arrayUnion(user.uid) : firestore.FieldValue.arrayRemove(user.uid) })
+        batch.update(following, { following: currentfollowing ? firestore.FieldValue.arrayUnion(users.uid) : firestore.FieldValue.arrayRemove(users.uid) })
+        batch.commit();
+    }
+
+
+    const getfollower = () => {
+        try {
+            firestore()
+                .collection('users')
+                .doc(user.uid)
+                .onSnapshot((snapshot) => {
+                    setFollow(snapshot.data())
+                })
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    useEffect(() => {
+        getfollower()
+    }, [])
 
     return (
         <View style={[styles.container, { height: height - 52, borderBottomWidth: 1, borderBottomColor: '#D4D4D4' }, index % 2 == 0 ? { backgroundColor: "#ADD8E6" } : { backgroundColor: "pink" }]}>
@@ -111,6 +209,24 @@ const ReelCard = ({ currindex, item, index }) => {
                     <Text style={styles.username}>
                         {users ? users.fname || 'User' : 'User'}
                     </Text>
+
+                    {users.following.includes(user.uid) ?
+                        <>
+                            <TouchableOpacity style={[styles.followbtn, { width: width / 5 }]} onPress={onfollow}>
+                                <Text style={styles.btntext}>
+                                    Following
+                                </Text>
+                            </TouchableOpacity>
+                        </>
+                        :
+                        <>
+                            <TouchableOpacity style={styles.followbtn} onPress={onfollow}>
+                                <Text style={styles.btntext}>
+                                    Follow
+                                </Text>
+                            </TouchableOpacity>
+                        </>
+                    }
                 </View>
                 <Text style={styles.text}>{item.text}</Text>
             </View>
@@ -125,7 +241,7 @@ const ReelCard = ({ currindex, item, index }) => {
                         {item.likesbyusers.length}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.rightouchcontainer}>
+                <TouchableOpacity style={styles.rightouchcontainer} onPress={() => refRBSheet.current.open()}>
                     <Ionicons name="md-chatbubble-outline" color="#fff" size={30} />
                     <Text style={styles.username}>0</Text>
                 </TouchableOpacity>
@@ -133,7 +249,49 @@ const ReelCard = ({ currindex, item, index }) => {
                     <MaterialCommunityIcons name="share" color="#fff" size={30} />
                 </TouchableOpacity>
             </View>
-        </View>
+            <RBSheet
+                ref={refRBSheet}
+                closeOnDragDown={true}
+                closeOnPressMask={true}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: 'transparent',
+                    },
+                    draggableIcon: {
+                        backgroundColor: '#fff',
+                    },
+                }}
+                height={height / 1.5}>
+                <Text style={styles.comment}>Comments</Text>
+                <View style={[Styles.container, { padding: 3 }]}>
+                    <View style={Styles.card}>
+                        <FlatList
+                            data={comments}
+                            renderItem={({ item }) =>
+                                <View style={Styles.userinfocontainer}>
+                                    <View style={Styles.userinfo}>
+                                        <Image style={Styles.userImg} source={{ uri: item.userimg }} />
+                                        <Text style={Styles.userName}>{item.name}</Text>
+                                        <Text style={[Styles.commentext, { maxWidth: '50%' }]}>{item.comment}</Text>
+                                    </View>
+                                </View>
+                            }
+                        />
+                    </View>
+                    <View style={Styles.maincontainer}>
+                        <TextInput style={Styles.textinput}
+                            placeholder={user.email}
+                            multiline={true}
+                            value={comment}
+                            onChangeText={(comment) => setComment(comment)}
+                        />
+                        <TouchableOpacity style={Styles.btn} onPress={onComment}>
+                            <Text style={Styles.btntxt}>post</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </RBSheet>
+        </View >
     )
 }
 
