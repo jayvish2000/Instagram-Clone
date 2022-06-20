@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
+import Share from 'react-native-share';
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -69,8 +70,20 @@ const ReelCard = ({ currindex, item, index }) => {
             });
     }
 
+    const ShareData = async () => {
+        const ShareOptions = {
+            url: item.reelImg || item.reelvideo,
+        };
+        try {
+            const ShareRes = await Share.open(ShareOptions);
+            console.log('✌✌✌✌res', JSON.stringify(ShareRes));
+        } catch (er) {
+            console.log('❌❌❌err', er);
+        }
+    };
+
     return (
-        <View style={[styles.container, { height: height - 89 }, index % 2 == 0 ? { backgroundColor: "#ADD8E6" } : { backgroundColor: "pink" }]}>
+        <View style={[styles.container, { height: height - 52, borderBottomWidth: 1, borderBottomColor: '#D4D4D4' }, index % 2 == 0 ? { backgroundColor: "#ADD8E6" } : { backgroundColor: "pink" }]}>
             <View style={styles.textcontainer}>
                 <Text style={styles.textreel}>Reels</Text>
                 <Ionicons name="camera" color="#fff" size={30} onPress={() => navigation.navigate('ReelPost')} />
@@ -116,7 +129,7 @@ const ReelCard = ({ currindex, item, index }) => {
                     <Ionicons name="md-chatbubble-outline" color="#fff" size={30} />
                     <Text style={styles.username}>0</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.rightouchcontainer}>
+                <TouchableOpacity style={styles.rightouchcontainer} onPress={ShareData}>
                     <MaterialCommunityIcons name="share" color="#fff" size={30} />
                 </TouchableOpacity>
             </View>

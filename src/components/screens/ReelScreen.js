@@ -1,13 +1,9 @@
-import { View, Dimensions, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
-import Video from 'react-native-video'
 import styles from '../../../styles/ReelStyles'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 import firestore from '@react-native-firebase/firestore';
 import ReelCard from '../ReelCard';
-
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
 
 const ReelScreen = ({ navigation }) => {
     const [currindex, setIndex] = useState(0)
@@ -76,7 +72,8 @@ const ReelScreen = ({ navigation }) => {
                 <View
                     style={{
                         justifyContent: 'center',
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        flex:1
                     }}>
                     <ActivityIndicator size={35} color="#ADD8E6" />
                 </View>

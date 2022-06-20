@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const width = Dimensions.get('screen').width
-const height = Dimensions.get('screen').height
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const styles = StyleSheet.create({
     container: {
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         zIndex: 1,
         position: 'absolute',
         width: width,
-        height: height
+        height: height - 53
     },
     textreel: {
         fontSize: 18,
