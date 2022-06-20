@@ -229,8 +229,6 @@ const SignUpScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </RBSheet>
-
-
       <View
         style={{
           height: 100,

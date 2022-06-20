@@ -17,6 +17,8 @@ import CommentScreen from '../src/components/screens/CommentScreen';
 import moment from 'moment';
 import SearchScreen from '../src/components/screens/SearchScreen';
 import LikeCommentFollowerScreen from '../src/components/screens/LikeCommentFollowerScreen';
+import ReelScreen from '../src/components/screens/ReelScreen';
+import PostReelScreen from '../src/components/screens/PostReelScreen'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -94,38 +96,25 @@ function TabBar({ navigation }) {
           ),
         })}
       />
-      {/* <Tab.Screen
-        name="add"
-        component={AddPostScreen}
+      <Tab.Screen
+        name="Reel"
+        component={ReelScreen}
         options={({ route }) => ({
+          headerShown: false,
           title: '',
-          tabBarStyle: { display: 'none' },
           tabBarLabel: () => null,
-          tabBarIcon: () => (
-            <View
-              style={{
-                height: 50,
-                width: 50,
-                borderRadius: 50 / 2,
-                marginBottom: 40,
-                backgroundColor: '#3897f1',
-                justifyContent: 'center',
-                alignItems: 'center',
-                elevation: 5,
-              }}>
-              <MaterialCommunityIcons name="plus" color="#fff" size={30} />
+          tabBarIcon: ({ color, size, focused }) => (
+            <View style={{ width: 24, height: 24, borderColor: focused ? "#000" : "#fff", borderWidth: 2, justifyContent: 'center', alignItems: 'center',borderRadius:8 }}>
+              <Image style={{ width: 35, height: 35, }} source={{ uri: 'https://o.remove.bg/downloads/6c0a2d50-4406-425a-b9df-7d1749100c13/reels-logo-219165295-removebg-preview.png' }} />
             </View>
           ),
-          headerLeft: () => (
-            <AntDesign style={{ padding: '4%' }} name='arrowleft' size={25} color="#000" onPress={() => navigation.navigate('Home')} />
-          ),
         })}
-      /> */}
+      />
       <Tab.Screen name="LCF" component={LikeCommentFollowerScreen}
         options={({ route }) => ({
           title: "Activity",
           headerShown: true,
-          headerShadowVisible: true,
+          headerShadowVisible: false,
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
@@ -179,12 +168,21 @@ function AppStack({ navigation }) {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Tab' component={TabBar} options={{ headerShown: false }} />
+      <Stack.Screen name='Tab' component={TabBar} options={{ headerShown: false,  headerShadowVisible: false, }} />
       <Stack.Screen
         name="AddPost"
         component={AddPostScreen}
         options={{
           title: '',
+          headerShadowVisible: false,
+        }}
+      />
+       <Stack.Screen
+        name="ReelPost"
+        component={PostReelScreen}
+        options={{
+          title: '',
+          headerShadowVisible: false,
         }}
       />
       <Stack.Screen

@@ -103,7 +103,7 @@ const PostCard = ({ item, ondelete, onPress }) => {
           <View style={styles.UserInfoText}>
             <TouchableOpacity onPress={onPress}>
               <Text style={styles.UserName}>
-                {userData ? userData.fname || 'JAY' : 'JAY'}
+                {userData ? userData.fname || 'User' : 'User'}
               </Text>
             </TouchableOpacity>
             <Text style={styles.PostTime}>

@@ -15,7 +15,7 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-  
+
   const fetchPosts = async () => {
     try {
       const list = [];
@@ -26,7 +26,6 @@ const HomeScreen = ({ navigation }) => {
         .get()
         .then(querySnapshot => {
           querySnapshot.forEach(doc => {
-
             const {
               userId,
               email,
