@@ -104,8 +104,8 @@ function TabBar({ navigation }) {
           title: '',
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{ width: 24, height: 24, borderColor: focused ? "#000" : "#fff", borderWidth: 2, justifyContent: 'center', alignItems: 'center',borderRadius:8 }}>
-              <Image style={{ width: 35, height: 35, }} source={{ uri: 'https://o.remove.bg/downloads/6c0a2d50-4406-425a-b9df-7d1749100c13/reels-logo-219165295-removebg-preview.png' }} />
+            <View style={{ width: 25, height: 25, borderColor: focused ? "#000" : "#fff", borderWidth: 3, justifyContent: 'center', alignItems: 'center', borderRadius: 4, backgroudColor: '#fff' }}>
+              <Image style={{ width: 25, height: 25, }} source={require('../src/images/reels.png')} />
             </View>
           ),
         })}
@@ -168,7 +168,7 @@ function AppStack({ navigation }) {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Tab' component={TabBar} options={{ headerShown: false,  headerShadowVisible: false, }} />
+      <Stack.Screen name='Tab' component={TabBar} options={{ headerShown: false, headerShadowVisible: false, }} />
       <Stack.Screen
         name="AddPost"
         component={AddPostScreen}
@@ -177,7 +177,7 @@ function AppStack({ navigation }) {
           headerShadowVisible: false,
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="ReelPost"
         component={PostReelScreen}
         options={{

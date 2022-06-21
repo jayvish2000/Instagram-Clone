@@ -5,6 +5,7 @@ import styles from '../../styles/ReelStyles';
 import { Styles } from '../../styles/commentStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather'
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { AuthContext } from '../../navigation/AuthProvider';
@@ -21,12 +22,12 @@ const ReelCard = ({ currindex, item, index }) => {
     const [users, setUser] = useState(null)
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
-    const [userinfo, setUserInfo] = useState()
-    const [follow, setFollow] = useState(null);
+    const [userinfo, setUserInfo] = useState(null)
+
     const videoRef = useRef(null)
     const refRBSheet = useRef();
 
-    console.log("fololl", follow)
+    console.log("users", users)
 
     const onBuffer = (e) => {
         console.log("buffering", e)
@@ -47,8 +48,7 @@ const ReelCard = ({ currindex, item, index }) => {
             await firestore()
                 .collection('users')
                 .doc(item.userId)
-                .get()
-                .then((documentSnapshot) => {
+                .onSnapshot((documentSnapshot) => {
                     if (documentSnapshot.exists) {
                         setUser(documentSnapshot.data())
                     }
@@ -163,28 +163,11 @@ const ReelCard = ({ currindex, item, index }) => {
         batch.commit();
     }
 
-
-    const getfollower = () => {
-        try {
-            firestore()
-                .collection('users')
-                .doc(user.uid)
-                .onSnapshot((snapshot) => {
-                    setFollow(snapshot.data())
-                })
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    useEffect(() => {
-        getfollower()
-    }, [])
-
     return (
         <View style={[styles.container, { height: height - 52, borderBottomWidth: 1, borderBottomColor: '#D4D4D4' }, index % 2 == 0 ? { backgroundColor: "#ADD8E6" } : { backgroundColor: "pink" }]}>
             <View style={styles.textcontainer}>
                 <Text style={styles.textreel}>Reels</Text>
-                <Ionicons name="camera" color="#fff" size={30} onPress={() => navigation.navigate('ReelPost')} />
+                <Feather name="camera" color="#fff" size={26} onPress={() => navigation.navigate('ReelPost')} />
             </View>
             <Video
                 style={styles.videocontainer}
@@ -206,27 +189,35 @@ const ReelCard = ({ currindex, item, index }) => {
                             'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
                             : 'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg',
                     }} />
-                    <Text style={styles.username}>
-                        {users ? users.fname || 'User' : 'User'}
-                    </Text>
-
-                    {users.following.includes(user.uid) ?
+                    <TouchableOpacity onPress={() => navigation.navigate('HomeProfile', { uid: item.userId, email: item.email })}>
+                        <Text style={styles.username}>
+                            {users ? users.fname || 'User' : 'User'}
+                        </Text>
+                    </TouchableOpacity>
+                    {user.uid != users?.uid ?
                         <>
-                            <TouchableOpacity style={[styles.followbtn, { width: width / 5 }]} onPress={onfollow}>
-                                <Text style={styles.btntext}>
-                                    Following
-                                </Text>
-                            </TouchableOpacity>
+                            {users?.follower.includes(user.uid) ?
+                                <>
+                                    <TouchableOpacity style={[styles.followbtn, { width: width / 5 }]} onPress={onfollow}>
+                                        <Text style={styles.btntext}>
+                                            Following
+                                        </Text>
+                                    </TouchableOpacity>
+                                </>
+                                :
+                                <>
+                                    <TouchableOpacity style={styles.followbtn} onPress={onfollow}>
+                                        <Text style={styles.btntext}>
+                                            Follow
+                                        </Text>
+                                    </TouchableOpacity>
+                                </>
+                            }
                         </>
                         :
-                        <>
-                            <TouchableOpacity style={styles.followbtn} onPress={onfollow}>
-                                <Text style={styles.btntext}>
-                                    Follow
-                                </Text>
-                            </TouchableOpacity>
-                        </>
+                        null
                     }
+
                 </View>
                 <Text style={styles.text}>{item.text}</Text>
             </View>

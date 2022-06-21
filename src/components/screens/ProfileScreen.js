@@ -48,16 +48,16 @@ const ProfileScreen = ({ navigation, route }) => {
   };
 
   const getUser = async () => {
-    try{
-    await firestore()
-      .collection('users')
-      .doc(route.params ? route.params.userId || route.params.uid : user.uid)
-      .onSnapshot(documentSnapshot => {
-        if (documentSnapshot.exists) {
-          setUserData(documentSnapshot.data());
-        }
-      });
-    }catch(e){
+    try {
+      await firestore()
+        .collection('users')
+        .doc(route.params ? route.params.userId || route.params.uid : user.uid)
+        .onSnapshot(documentSnapshot => {
+          if (documentSnapshot.exists) {
+            setUserData(documentSnapshot.data());
+          }
+        });
+    } catch (e) {
       console.log(e)
     }
   };
@@ -159,33 +159,59 @@ const ProfileScreen = ({ navigation, route }) => {
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
-              <TouchableOpacity
-                style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
-                onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
-                <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Message</Text>
-              </TouchableOpacity>
-              <>
-                {route.params.userId || route.params.uid ?
+              {route.params.userId || route.params.uid != user.uid ?
+                <>
+                  <TouchableOpacity
+                    style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
+                    onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
+                    <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Message</Text>
+                  </TouchableOpacity>
                   <>
-                    {userData?.follower.includes(user.uid) ?
-                      <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
-                        onPress={onfollow}>
-                        <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
-                      </TouchableOpacity>
+                    {route.params.userId || route.params.uid ?
+                      <>
+                        {userData?.follower.includes(user.uid) ?
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
+                            onPress={onfollow}>
+                            <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
+                          </TouchableOpacity>
+                          :
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
+                            onPress={onfollow}>
+                            <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
+                          </TouchableOpacity>
+
+                        }
+                      </>
                       :
-                      <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
-                        onPress={onfollow}>
-                        <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
-                      </TouchableOpacity>
+                      null
 
                     }
                   </>
-                  :
-                  null
 
-                }
-              </>
+                </>
+                :
+                <>
+                  <TouchableOpacity
+                    style={styles.userBtn}
+                    onPress={() => navigation.navigate('EditProfile')}>
+                    <Text style={styles.userBtnTxt}>Edit Profile</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.userBtn} onPress={() => {
+                    firestore()
+                      .collection('users')
+                      .doc(user.uid)
+                      .update({
+                        status: firestore.FieldValue.serverTimestamp()
+                      }).then(() => {
+                        logout()
+                      })
+                  }}>
+                    <Text style={styles.userBtnTxt}>Logout</Text>
+                  </TouchableOpacity>
+                </>
+              }
             </>
+
           ) : (
             <>
               <TouchableOpacity

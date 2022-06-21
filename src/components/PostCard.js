@@ -138,14 +138,14 @@ const PostCard = ({ item, ondelete, onPress }) => {
             {item.likesbyusers.includes(user.uid) ? (
               <Ionicons name="heart" size={30} color="red" />
             ) : (
-              <Ionicons name="heart-outline" size={30} color="black" />
+              <Ionicons name="heart-outline" size={30} color="#9b9b9b" />
             )}
             <Text style={styles.InteractionText}>
               {item.likesbyusers.length} Likes
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
-            <Ionicons name="md-chatbubble-outline" size={24} />
+            <Ionicons name="md-chatbubble-outline" size={24} color="#9b9b9b" />
             {/* {renderComment()} */}
             <Text style={styles.InteractionText}>
               {comments?.length}
@@ -153,14 +153,14 @@ const PostCard = ({ item, ondelete, onPress }) => {
             <Text style={styles.InteractionText}>Comments</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={ShareData}>
-            <MaterialCommunityIcons name="share" size={28} />
+            <MaterialCommunityIcons name="share" size={28} color="#9b9b9b" />
             <Text style={styles.InteractionText}>Share</Text>
           </TouchableOpacity>
           {user.uid === item.userId ? (
             <TouchableOpacity
               style={styles.Interaction}
               onPress={() => ondelete(item.id)}>
-              <Ionicons name="md-trash-bin" size={24} />
+              <Ionicons name="md-trash-bin" size={24} color="#9b9b9b" />
             </TouchableOpacity>
           ) : null}
         </View>
