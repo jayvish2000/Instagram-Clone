@@ -233,7 +233,8 @@ const ReelCard = ({ currindex, item, index }) => {
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.rightouchcontainer} onPress={() => refRBSheet.current.open()}>
-                    <Ionicons name="md-chatbubble-outline" color="#fff" size={30} />
+                    <Image style={{width:32,height:32}} source={require('../images/chat.png')}/>
+                    {/* <Ionicons name="md-chatbubble-outline" color="#fff" size={30} /> */}
                     <Text style={styles.username}>0</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.rightouchcontainer} onPress={ShareData}>

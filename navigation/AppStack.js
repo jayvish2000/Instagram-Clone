@@ -7,7 +7,7 @@ import ProfileScreen from '../src/components/screens/ProfileScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
@@ -52,7 +52,7 @@ function TabBar({ navigation }) {
           shadowColor: '#fff'
         },
         tabBarLabelStyle: {
-          marginBottom: 10,
+          marginBottom: 10
         },
       }}>
       <Tab.Screen
@@ -67,9 +67,13 @@ function TabBar({ navigation }) {
           ),
 
           headerRight: () => (
-            <View style={{ flexDirection: 'row' }}>
-              <AntDesign style={{ padding: '4%' }} name='plussquareo' size={25} color="#000" onPress={() => navigation.navigate('AddPost')} />
-              <AntDesign style={{ padding: '4%' }} name='message1' size={25} color="#000" onPress={() => navigation.navigate('Messages')} />
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('AddPost')} >
+                <Image style={{ width: 24, height: 24, marginRight: '5%' }} source={require('../src/images/plus.png')} />
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => navigation.navigate('Messages')} >
+                <Image style={{ width: 24, height: 24, marginRight: '5%', marginLeft: 3 }} source={require('../src/images/messenger.png')} />
+              </TouchableWithoutFeedback>
             </View>
           ),
           tabBarLabel: () => null,
@@ -105,11 +109,11 @@ function TabBar({ navigation }) {
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
             <View style={{ width: 33, height: 33, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroudColor: '#fff' }}>
-            { focused ? 
-            <Image style={{ width: 33, height: 33 }} source={require('../src/images/reel.png')} />
-             :
-            <Image style={{ width: 33, height: 33 }} source={require('../src/images/reels.png')} />
-            }
+              {focused ?
+                <Image style={{ width: 24, height: 24 }} source={require('../src/images/reel.png')} />
+                :
+                <Image style={{ width: 33, height: 33 }} source={require('../src/images/reels.png')} />
+              }
             </View>
           ),
         })}

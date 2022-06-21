@@ -128,7 +128,7 @@ const PostCard = ({ item, ondelete, onPress }) => {
         {item.postvideo != null ? (
           <ProgressiveVideo
             poster="https://www.cloudlessons.net/images/video-thumb.png"
-            style={{ width:width, height:  height / 3.7  }}
+            style={{ width: width, height: height / 3.7 }}
             source={{ uri: item.postvideo }}
             resizeMode="cover"
           />
@@ -146,7 +146,8 @@ const PostCard = ({ item, ondelete, onPress }) => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
-            <Ionicons name="md-chatbubble-outline" size={24} color="#9b9b9b" />
+            <Image style={{ width: 28, height: 28 }} source={require('../images/chatb.png')} />
+            {/* <Ionicons name="md-chatbubble-outline" size={24} color="#9b9b9b" /> */}
             <Text style={styles.InteractionText}>
               {comments?.length}
             </Text>

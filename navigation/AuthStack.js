@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import OnboardingScreen from '../src/components/screens/OnboardingScreen';
+import SplashScreen from '../src/components/screens/SplashScreen';
 import LoginScreen from '../src/components/screens/LoginScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SignUpScreen from '../src/components/screens/SignUpScreen';
@@ -31,15 +31,15 @@ const AuthStack = () => {
   if (isFirstLaunch === null) {
     return null;
   } else if (isFirstLaunch === true) {
-    routeName = 'Onboarding';
+    routeName = 'Splash';
   } else {
     routeName = 'Login';
   }
   return (
     <Stack.Navigator initialRouteName={routeName}>
       <Stack.Screen
-        name="Onboarding"
-        component={OnboardingScreen}
+        name="Splash"
+        component={SplashScreen}
         options={{ header: () => null }}
       />
       <Stack.Screen
