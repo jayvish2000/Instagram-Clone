@@ -10,7 +10,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
     const [comment, setComment] = useState([])
     const [like, setLike] = useState([])
     const [post, setPosts] = useState([])
-const [commentmsg,setCommentmsg]=useState([])
+    const [commentmsg, setCommentmsg] = useState([])
 
     const fetchFollower = async () => {
         await firestore()
@@ -56,7 +56,7 @@ const [commentmsg,setCommentmsg]=useState([])
                         .get()
                         .then((snapshot) => {
                             snapshot.docs.forEach((doc) => {
-                               setCommentmsg(doc.data())
+                                setCommentmsg(doc.data())
                                 const { commentbyusers } = doc.data()
                                 firestore()
                                     .collection('users')
@@ -101,7 +101,7 @@ const [commentmsg,setCommentmsg]=useState([])
             <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: follower.uid, email: follower.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: follower.userImg }} />
-                    <View style={[styles.textmaincontainer,{width:260}]}>
+                    <View style={[styles.textmaincontainer, { width: 260 }]}>
                         <Text style={styles.username}>
                             {follower.fname}
                         </Text>
@@ -119,7 +119,7 @@ const [commentmsg,setCommentmsg]=useState([])
             <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: comment.uid, email: comment.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: comment.userImg }} />
-                    <View style={[styles.textmaincontainer,{width:260}]}>
+                    <View style={[styles.textmaincontainer, { width: 260 }]}>
                         <Text style={styles.username}>
                             {comment.fname}
                         </Text>

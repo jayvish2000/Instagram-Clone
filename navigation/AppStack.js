@@ -104,8 +104,8 @@ function TabBar({ navigation }) {
           title: '',
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{ width: 25, height: 25, borderColor: focused ? "#000" : "#fff", borderWidth: 3, justifyContent: 'center', alignItems: 'center', borderRadius: 4, backgroudColor: '#fff' }}>
-              <Image style={{ width: 25, height: 25, }} source={require('../src/images/reels.png')} />
+            <View style={{ width: 33, height: 33, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroudColor: '#fff' }}>
+              <Image style={{ width: 33, height: 33, }} source={{ uri: focused ? 'https://o.remove.bg/downloads/32110238-5779-4da0-a2bf-9973efb63864/video__1_-removebg-preview.png' : 'https://o.remove.bg/downloads/acb09e41-9e2b-4144-a54d-a2137e10bf6f/video__1_-removebg-preview.png' }} />
             </View>
           ),
         })}
@@ -182,6 +182,7 @@ function AppStack({ navigation }) {
         component={PostReelScreen}
         options={{
           title: '',
+          headerShown: false,
           headerShadowVisible: false,
         }}
       />

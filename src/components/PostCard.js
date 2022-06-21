@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 import React, { useState, useContext, useEffect } from 'react';
 import { styles } from '../../styles/Feedstyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,7 +8,10 @@ import firestore from '@react-native-firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Share from 'react-native-share';
 import { ProgressiveImage, ProgressiveVideo } from './ProgressiveData';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
+
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const PostCard = ({ item, ondelete, onPress }) => {
   const { user } = useContext(AuthContext);
@@ -39,8 +42,7 @@ const PostCard = ({ item, ondelete, onPress }) => {
     await firestore()
       .collection('users')
       .doc(item.userId)
-      .get()
-      .then(documentSnapshot => {
+      .onSnapshot(documentSnapshot => {
         if (documentSnapshot.exists) {
           setUserData(documentSnapshot.data());
         }
@@ -119,17 +121,16 @@ const PostCard = ({ item, ondelete, onPress }) => {
               uri: 'https://www.touchtaiwan.com/images/default.jpg',
             }}
             source={{ uri: item.postImg }}
-            style={{ width: '100%', height: 300 }}
+            style={{ width: width, height: height / 2 }}
             resizeMode="cover"
           />
         ) : null}
         {item.postvideo != null ? (
           <ProgressiveVideo
             poster="https://www.cloudlessons.net/images/video-thumb.png"
-            style={{ width: '100%', height: 200 }}
+            style={{ width:width, height:  height / 3.7  }}
             source={{ uri: item.postvideo }}
             resizeMode="cover"
-          // controls={true}
           />
         ) : null}
 
@@ -146,7 +147,6 @@ const PostCard = ({ item, ondelete, onPress }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
             <Ionicons name="md-chatbubble-outline" size={24} color="#9b9b9b" />
-            {/* {renderComment()} */}
             <Text style={styles.InteractionText}>
               {comments?.length}
             </Text>

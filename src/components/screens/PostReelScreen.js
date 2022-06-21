@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ToastAndroid,
-  ActivityIndicator
+  ActivityIndicator,
+  Dimensions
 } from 'react-native';
 import React, { useState, useContext } from 'react';
 import {styles} from '../../../styles/AddPostStyles'
@@ -17,6 +18,9 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
+
+const width=Dimensions.get('window').width
+const height=Dimensions.get('window').height
 
 const PostReelScreen = ({ item, navigation }) => {
   const { user } = useContext(AuthContext);
@@ -182,14 +186,14 @@ const PostReelScreen = ({ item, navigation }) => {
     <View style={styles.container}>
       <View style={styles.InputWrapper}>
         {image != null ? (
-          <View style={{ width: '100%', height: '70%' }}>
+          <View style={{ width: width, height:height/2 }}>
             <Image style={styles.imageWrapper} source={{ uri: image }} />
           </View>
         ) : (
           <Video
-            style={{ width: '100%', height: '70%' }}
+            style={{ width: width, height: height/3.7 }}
             source={{ uri: video }}
-            resizeMode='contain'
+            resizeMode='cover'
           />
         )}
         <TextInput
