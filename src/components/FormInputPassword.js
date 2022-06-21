@@ -1,7 +1,6 @@
-import {View, TextInput, StyleSheet, Pressable,Dimensions} from 'react-native';
+import {View, TextInput, StyleSheet, Pressable,Dimensions,Appearance} from 'react-native';
 import React, {useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {windowWidth, windowHeight} from '../../utils/Dimensions';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const height =Dimensions.get('window').height
@@ -16,6 +15,10 @@ const FormInputPassword = ({
 }) => {
   const [isSecureEntry, setIsSecureEntry] = useState(false);
   const [rightIcon, setRightIcon] = useState('eye');
+  const [theme, setTheme] = useState(Appearance.getColorScheme());
+  Appearance.addChangeListener((scheme) => {
+    setTheme(scheme.colorScheme)
+  })
 
   const handlePasswordVisibility = () => {
     if (rightIcon === 'eye') {
@@ -28,7 +31,7 @@ const FormInputPassword = ({
   };
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={theme == 'light' ? styles.inputContainer : styles.darkinputContainer}>
       <View style={styles.iconstyle}>
         <AntDesign name={iconType} size={20} color="#666" />
       </View>
@@ -62,6 +65,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fafafa',
+  },
+  darkinputContainer: {
+    marginTop: 5,
+    marginBottom: 10,
+    width: '100%',
+    height: height / 18,
+    borderRadius: 3,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#000',
   },
   iconstyle: {
     padding: 8,

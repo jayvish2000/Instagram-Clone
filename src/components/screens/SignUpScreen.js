@@ -7,7 +7,8 @@ import {
   ToastAndroid,
   Image,
   ActivityIndicator,
-  Alert
+  Alert,
+  Appearance
 } from 'react-native';
 import React, { useState, useRef, useContext } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -32,7 +33,12 @@ const SignUpScreen = ({ navigation }) => {
   const [phone, setPhone] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [theme, setTheme] = useState(Appearance.getColorScheme());
   const refRBSheet = useRef();
+
+  Appearance.addChangeListener((scheme) => {
+    setTheme(scheme.colorScheme)
+  })
 
   const uploadImage = async () => {
     if (image == null) {
@@ -130,7 +136,7 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={theme == 'light' ?  styles.container :styles.darkmodecontainer}>
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -352,11 +358,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  text: {
-    fontSize: 28,
-    marginBottom: 10,
-    color: '#051d5f',
-  },
+ darkmodecontainer:{
+  backgroundColor: '#000',
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 20,
+ },
   navbtn: {
     marginTop: 15,
   },

@@ -5,8 +5,7 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  KeyboardAvoidingView,
-  ScrollView
+  Appearance
 } from 'react-native';
 import React, { useContext, useState } from 'react';
 import FormInput from '../FormInput';
@@ -18,13 +17,21 @@ import FormInputPassword from '../FormInputPassword';
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [theme, setTheme] = useState(Appearance.getColorScheme());
   const { login, googleLogin } = useContext(AuthContext);
 
+  Appearance.addChangeListener((scheme) => {
+    setTheme(scheme.colorScheme)
+  })
+
   return (
-    <View style={styles.container}>
-      <Image style={{ width: '60%', height: '10%', alignSelf: 'center', marginBottom: '8%' }}
-        source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1280px-Instagram_logo.svg.png' }} />
+    <View style={theme == 'light' ? styles.container : styles.darkmodecontainer}>
+      {theme == 'light' ?
+        <Image style={styles.instatext}
+          source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1280px-Instagram_logo.svg.png' }} />
+        :
+        <Image style={[styles.instatext, { width: '60%', height: '8%' }]}
+          source={{ uri: 'https://o.remove.bg/downloads/f867c640-8dd5-4bc0-b825-b6dfe49cfaf2/instagram-removebg-preview.png' }} />}
       <FormInput
         keyboardType="email-address"
         placeholderText="Email"
@@ -87,18 +94,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
   },
-  logo: {
-    height: 150,
-    width: 150,
-    resizeMode: 'cover',
-  },
-  text: {
-    fontSize: 28,
-    marginBottom: 10,
-    color: '#051d5f',
-  },
-  navbtn: {
-    marginTop: 15,
+  instatext: {
+    width: '60%',
+    height: '10%',
+    alignSelf: 'center',
+    marginBottom: '8%'
   },
   forgotbtn: {
     justifyContent: 'center',
@@ -110,4 +110,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#c9c9c9',
   },
+  darkmodecontainer: {
+    backgroundColor: '#000',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20
+  }
 });

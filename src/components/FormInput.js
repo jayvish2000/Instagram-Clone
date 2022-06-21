@@ -1,13 +1,18 @@
-import {View, TextInput, StyleSheet,Dimensions} from 'react-native';
-import React from 'react';
+import { View, TextInput, StyleSheet, Dimensions, Appearance } from 'react-native';
+import React, { useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
-const FormInput = ({iconType, labelValue, placeholderText, ...rest}) => {
+const FormInput = ({ iconType, labelValue, placeholderText, ...rest }) => {
+  const [theme, setTheme] = useState(Appearance.getColorScheme());
+  Appearance.addChangeListener((scheme) => {
+    setTheme(scheme.colorScheme)
+  })
+
   return (
-    <View style={styles.inputContainer}>
+    <View style={theme == 'light' ? styles.inputContainer : styles.darkinputContainer}>
       <View style={styles.iconstyle}>
         <AntDesign name={iconType} size={20} color="#666" />
       </View>
@@ -37,6 +42,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#fafafa',
+  },
+  darkinputContainer: {
+    marginTop: 5,
+    marginBottom: 10,
+    width: '100%',
+    height: height / 18,
+    borderRadius: 3,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#000',
   },
   iconstyle: {
     padding: 8,
