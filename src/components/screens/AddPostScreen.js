@@ -18,11 +18,13 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
-
+import { useTheme } from '@react-navigation/native'
+  
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const AddPostScreen = ({ item, navigation }) => {
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
@@ -182,8 +184,8 @@ const AddPostScreen = ({ item, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.InputWrapper}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.InputWrapper, { backgroundColor: colors.background }]}>
         {image != null ? (
           <View style={{ width: width, height: height / 2 }}>
             <Image style={styles.imageWrapper} source={{ uri: image }} />
@@ -205,14 +207,14 @@ const AddPostScreen = ({ item, navigation }) => {
         />
         {uploading ? (
           <View style={styles.StatusWrapper}>
-            <Text style={{ fontSize: 15, color: '#2e64e5', fontWeight: '500' }}>
+            <Text style={{ fontSize: 15, color: colors.primary, fontWeight: '500' }}>
               {transferred} % Completed
             </Text>
-            <ActivityIndicator size="large" color="#2e64e5" />
+            <ActivityIndicator size="large" color={colors.primary} />
           </View>
         ) : (
-          <TouchableOpacity style={styles.submitbtn} onPress={submitPost}>
-            <Text style={styles.submitbtntext}>Post</Text>
+          <TouchableOpacity style={[styles.submitbtn, { backgroubdColor: colors.addbtnbg }]} onPress={submitPost}>
+            <Text style={[styles.submitbtntext,{color:colors.addbtntext}]}>Post</Text>
           </TouchableOpacity>
         )}
       </View>

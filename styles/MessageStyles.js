@@ -2,8 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,    
-    backgroundColor: '#ffffff',
+    flex: 1
   },
   Card: {
     width: '100%',
@@ -39,15 +38,12 @@ export const styles = StyleSheet.create({
   },
   UserName: {
     fontSize: 14,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: 'bold'
   },
   PostTime: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 12
   },
   about: {
-    fontSize: 14,
-    color: '#9b9b9b',
+    fontSize: 14
   },
 });

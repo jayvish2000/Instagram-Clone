@@ -2,13 +2,11 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "#fff"
+        flex: 1
     },
     searchcontainer: {
         width: '100%',
         height: 44,
-        backgroundColor: '#fff',
         marginLeft: "3%",
         marginRight: '3%',
         flexDirection: "row",
@@ -23,7 +21,6 @@ const styles = StyleSheet.create({
     textinput: {
         width: '90%',
         height: 35,
-        backgroundColor: "#ECECEC",
         borderRadius: 5,
         marginRight: '12%',
         marginLeft: '1%'
@@ -62,13 +59,11 @@ const styles = StyleSheet.create({
     },
     username: {
         fontSize: 15,
-        fontWeight: '400',
-        color: '#000'
+        fontWeight: '400'
     },
     userabout: {
         fontSize: 14,
-        fontWeight: '300',
-        color: '#242526'
+        fontWeight: '300'
     }
 })
 

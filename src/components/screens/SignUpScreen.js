@@ -23,8 +23,10 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import auth from '@react-native-firebase/auth';
 import FormInputPassword from '../FormInputPassword';
 import { AuthContext } from '../../../navigation/AuthProvider';
-
+import { useTheme } from '@react-navigation/native'
+ 
 const SignUpScreen = ({ navigation }) => {
+  const { colors } = useTheme()
   const { googleLogin } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -136,7 +138,7 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={theme == 'light' ?  styles.container :styles.darkmodecontainer}>
+    <View style={ [styles.container,{backgroundColor:colors.background}]}>
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -352,19 +354,11 @@ export default SignUpScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
- darkmodecontainer:{
-  backgroundColor: '#000',
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: 20,
- },
   navbtn: {
     marginTop: 15,
   },

@@ -3,16 +3,13 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'#fff',
     justifyContent:'center',
     
   },
   InputWrapper: {
-    // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
-    backgroundColor: '#2e64515',
+    width: '100%'
   },
   Inputfield: {
     justifyContent: 'center',
@@ -24,7 +21,6 @@ export const styles = StyleSheet.create({
 
   actionButtonIcon: {
     fontSize: 22,
-    // height: 22,
     color: 'white',
   },
   imageWrapper: {
@@ -40,14 +36,12 @@ export const styles = StyleSheet.create({
   submitbtn: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#2e64e515',
     borderRadius: 5,
     padding: 10,
     width: '30%',
   },
   submitbtntext: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: '#2e64e5',
+    fontWeight: 'bold'
   },
 });

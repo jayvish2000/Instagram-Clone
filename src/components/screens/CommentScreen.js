@@ -4,8 +4,10 @@ import firestore from '@react-native-firebase/firestore'
 import { AuthContext } from '../../../navigation/AuthProvider';
 import { Styles } from '../../../styles/commentStyles'
 import auth from '@react-native-firebase/auth';
+import { useTheme } from '@react-navigation/native'
 
 const CommentScreen = ({ route }) => {
+    const { colors } = useTheme()
     const { user } = useContext(AuthContext);
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
@@ -65,7 +67,7 @@ const CommentScreen = ({ route }) => {
     }, [])
 
     return (
-        <View style={Styles.container}>
+        <View style={[Styles.container, { backgroundColor: colors.background }]}>
             <View style={Styles.card}>
                 <FlatList
                     data={comments}
@@ -73,16 +75,16 @@ const CommentScreen = ({ route }) => {
                         <View style={Styles.userinfocontainer}>
                             <View style={Styles.userinfo}>
                                 <Image style={Styles.userImg} source={{ uri: item.userimg }} />
-                                <Text style={Styles.userName}>{item.name}</Text>
-                                <Text style={Styles.commentext}>{item.comment}</Text>
+                                <Text style={[Styles.userName, { color: colors.username }]}>{item.name}</Text>
+                                <Text style={[Styles.commentext, { color: colors.about }]}>{item.comment}</Text>
                             </View>
 
                         </View>
                     }
                 />
             </View>
-            <View style={Styles.maincontainer}>
-                <TextInput style={Styles.textinput}
+            <View style={[Styles.maincontainer, { backgroundColor: colors.background }]}>
+                <TextInput style={[Styles.textinput, { backgroundColor: colors.textinput }]}
                     placeholder={user.email}
                     // placeholderTextColor="#242526"
                     multiline={true}

@@ -8,10 +8,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UserPostDataVideo from '../UserPostDataVideo'
 import UserPostData from '../UserPostData'
+import { useTheme } from '@react-navigation/native'
 
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = ({ navigation, route }) => {
+  const { colors } = useTheme()
   const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -131,7 +133,7 @@ const ProfileScreen = ({ navigation, route }) => {
   }, [])
 
   return (
-    <View style={styles.container}>
+    <View style={{ backgroundColor: colors.background }}>
       <View
         style={{
           width: '100%',
@@ -149,10 +151,10 @@ const ProfileScreen = ({ navigation, route }) => {
 
           }}
         />
-        <Text style={styles.userName}>
+        <Text style={[styles.userName, { color: colors.username }]}>
           {userData ? userData.fname : ''}
         </Text>
-        <Text style={styles.aboutUser}>
+        <Text style={[styles.aboutUser, { color: colors.about }]}>
           {userData ? userData.about : ''}
         </Text>
 
@@ -162,22 +164,22 @@ const ProfileScreen = ({ navigation, route }) => {
               {route.params.userId || route.params.uid != user.uid ?
                 <>
                   <TouchableOpacity
-                    style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
+                    style={[styles.userBtn, { backgroundColor: colors.msgbg, borderColor: colors.msgbg }]}
                     onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
-                    <Text style={[styles.userBtnTxt, { color: '#fff' }]}>Message</Text>
+                    <Text style={[styles.userBtnTxt, { color: colors.msgtext }]}>Message</Text>
                   </TouchableOpacity>
                   <>
-                    {route.params.userId || route.params.uid ?
+                    {route.params.userId || route.params.uid != user.uid ?
                       <>
                         {userData?.follower.includes(user.uid) ?
-                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: colors.followingbtn, borderColor: colors.followingbr }]}
                             onPress={onfollow}>
-                            <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
+                            <Text style={[styles.userBtnTxt, { color: colors.text }]}>following</Text>
                           </TouchableOpacity>
                           :
-                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f0', borderColor: '#3897f0' }]}
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: colors.msgbg, borderColor: colors.msgbg }]}
                             onPress={onfollow}>
-                            <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
+                            <Text style={[styles.userBtnTxt, { color: colors.msgtext }]}>follow</Text>
                           </TouchableOpacity>
 
                         }
@@ -192,11 +194,11 @@ const ProfileScreen = ({ navigation, route }) => {
                 :
                 <>
                   <TouchableOpacity
-                    style={styles.userBtn}
+                    style={[styles.userBtn, { borderColor: colors.btncon }]}
                     onPress={() => navigation.navigate('EditProfile')}>
-                    <Text style={styles.userBtnTxt}>Edit Profile</Text>
+                    <Text style={[styles.userBtnTxt, { color: colors.text }]}>Edit Profile</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.userBtn} onPress={() => {
+                  <TouchableOpacity style={[styles.userBtn, { borderColor: colors.btncon }]} onPress={() => {
                     firestore()
                       .collection('users')
                       .doc(user.uid)
@@ -206,7 +208,7 @@ const ProfileScreen = ({ navigation, route }) => {
                         logout()
                       })
                   }}>
-                    <Text style={styles.userBtnTxt}>Logout</Text>
+                    <Text style={[styles.userBtnTxt, { color: colors.text }]}>Logout</Text>
                   </TouchableOpacity>
                 </>
               }
@@ -215,11 +217,11 @@ const ProfileScreen = ({ navigation, route }) => {
           ) : (
             <>
               <TouchableOpacity
-                style={styles.userBtn}
+                style={[styles.userBtn, { borderColor: colors.btncon }]}
                 onPress={() => navigation.navigate('EditProfile')}>
-                <Text style={styles.userBtnTxt}>Edit Profile</Text>
+                <Text style={[styles.userBtnTxt, { color: colors.text }]}>Edit Profile</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.userBtn} onPress={() => {
+              <TouchableOpacity style={[styles.userBtn, { borderColor: colors.btncon }]} onPress={() => {
                 firestore()
                   .collection('users')
                   .doc(user.uid)
@@ -229,23 +231,23 @@ const ProfileScreen = ({ navigation, route }) => {
                     logout()
                   })
               }}>
-                <Text style={styles.userBtnTxt}>Logout</Text>
+                <Text style={[styles.userBtnTxt, { color: colors.text }]}>Logout</Text>
               </TouchableOpacity>
             </>
           )}
         </View>
         <View style={styles.userInfoWrapper}>
           <View style={styles.userInfoItem}>
-            <Text style={styles.userInfoTitle}>{posts.length}</Text>
-            <Text style={styles.userInfoSubTitle}>Posts</Text>
+            <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{posts.length}</Text>
+            <Text style={[styles.userInfoSubTitle, { color: colors.primary }]}>Posts</Text>
           </View>
           <View style={styles.userInfoItem}>
             {route.params ?
               <>
                 {follow?.follower ?
-                  <Text style={styles.userInfoTitle}>{follow?.follower.length}</Text>
+                  <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.follower.length}</Text>
                   :
-                  <Text style={styles.userInfoTitle}>0</Text>
+                  <Text style={[styles.userInfoTitle, { color: colors.primary }]}>0</Text>
                 }
               </>
               :
@@ -253,16 +255,16 @@ const ProfileScreen = ({ navigation, route }) => {
                 {user.uid ?
                   <>
                     {follow?.follower ?
-                      <Text style={styles.userInfoTitle}>{follow?.follower.length}</Text>
+                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.follower.length}</Text>
                       :
-                      <Text style={styles.userInfoTitle}>0</Text>
+                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>0</Text>
                     }
                   </>
                   : null
                 }
               </>
             }
-            <Text style={styles.userInfoSubTitle}>Follower</Text>
+            <Text style={[styles.userInfoSubTitle, { color: colors.primary }]}>Follower</Text>
           </View>
           <View style={styles.userInfoItem}>
             {route.params ?
@@ -270,9 +272,9 @@ const ProfileScreen = ({ navigation, route }) => {
                 {route.params ?
                   <>
                     {follow?.following ?
-                      <Text style={styles.userInfoTitle}>{follow?.following.length}</Text>
+                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.following.length}</Text>
                       :
-                      <Text style={styles.userInfoTitle}>0</Text>
+                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>0</Text>
                     }
                   </>
                   : null
@@ -280,10 +282,10 @@ const ProfileScreen = ({ navigation, route }) => {
               </>
               :
               <>
-                <Text style={styles.userInfoTitle}>{follow?.following.length}</Text>
+                <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.following.length}</Text>
               </>
             }
-            <Text style={styles.userInfoSubTitle}>Following</Text>
+            <Text style={[styles.userInfoSubTitle, { color: colors.primary }]}>Following</Text>
           </View>
 
         </View>
@@ -292,14 +294,14 @@ const ProfileScreen = ({ navigation, route }) => {
       <View style={{ width: '100%', height: '70%' }}>
         <Tab.Navigator
           screenOptions={{
-            tabBarActiveTintColor: '#000',
+            tabBarActiveTintColor: colors.tabBarActiveTintColor,
             headerShown: false,
-            tabBarInactiveTintColor: '#949494',
+            tabBarInactiveTintColor: colors.tabBarInactiveTintColor,
             tabBarIndicatorStyle: {
-              width: '50%', height: 1, backgroundColor: '#000'
+              width: '50%', height: 1, backgroundColor: colors.primary
             },
             tabBarStyle: {
-              shadowColor: '#fff', marginBottom: 1,
+              shadowColor: colors.background, marginBottom: 1,
             },
 
           }}>

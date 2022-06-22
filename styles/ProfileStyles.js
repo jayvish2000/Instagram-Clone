@@ -1,12 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    backgroundColor: '#fff',
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
   userImg: {
     height: 100,
     width: 100,
@@ -17,13 +11,11 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 6,
-    marginBottom: 6,
-    color: '#000',
+    marginBottom: 6
   },
   aboutUser: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#666',
     textAlign: 'center',
     marginBottom: 6,
   },
@@ -34,7 +26,6 @@ export const styles = StyleSheet.create({
     marginBottom: 6,
   },
   userBtn: {
-    borderColor: '#ECECEC',
     borderWidth: 2,
     borderRadius: 3,
     paddingVertical: 8,
@@ -42,7 +33,6 @@ export const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   userBtnTxt: {
-    color: '#000',
     fontSize: 16,
     fontWeight: '500'
   },
@@ -60,11 +50,9 @@ export const styles = StyleSheet.create({
     fontWeight: '500',
     marginBottom: 5,
     textAlign: 'center',
-    color: '#000'
   },
   userInfoSubTitle: {
     fontSize: 12,
-    color: '#000',
     textAlign: 'center',
   },
 });

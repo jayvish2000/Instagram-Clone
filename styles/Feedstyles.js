@@ -3,12 +3,9 @@ import {StyleSheet} from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    // alignItems: 'center',
-    backgroundColor: '#f6f7f9',
+    justifyContent: 'center'
   },
   card: {
-    backgroundColor: '#fff',
     borderBottomWidth: 1,
     borderBottomColor: '#D4D4D4',
   },
@@ -24,8 +21,7 @@ export const styles = StyleSheet.create({
   },
   UserName: {
     fontSize: 15,
-    fontWeight: 'bold',
-    color: '#000',
+    fontWeight: 'bold'
   },
   UserInfoText: {
     flexDirection: 'column',
@@ -33,14 +29,13 @@ export const styles = StyleSheet.create({
     marginLeft: 8,
   },
   PostTime: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 12
   },
   Posttext: {
     fontSize: 14,
     paddingLeft: 15,
     paddingRight: 15,
-    marginBottom: 12,
+    marginBottom: 12
   },
   PostImg: {
     width: '100%',
@@ -62,7 +57,6 @@ export const styles = StyleSheet.create({
   InteractionText: {
     fontSize: 12,
     fontWeight: 'bold',
-    color: '#333',
     marginLeft: 5,
     marginRight: 5,
   },

@@ -19,13 +19,14 @@ import SearchScreen from '../src/components/screens/SearchScreen';
 import LikeCommentFollowerScreen from '../src/components/screens/LikeCommentFollowerScreen';
 import ReelScreen from '../src/components/screens/ReelScreen';
 import PostReelScreen from '../src/components/screens/PostReelScreen'
+import { useTheme } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function TabBar({ navigation }) {
   const [userProfile, setUserProfile] = useState(null)
-
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
 
   const getuserProfile = async () => {
@@ -45,8 +46,8 @@ function TabBar({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: '#000',
-        tabBarInactiveTintColor: '#949494',
+        tabBarActiveTintColor: colors.tabBarActiveTintColor,
+        tabBarInactiveTintColor: colors.tabBarInactiveTintColor,
         tabBarStyle: {
           height: 52,
           shadowColor: '#fff'
@@ -61,19 +62,15 @@ function TabBar({ navigation }) {
         options={{
           title: '',
           headerShown: true,
-          headerLeft: () => (
-            <Image style={{ width: 100, height: 40, resizeMode: 'cover', marginLeft: 10 }}
-              source={require('../src/images/Insta.png')} />
-          ),
+          headerTitle: 'Instagram',
+          headerTitleStyle: {
+            color: colors.title
+          },
 
           headerRight: () => (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('AddPost')} >
-                <Image style={{ width: 24, height: 24, marginRight: '5%' }} source={require('../src/images/plus.png')} />
-              </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => navigation.navigate('Messages')} >
-                <Image style={{ width: 24, height: 24, marginRight: '5%', marginLeft: 3 }} source={require('../src/images/messenger.png')} />
-              </TouchableWithoutFeedback>
+              <AntDesign style={{ marginRight: '4%' }} name="plussquare" color={colors.icon} size={24} onPress={() => navigation.navigate('AddPost')} />
+              <AntDesign style={{ marginRight: '4%' }} name="message1" color={colors.icon} size={24} onPress={() => navigation.navigate('Messages')} />
             </View>
           ),
           tabBarLabel: () => null,
@@ -108,7 +105,7 @@ function TabBar({ navigation }) {
           title: '',
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{ width: 33, height: 33, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroudColor: '#fff' }}>
+            <View style={{ width: 33, height: 33, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroudColor: colors.primary }}>
               {focused ?
                 <Image style={{ width: 24, height: 24 }} source={require('../src/images/reel.png')} />
                 :
@@ -139,13 +136,13 @@ function TabBar({ navigation }) {
         options={{
           headerTitle: () => (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <Ionicons name='lock-closed-outline' size={20} color='#000' />
-              <Text style={{ fontSize: 16, fontWeight: '500', color: '#000', marginLeft: 4 }}>{userProfile?.email}</Text>
+              <Ionicons name='lock-closed-outline' size={20} color={colors.lock} />
+              <Text style={{ fontSize: 16, fontWeight: '500', color: colors.username, marginLeft: 4 }}>{userProfile?.email}</Text>
             </View>
           ),
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{ backgroundColor: focused ? '#000' : "#fff", width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: focused ? colors.primary : colors.background, width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
               <Image style={{ width: 30, height: 30, borderRadius: 15 }} source={{ uri: userProfile?.userImg }} />
             </View>
           ),
@@ -157,7 +154,7 @@ function TabBar({ navigation }) {
 
 function AppStack({ navigation }) {
   const [userProfile, setUserProfile] = useState(null)
-
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
 
   const getuserProfile = async () => {
@@ -200,7 +197,7 @@ function AppStack({ navigation }) {
         options={({ route }) => ({
           headerTitle: () => (
             <View style={{ justifyContent: 'center' }}>
-              <Text style={{ fontSize: 18, fontWeight: '500', color: "#000" }}>{route.params.email}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: colors.username }}>{route.params.email}</Text>
             </View>
           ),
         })}
@@ -212,7 +209,7 @@ function AppStack({ navigation }) {
           headerShadowVisible: false,
           title: userProfile?.email,
           headerTitleStyle: {
-            color: '#000'
+            color: colors.username
           },
         }}
       />
@@ -222,8 +219,8 @@ function AppStack({ navigation }) {
         options={({ route }) => ({
           headerTitle: () => (
             <View style={{ flexDirection: 'column' }}>
-              <Text style={{ fontSize: 18, fontWeight: '500', color: "#000" }}>{route.params.userName}</Text>
-              <Text style={{ fontSize: 12, fontWeight: '400', color: "#9b9b9b" }}>{moment(route.params.status).calendar()}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: colors.username }}>{route.params.userName}</Text>
+              <Text style={{ fontSize: 12, fontWeight: '400', color: colors.about }}>{moment(route.params.status).calendar()}</Text>
             </View>
           ),
           headerTitleStyle: {

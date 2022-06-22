@@ -4,8 +4,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  Platform,
-  Appearance
+  Platform
 } from 'react-native';
 import React, { useContext, useState } from 'react';
 import FormInput from '../FormInput';
@@ -13,25 +12,18 @@ import FormButton from '../FormButton';
 import SocialButton from '../SocialButton';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import FormInputPassword from '../FormInputPassword';
+import { useTheme } from '@react-navigation/native'
 
 const LoginScreen = ({ navigation }) => {
+  const { colors } = useTheme()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [theme, setTheme] = useState(Appearance.getColorScheme());
+
   const { login, googleLogin } = useContext(AuthContext);
 
-  Appearance.addChangeListener((scheme) => {
-    setTheme(scheme.colorScheme)
-  })
-
   return (
-    <View style={theme == 'light' ? styles.container : styles.darkmodecontainer}>
-      {theme == 'light' ?
-        <Image style={styles.instatext}
-          source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/1280px-Instagram_logo.svg.png' }} />
-        :
-        <Image style={[styles.instatext, { width: '60%', height: '8%' }]}
-          source={{ uri: 'https://o.remove.bg/downloads/f867c640-8dd5-4bc0-b825-b6dfe49cfaf2/instagram-removebg-preview.png' }} />}
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={{ fontSize: 18, fontWeight: '500', color: colors.title, textAlign: 'center' }}>Instagram</Text>
       <FormInput
         keyboardType="email-address"
         placeholderText="Email"
@@ -109,12 +101,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '500',
     color: '#c9c9c9',
-  },
-  darkmodecontainer: {
-    backgroundColor: '#000',
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20
   }
 });

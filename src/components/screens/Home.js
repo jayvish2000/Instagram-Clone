@@ -10,8 +10,10 @@ import { styles } from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import { useNavigation,useTheme } from '@react-navigation/native'
 
 const HomeScreen = ({ navigation }) => {
+  const {colors}=useTheme()
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
@@ -129,7 +131,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:colors.background}]}>
       {loading ? (
         <View
           style={{
@@ -140,7 +142,7 @@ const HomeScreen = ({ navigation }) => {
           <ActivityIndicator size={45} color="#2e64e5" />
         </View>
       ) : (
-        <View style={styles.container}>
+        <View style={[styles.container,{backgroundColor:colors.background}]}>
           <FlatList
             data={posts}
             onRefresh={() => fetchPosts()}

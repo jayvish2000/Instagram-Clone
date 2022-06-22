@@ -10,7 +10,7 @@ import {
   Dimensions
 } from 'react-native';
 import React, { useState, useContext } from 'react';
-import {styles} from '../../../styles/AddPostStyles'
+import { styles } from '../../../styles/AddPostStyles'
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -18,11 +18,13 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
+import { useTheme } from '@react-navigation/native'
 
-const width=Dimensions.get('window').width
-const height=Dimensions.get('window').height
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const PostReelScreen = ({ item, navigation }) => {
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
@@ -32,7 +34,7 @@ const PostReelScreen = ({ item, navigation }) => {
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
-      mediaType:'any',
+      mediaType: 'any',
       cropping: true,
     }).then(image => {
       const imageUrl = Platform.OS === 'ios' ? image.sourceURL : image.path;
@@ -183,15 +185,15 @@ const PostReelScreen = ({ item, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.InputWrapper}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={[styles.InputWrapper, { backgroundColor: colors.background }]}>
         {image != null ? (
-          <View style={{ width: width, height:height/2 }}>
+          <View style={{ width: width, height: height / 2 }}>
             <Image style={styles.imageWrapper} source={{ uri: image }} />
           </View>
         ) : (
           <Video
-            style={{ width: width, height: height/3.7 }}
+            style={{ width: width, height: height / 3.7 }}
             source={{ uri: video }}
             resizeMode='cover'
           />
@@ -212,8 +214,8 @@ const PostReelScreen = ({ item, navigation }) => {
             <ActivityIndicator size="large" color="#2e64e5" />
           </View>
         ) : (
-          <TouchableOpacity style={styles.submitbtn} onPress={submitPost}>
-            <Text style={styles.submitbtntext}>Post Reel</Text>
+          <TouchableOpacity style={[styles.submitbtn, { backgroundColor: colors.addbtnbg }]} onPress={submitPost}>
+            <Text style={[styles.submitbtntext,{color:colors.addbtntext}]}>Post Reel</Text>
           </TouchableOpacity>
         )}
       </View>

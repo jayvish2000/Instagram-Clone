@@ -15,8 +15,10 @@ import storage from '@react-native-firebase/storage';
 import Entypo from 'react-native-vector-icons/Entypo';
 import RBSheet from "react-native-raw-bottom-sheet";
 import Video from 'react-native-video';
+import { useTheme } from '@react-navigation/native'
 
 const ChatScreen = ({ route }) => {
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState([]);
   const [userData, setUserData] = useState(null);
@@ -109,11 +111,11 @@ const ChatScreen = ({ route }) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: '#8a3ab9',
+            backgroundColor: colors.chatright,
             borderRadius: 15,
           },
           left: {
-            backgroundColor: '#ECECEC'
+            backgroundColor: colors.chatleft
           }
         }}
         textStyle={{
@@ -157,14 +159,14 @@ const ChatScreen = ({ route }) => {
             onPress: () => renderSend(text, onSend),
           }}>
           <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
-            <MaterialCommunityIcons name='send' size={25} color="#2e64e5" />
+            <MaterialCommunityIcons name='send' size={25} color={colors.primary} />
           </View>
         </Send>
       )
     } else {
       return (
         <TouchableOpacity style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
-          <MaterialCommunityIcons name='microphone' color="#2e64e5" size={25} />
+          <MaterialCommunityIcons name='microphone' color={colors.primary} size={25} />
         </TouchableOpacity>
       )
     }
@@ -338,7 +340,6 @@ const ChatScreen = ({ route }) => {
   const customtInputToolbar = props => {
     return (
       <View style={{
-        backgroundColor: "green",
         borderTopWidth: 0,
         width: '98%',
         justifyContent: 'flex-end',
@@ -351,7 +352,7 @@ const ChatScreen = ({ route }) => {
         <InputToolbar
           {...props}
           containerStyle={{
-            backgroundColor: "#ECECEC",
+            backgroundColor: colors.textinput,
             borderTopWidth: 0,
             marginRight: 5,
             marginLeft: 5,
@@ -363,7 +364,7 @@ const ChatScreen = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
       <GiftedChat
 
         messages={messages}
@@ -390,11 +391,11 @@ const ChatScreen = ({ route }) => {
                   backgroundColor: "transparent"
                 },
                 draggableIcon: {
-                  backgroundColor: "#000"
+                  backgroundColor: "#fff"
                 }
               }}
             >
-              <Text style={{ fontSize: 18, fontWeight: '500', alignSelf: 'center', color: '#2e64e5' }}>Choose From</Text>
+              <Text style={{ fontSize: 18, fontWeight: '500', alignSelf: 'center', color: colors.camera }}>Choose From</Text>
               <View
                 style={{
                   borderBottomWidth: 1,
@@ -423,11 +424,11 @@ const ChatScreen = ({ route }) => {
                       alignItems: 'center',
                       shadowColor: '#fff'
                     }}>
-                    <MaterialCommunityIcons name="camera" size={25} color="#2e64e5" />
+                    <MaterialCommunityIcons name="camera" size={25} color={colors.camera} />
                   </View>
                   <Text
                     style={{
-                      color: '#2e64e5',
+                      color: colors.camera,
                       fontSize: 16,
                       padding: 12,
                     }}>
@@ -454,11 +455,11 @@ const ChatScreen = ({ route }) => {
                       alignItems: 'center',
                       shadowColor: '#fff'
                     }}>
-                    <MaterialCommunityIcons name="folder-image" size={25} color="#2e64e5" />
+                    <MaterialCommunityIcons name="folder-image" size={25} color={colors.camera} />
                   </View>
                   <Text
                     style={{
-                      color: '#2e64e5',
+                      color: colors.camera,
                       fontSize: 16,
                       padding: 12,
                     }}>
@@ -489,12 +490,12 @@ const ChatScreen = ({ route }) => {
                     <MaterialCommunityIcons
                       name="video"
                       size={25}
-                      color="#2e64e5"
+                      color={colors.camera}
                     />
                   </View>
                   <Text
                     style={{
-                      color: '#2e64e5',
+                      color: colors.camera,
                       fontSize: 16,
                       padding: 12,
                     }}>
@@ -508,17 +509,17 @@ const ChatScreen = ({ route }) => {
               <Entypo
                 name='attachment'
                 size={25}
-                color='#2e64e5'
+                color={colors.primary}
               />
             </TouchableOpacity>
-          </View>
+          </View >
         )}
         renderMessageImage={renderMessageImage}
         renderMessageVideo={renderMessageVideo}
         onLongPress={onLongPress}
         renderInputToolbar={customtInputToolbar}
       />
-    </View>
+    </View >
   );
 };
 

@@ -3,20 +3,22 @@ import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../../navigation/AuthProvider'
 import FormInput from '../FormInput'
 import FormButton from '../FormButton'
+import { useTheme } from '@react-navigation/native'
 
 const ForgotPassword = ({ navigation }) => {
+  const { colors } = useTheme()
   const [email, setEmail] = useState('')
   const { forgotpassword } = useContext(AuthContext)
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{bakcgroundColor:colors.background}]}>
       <View style={styles.formcontainer}>
         <Text style={styles.text}>Trouble with logging in?</Text>
         <Text style={[styles.text, { fontSize: 14, color: '#c0c0c0', fontWeight: '400' }]}>
           Enter your email address and we'll send
           you a link to rest your password.
         </Text>
-        <FormInput
+        <FormInput 
           keyboardType="email-address"
           placeholderText="Enter Your Email"
           iconType="user"
@@ -47,9 +49,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-
+    justifyContent: 'center'
   },
   formcontainer: {
     justifyContent: 'center',

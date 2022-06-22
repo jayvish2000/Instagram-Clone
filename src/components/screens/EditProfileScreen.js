@@ -22,8 +22,10 @@ import { AuthContext } from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { useTheme } from '@react-navigation/native'
 
 const EditProfileScreen = ({ navigation }) => {
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -130,10 +132,10 @@ const EditProfileScreen = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView style={[styles.container,{backgroundColor:colors.background}]} showsVerticalScrollIndicator={false}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 12 }}>
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Entypo name='cross' color="#000" size={30} />
+          <Entypo name='cross' color={colors.crossicon} size={30} />
         </TouchableOpacity>
         {uploading ? (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -154,15 +156,14 @@ const EditProfileScreen = ({ navigation }) => {
             backgroundColor: 'transparent',
           },
           draggableIcon: {
-            backgroundColor: '#000',
+            backgroundColor: '#fff',
           },
         }}
         height={240}>
-        <Text style={styles.chooseimg}>Choose Picture</Text>
+        <Text style={[styles.chooseimg,{color:colors.camera}]}>Choose Picture</Text>
         <View
           style={{
             borderBottomWidth: 1,
-
             marginBottom: 20,
           }}
         />
@@ -279,39 +280,39 @@ const EditProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        <Text style={{ marginTop: 10, fontSize: 18, fontWeight: 'bold', color: '#000' }}>
+        <Text style={{ marginTop: 10, fontSize: 18, fontWeight: 'bold', color: colors.username }}>
           {userData ? userData.fname : ''}
         </Text>
-        <Text style={{ marginTop: 5, fontSize: 14, fontWeight: '500', color: '#000' }}>
+        <Text style={{ marginTop: 5, fontSize: 14, fontWeight: '500', color: colors.username }}>
           {userData ? userData.email : ''}
         </Text>
       </View>
 
-      <View style={styles.actioncontainer}>
+      <View style={[styles.actioncontainer,{backgroundColor:colors.acbg,borderColor:colors.acbc}]}>
         <FontAwesome
-          style={styles.icon}
+          style={[styles.icon,{backgroundColor:colors.forminputbg}]}
           name="user-o"
-          color="#333333"
+          color={colors.icon}
           size={20}
         />
-        <View style={[styles.divider, { padding: 5 }]} />
+        <View style={[styles.divider, { padding: 5 ,borderColor:colors.div}]} />
         <TextInput
           placeholder="Full Name"
           placeholderTextColor="#666666"
           autoCorrect={false}
           value={userData ? userData.fname : ''}
           onChangeText={txt => setUserData({ ...userData, fname: txt })}
-          style={styles.textInput}
+          style={[styles.textInput,{color:colors.forminputtext,backgroundColor:colors.forminputbg}]}
         />
       </View>
-      <View style={styles.actioncontainer}>
+      <View style={[styles.actioncontainer,{backgroundColor:colors.acbg,borderColor:colors.acbc}]}>
         <Ionicons
-          style={styles.icon}
+          style={[styles.icon,{backgroundColor:colors.forminputbg}]}
           name="ios-clipboard-outline"
-          color="#333333"
+          color={colors.icon}
           size={20}
         />
-        <View style={{ borderRightWidth: 1, height: '110%', padding: 4 }} />
+        <View style={{ borderRightWidth: 1, height: '110%', padding: 4,borderColor:colors.div }} />
         <TextInput
           multiline
           numberOfLines={2}
@@ -320,13 +321,13 @@ const EditProfileScreen = ({ navigation }) => {
           value={userData ? userData.about : ''}
           onChangeText={txt => setUserData({ ...userData, about: txt })}
           autoCorrect={true}
-          style={styles.textInput}
+          style={[styles.textInput,{color:colors.forminputtext,backgroundColor:colors.forminputbg}]}
         />
       </View>
 
-      <View style={styles.actioncontainer}>
-        <Feather style={styles.icon} name="phone" color="#333333" size={20} />
-        <View style={{ borderRightWidth: 1, height: '110%', padding: 4 }} />
+      <View style={[styles.actioncontainer,{backgroundColor:colors.acbg,borderColor:colors.acbc}]}>
+        <Feather style={[styles.icon,{backgroundColor:colors.forminputbg}]} name="phone"  color={colors.icon} size={20} />
+        <View style={{ borderRightWidth: 1, height: '110%', padding: 4,borderColor:colors.div }} />
         <TextInput
           placeholder="Phone"
           placeholderTextColor="#666666"
@@ -335,7 +336,7 @@ const EditProfileScreen = ({ navigation }) => {
           maxLength={10}
           value={userData ? userData.phone : ''}
           onChangeText={txt => setUserData({ ...userData, phone: txt })}
-          style={styles.textInput}
+          style={[styles.textInput,{color:colors.forminputtext,backgroundColor:colors.forminputbg}]}
         />
       </View>
     </ScrollView>

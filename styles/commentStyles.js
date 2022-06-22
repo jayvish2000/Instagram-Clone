@@ -2,8 +2,7 @@ import { StyleSheet } from 'react-native';
 
 export const Styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff'
+        flex: 1
     },
     card: {
         justifyContent: 'center',
@@ -14,7 +13,6 @@ export const Styles = StyleSheet.create({
     maincontainer: {
         width: '100%',
         justifyContent: 'center',
-        backgroundColor: '#fff',
         padding: 8,
         flexDirection: 'row',
         alignItems: 'center'
@@ -37,21 +35,18 @@ export const Styles = StyleSheet.create({
     userName: {
         fontSize: 16,
         fontWeight: '500',
-        color: '#000',
         marginLeft: 6,
 
     },
     commentext: {
         fontSize: 16,
         fontWeight: '400',
-        color: '#9b9b9b',
         marginLeft: 6,
         maxWidth: '70%'
     },
     textinput: {
         width: '90%',
         height: 40,
-        backgroundColor: '#ECECEC',
         borderRadius: 24,
         paddingLeft: 12
     },

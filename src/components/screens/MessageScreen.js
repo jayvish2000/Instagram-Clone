@@ -4,11 +4,13 @@ import { styles } from '../../../styles/MessageStyles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
-
+import { useTheme } from '@react-navigation/native'
+ 
 const MessageScreen = ({ navigation }) => {
+  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  console.log("yt", userData)
+
   const getUser = async () => {
     try {
       const list = [];
@@ -62,7 +64,7 @@ const MessageScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,{backgroundColor:colors.background}]}>
       <View style={styles.Card}>
         {userData ?
           <TouchableOpacity
@@ -78,11 +80,11 @@ const MessageScreen = ({ navigation }) => {
               </View>
               <View style={styles.TextSection}>
                 <View style={styles.UserInfoText}>
-                  <Text style={styles.UserName}>
+                  <Text style={[styles.UserName,{color:colors.username}]}>
                     {userData?.fname}
                   </Text>
                 </View>
-                <Text style={styles.about}>
+                <Text style={[styles.about,{color:colors.about}]}>
                   {userData?.about}
                 </Text>
               </View>
