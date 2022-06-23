@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         width: 40,
         height: 40,
         borderRadius: 40 / 2,
-        marginRight: 6
+        marginRight: 5
     },
     username: {
         fontSize: 16,
@@ -57,7 +57,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         fontWeight: '400',
-        color: '#9b9b9b'
+        color: '#fff',
+        marginLeft:5
     },
     rightcontainer: {
         backgroundColor: 'transparent',

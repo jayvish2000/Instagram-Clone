@@ -6,12 +6,10 @@ import AppStack from './AppStack';
 import auth from '@react-native-firebase/auth';
 import { AuthContext } from './AuthProvider';
 import firestore from '@react-native-firebase/firestore';
-import {Darkmode,Lightmode} from '../src/components/ModeColor/Modes';
 
 const Routes = () => {
   const { user, setUser } = useContext(AuthContext);
   const [initializing, setInitializing] = useState(true);
-  const scheme = useColorScheme();
 
   const onAuthStateChanged = user => {
     setUser(user);
@@ -37,7 +35,7 @@ const Routes = () => {
   if (initializing) return null;
 
   return (
-    <NavigationContainer theme={scheme =='dark' ?Darkmode : Lightmode}>
+    <NavigationContainer>
       {user ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );

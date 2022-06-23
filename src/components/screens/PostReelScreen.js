@@ -185,8 +185,8 @@ const PostReelScreen = ({ item, navigation }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.InputWrapper, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
+      <View style={styles.InputWrapper}>
         {image != null ? (
           <View style={{ width: width, height: height / 2 }}>
             <Image style={styles.imageWrapper} source={{ uri: image }} />
@@ -208,14 +208,14 @@ const PostReelScreen = ({ item, navigation }) => {
         />
         {uploading ? (
           <View style={styles.StatusWrapper}>
-            <Text style={{ fontSize: 15, color: '#2e64e5', fontWeight: '500' }}>
+            <Text style={{ fontSize: 15, color: '#3897f1', fontWeight: '500' }}>
               {transferred} % Completed
             </Text>
-            <ActivityIndicator size="large" color="#2e64e5" />
+            <ActivityIndicator size="large" color="#3897f1" />
           </View>
         ) : (
-          <TouchableOpacity style={[styles.submitbtn, { backgroundColor: colors.addbtnbg }]} onPress={submitPost}>
-            <Text style={[styles.submitbtntext,{color:colors.addbtntext}]}>Post Reel</Text>
+          <TouchableOpacity style={styles.submitbtn} onPress={submitPost}>
+            <Text style={styles.submitbtntext}>Post Reel</Text>
           </TouchableOpacity>
         )}
       </View>

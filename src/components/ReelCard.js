@@ -12,13 +12,11 @@ import { AuthContext } from '../../navigation/AuthProvider';
 import Share from 'react-native-share';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import auth from '@react-native-firebase/auth';
-import { useTheme } from '@react-navigation/native'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const ReelCard = ({ currindex, item, index }) => {
-    const { colors } = useTheme()
     const { user } = useContext(AuthContext);
     const navigation = useNavigation()
     const [users, setUser] = useState(null)
@@ -255,7 +253,7 @@ const ReelCard = ({ currindex, item, index }) => {
                     },
                 }}
                 height={height / 1.5}>
-                <Text style={[styles.comment,{color:colors.primary}]}>Comments</Text>
+                <Text style={styles.comment}>Comments</Text>
                 <View style={[Styles.container, { padding: 3 }]}>
                     <View style={Styles.card}>
                         <FlatList

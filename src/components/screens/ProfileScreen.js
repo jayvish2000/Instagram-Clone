@@ -133,7 +133,7 @@ const ProfileScreen = ({ navigation, route }) => {
   }, [])
 
   return (
-    <View style={{ backgroundColor: colors.background }}>
+    <View style={{ backgroundColor: '#fff' }}>
       <View
         style={{
           width: '100%',
@@ -151,35 +151,35 @@ const ProfileScreen = ({ navigation, route }) => {
 
           }}
         />
-        <Text style={[styles.userName, { color: colors.username }]}>
+        <Text style={[styles.userName, { color: '#000' }]}>
           {userData ? userData.fname : ''}
         </Text>
-        <Text style={[styles.aboutUser, { color: colors.about }]}>
+        <Text style={[styles.aboutUser, { color: '#9b9b9b' }]}>
           {userData ? userData.about : ''}
         </Text>
 
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
-              {route.params.userId || route.params.uid != user.uid ?
+              {route.params.userId  != user.uid ?
                 <>
                   <TouchableOpacity
-                    style={[styles.userBtn, { backgroundColor: colors.msgbg, borderColor: colors.msgbg }]}
+                    style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
                     onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
-                    <Text style={[styles.userBtnTxt, { color: colors.msgtext }]}>Message</Text>
+                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Message</Text>
                   </TouchableOpacity>
                   <>
                     {route.params.userId || route.params.uid != user.uid ?
                       <>
                         {userData?.follower.includes(user.uid) ?
-                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: colors.followingbtn, borderColor: colors.followingbr }]}
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
                             onPress={onfollow}>
                             <Text style={[styles.userBtnTxt, { color: colors.text }]}>following</Text>
                           </TouchableOpacity>
                           :
-                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: colors.msgbg, borderColor: colors.msgbg }]}
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f1', borderColor: '#3897f1' }]}
                             onPress={onfollow}>
-                            <Text style={[styles.userBtnTxt, { color: colors.msgtext }]}>follow</Text>
+                            <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
                           </TouchableOpacity>
 
                         }
@@ -194,11 +194,11 @@ const ProfileScreen = ({ navigation, route }) => {
                 :
                 <>
                   <TouchableOpacity
-                    style={[styles.userBtn, { borderColor: colors.btncon }]}
+                    style={[styles.userBtn, { borderColor: '#ECECEC' }]}
                     onPress={() => navigation.navigate('EditProfile')}>
-                    <Text style={[styles.userBtnTxt, { color: colors.text }]}>Edit Profile</Text>
+                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Edit Profile</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={[styles.userBtn, { borderColor: colors.btncon }]} onPress={() => {
+                  <TouchableOpacity style={[styles.userBtn, { borderColor: '#ECECEC' }]} onPress={() => {
                     firestore()
                       .collection('users')
                       .doc(user.uid)
@@ -208,7 +208,7 @@ const ProfileScreen = ({ navigation, route }) => {
                         logout()
                       })
                   }}>
-                    <Text style={[styles.userBtnTxt, { color: colors.text }]}>Logout</Text>
+                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Logout</Text>
                   </TouchableOpacity>
                 </>
               }
@@ -217,11 +217,11 @@ const ProfileScreen = ({ navigation, route }) => {
           ) : (
             <>
               <TouchableOpacity
-                style={[styles.userBtn, { borderColor: colors.btncon }]}
+                style={[styles.userBtn, { borderColor: '#ECECEC'}]}
                 onPress={() => navigation.navigate('EditProfile')}>
-                <Text style={[styles.userBtnTxt, { color: colors.text }]}>Edit Profile</Text>
+                <Text style={[styles.userBtnTxt, { color:'#000' }]}>Edit Profile</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.userBtn, { borderColor: colors.btncon }]} onPress={() => {
+              <TouchableOpacity style={[styles.userBtn, {borderColor: '#ECECEC' }]} onPress={() => {
                 firestore()
                   .collection('users')
                   .doc(user.uid)
@@ -231,23 +231,23 @@ const ProfileScreen = ({ navigation, route }) => {
                     logout()
                   })
               }}>
-                <Text style={[styles.userBtnTxt, { color: colors.text }]}>Logout</Text>
+                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Logout</Text>
               </TouchableOpacity>
             </>
           )}
         </View>
         <View style={styles.userInfoWrapper}>
           <View style={styles.userInfoItem}>
-            <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{posts.length}</Text>
-            <Text style={[styles.userInfoSubTitle, { color: colors.primary }]}>Posts</Text>
+            <Text style={[styles.userInfoTitle, { color: '#000' }]}>{posts.length}</Text>
+            <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Posts</Text>
           </View>
           <View style={styles.userInfoItem}>
             {route.params ?
               <>
                 {follow?.follower ?
-                  <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.follower.length}</Text>
+                  <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.follower.length}</Text>
                   :
-                  <Text style={[styles.userInfoTitle, { color: colors.primary }]}>0</Text>
+                  <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
                 }
               </>
               :
@@ -255,16 +255,16 @@ const ProfileScreen = ({ navigation, route }) => {
                 {user.uid ?
                   <>
                     {follow?.follower ?
-                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.follower.length}</Text>
+                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.follower.length}</Text>
                       :
-                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>0</Text>
+                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
                     }
                   </>
                   : null
                 }
               </>
             }
-            <Text style={[styles.userInfoSubTitle, { color: colors.primary }]}>Follower</Text>
+            <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Follower</Text>
           </View>
           <View style={styles.userInfoItem}>
             {route.params ?
@@ -272,9 +272,9 @@ const ProfileScreen = ({ navigation, route }) => {
                 {route.params ?
                   <>
                     {follow?.following ?
-                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.following.length}</Text>
+                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.following.length}</Text>
                       :
-                      <Text style={[styles.userInfoTitle, { color: colors.primary }]}>0</Text>
+                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
                     }
                   </>
                   : null
@@ -282,10 +282,10 @@ const ProfileScreen = ({ navigation, route }) => {
               </>
               :
               <>
-                <Text style={[styles.userInfoTitle, { color: colors.primary }]}>{follow?.following.length}</Text>
+                <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.following.length}</Text>
               </>
             }
-            <Text style={[styles.userInfoSubTitle, { color: colors.primary }]}>Following</Text>
+            <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Following</Text>
           </View>
 
         </View>
@@ -294,14 +294,14 @@ const ProfileScreen = ({ navigation, route }) => {
       <View style={{ width: '100%', height: '70%' }}>
         <Tab.Navigator
           screenOptions={{
-            tabBarActiveTintColor: colors.tabBarActiveTintColor,
+            tabBarActiveTintColor:'#000',
             headerShown: false,
-            tabBarInactiveTintColor: colors.tabBarInactiveTintColor,
+            tabBarInactiveTintColor: '#949494',
             tabBarIndicatorStyle: {
-              width: '50%', height: 1, backgroundColor: colors.primary
+              width: '50%', height: 1, backgroundColor: '#000'
             },
             tabBarStyle: {
-              shadowColor: colors.background, marginBottom: 1,
+              shadowColor: '#fff', marginBottom: 1,
             },
 
           }}>

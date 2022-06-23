@@ -22,8 +22,8 @@ const LoginScreen = ({ navigation }) => {
   const { login, googleLogin } = useContext(AuthContext);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={{ fontSize: 18, fontWeight: '500', color: colors.title, textAlign: 'center' }}>Instagram</Text>
+    <View style={styles.container}>
+      <Text style={{ fontSize: 30, fontWeight: '600', color: '#000', textAlign: 'center', marginBottom: '20%' }}>Instagram</Text>
       <FormInput
         keyboardType="email-address"
         placeholderText="Email"
@@ -47,11 +47,11 @@ const LoginScreen = ({ navigation }) => {
         onPress={() => login(email, password)}
       />
       <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
 
         <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
 
-        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor:'#9b9b9b', width: '42%', height: 0 }} />
       </View>
       {Platform.OS === 'android' ? (
         <View>
@@ -100,6 +100,6 @@ const styles = StyleSheet.create({
   navbtntext: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#c9c9c9',
+    color: '#9b9b9b',
   }
 });

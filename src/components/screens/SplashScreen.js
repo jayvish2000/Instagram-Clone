@@ -1,18 +1,31 @@
-import { View,Image, Dimensions, StyleSheet } from 'react-native';
+import { View, Dimensions, StyleSheet, Text, Image } from 'react-native';
 import React from 'react';
+import { useTheme } from '@react-navigation/native'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const SplashScreen = ({ navigation }) => {
+  const { colors } = useTheme()
 
-setTimeout(() => {
-  navigation.replace('Login')
-}, 3000);
+  setTimeout(() => {
+    navigation.replace('Login')
+  }, 3000);
 
   return (
-    <View style={styles.container}>
-      <Image style={styles.logo} source={require('../../images/instalogo.jpg')} />
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <View style={styles.titlecontainer}>
+        <Image style={styles.logo} source={require('../../images/instagram.png')} />
+      </View>
+      <Text style={styles.from}>
+        from
+      </Text>
+      <View style={styles.metacontainer}>
+        <Image style={styles.metaimg} source={require('../../images/meta.png')} />
+        <Text style={[styles.title, { color: colors.title }]}>
+          meta
+        </Text>
+      </View>
     </View>
   );
 };
@@ -25,8 +38,37 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  logo: {
+  titlecontainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     width: width,
-    height: height
+    height: height - 150
+  },
+  logo: {
+    width: width / 9,
+    height: height / 19,
+    elevation: 24,
+    resizeMode: 'cover'
+  },
+  from: {
+    fontSize: 18,
+    fontWeight: '400',
+    color:'#3897f1'
+  },
+  metacontainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: width / 2,
+    height: height / 16,
+  },
+  metaimg: {
+    width: width / 14,
+    height: height / 30,
+    marginRight: '2%'
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '600'
   }
 })

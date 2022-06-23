@@ -10,33 +10,33 @@ import ForgotPassword from '../src/components/screens/ForgotPassword';
 const Stack = createNativeStackNavigator();
 
 const AuthStack = () => {
-  const [isFirstLaunch, setIsFirstLaunch] = useState(null);
-  let routeName;
+  // const [isFirstLaunch, setIsFirstLaunch] = useState(null);
+  // let routeName;
 
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then(value => {
-      if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true');
-        setIsFirstLaunch(true);
-      } else {
-        setIsFirstLaunch(false);
-      }
-    });
+    // AsyncStorage.getItem('alreadyLaunched').then(value => {
+    //   if (value == null) {
+    //     AsyncStorage.setItem('alreadyLaunched', 'true');
+    //     setIsFirstLaunch(true);
+    //   } else {
+    //     setIsFirstLaunch(false);
+    //   }
+    // });
 
     GoogleSignin.configure({
       webClientId: '66915133418-c5rspu83ko0vdceik762dc6e32v9kn22.apps.googleusercontent.com',
       offlineAccess: true
     });
   }, []);
-  if (isFirstLaunch === null) {
-    return null;
-  } else if (isFirstLaunch === true) {
-    routeName = 'Splash';
-  } else {
-    routeName = 'Login';
-  }
+  // if (isFirstLaunch === null) {
+  //   return null;
+  // } else if (isFirstLaunch === true) {
+  //   routeName = 'Splash';
+  // } else {
+  //   routeName = 'Login';
+  // }
   return (
-    <Stack.Navigator initialRouteName={routeName}>
+    <Stack.Navigator initialRouteName='Splash'>
       <Stack.Screen
         name="Splash"
         component={SplashScreen}

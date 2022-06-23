@@ -24,7 +24,7 @@ import auth from '@react-native-firebase/auth';
 import FormInputPassword from '../FormInputPassword';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import { useTheme } from '@react-navigation/native'
- 
+
 const SignUpScreen = ({ navigation }) => {
   const { colors } = useTheme()
   const { googleLogin } = useContext(AuthContext);
@@ -122,9 +122,9 @@ const SignUpScreen = ({ navigation }) => {
           ToastAndroid.show('User already exists', ToastAndroid.SHORT);
         } else if (error.code === 'auth/invalid-email') {
           ToastAndroid.show('Invalid email address', ToastAndroid.SHORT);
-        }else if (error.code === 'auth/weak-password') {
+        } else if (error.code === 'auth/weak-password') {
           ToastAndroid.show('Password should be at least 6 characters', ToastAndroid.SHORT);
-        }else if (error.code === 'auth/network-request-failed') {
+        } else if (error.code === 'auth/network-request-failed') {
           ToastAndroid.show('Network request failed', ToastAndroid.SHORT)
         } else {
           console.log(error)
@@ -138,7 +138,7 @@ const SignUpScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={ [styles.container,{backgroundColor:colors.background}]}>
+    <View style={styles.container}>
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -324,9 +324,9 @@ const SignUpScreen = ({ navigation }) => {
         <FormButton buttonTitle="Signup" onPress={() => register()} />
       )}
       <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
         <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
-        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#ECECEC', width: '42%', height: 0 }} />
+        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
       </View>
       {Platform.OS === 'android' ? (
         <View>
@@ -338,7 +338,7 @@ const SignUpScreen = ({ navigation }) => {
 
       <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <Text style={styles.navbtntext}>
-          Have an account?
+         Already have an account?
         </Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
@@ -358,6 +358,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+    backgroundColor: '#fff'
   },
   navbtn: {
     marginTop: 15,

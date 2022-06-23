@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent:'center',
-    
+    backgroundColor:'#fff'
   },
   InputWrapper: {
     justifyContent: 'center',
@@ -39,9 +39,11 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     width: '30%',
+    backgroundColor:'#3897f1'
   },
   submitbtntext: {
     fontSize: 15,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color:'#fff'
   },
 });

@@ -10,12 +10,12 @@ const FormInput = ({ iconType, labelValue, placeholderText, ...rest }) => {
   const { colors } = useTheme()
 
   return (
-    <View style={[styles.inputContainer, { backgroundColor: colors.acbg, borderColor: colors.acbc }]}>
-      <View style={[styles.iconstyle, { borderRightColor: colors.acbc }]}>
-        <AntDesign name={iconType} size={20} color={colors.icon} />
+    <View style={styles.inputContainer}>
+      <View style={styles.iconstyle}>
+        <AntDesign name={iconType} size={20} color='#333' />
       </View>
       <TextInput
-        style={[styles.input, { color: colors.forminputtext }]}
+        style={styles.input}
         value={labelValue}
         placeholder={placeholderText}
         numberOfLines={1}
@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     borderWidth: 1,
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor:'#fafafa',
+    borderColor:'#949494'
   },
   iconstyle: {
     padding: 8,
@@ -46,6 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRightWidth: 1,
     width: 38,
+    borderColor:'#949494'
   },
   input: {
     padding: 10,

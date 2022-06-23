@@ -131,7 +131,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.container,{backgroundColor:colors.background}]}>
+    <View style={styles.container}>
       {loading ? (
         <View
           style={{
@@ -142,7 +142,7 @@ const HomeScreen = ({ navigation }) => {
           <ActivityIndicator size={45} color="#2e64e5" />
         </View>
       ) : (
-        <View style={[styles.container,{backgroundColor:colors.background}]}>
+        <View style={styles.container}>
           <FlatList
             data={posts}
             onRefresh={() => fetchPosts()}

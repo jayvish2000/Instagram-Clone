@@ -29,12 +29,12 @@ const SearchScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={[styles.searchcontainer, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
+      <View style={styles.searchcontainer}>
         <TouchableOpacity style={styles.iconcontainer}>
-          <Ionicons name="search-outline" color={colors.icon} size={24} />
+          <Ionicons name="search-outline" color='#9b9b9b' size={24} />
         </TouchableOpacity>
-        <TextInput style={[styles.textinput, { backgroundColor: colors.textinput }]}
+        <TextInput style={styles.textinput}
           placeholder="Search"
           onChangeText={(text) => searchUser(text)}
         />
@@ -47,11 +47,11 @@ const SearchScreen = ({ navigation }) => {
               <Image style={styles.userimg} source={{ uri: item.userImg }} />
               <View style={styles.textmaincontainer}>
                 <View style={styles.namecontainer}>
-                  <Text style={[styles.username, { color: colors.username }]}>
+                  <Text style={styles.username}>
                     {item.fname}
                   </Text>
                 </View>
-                <Text style={[styles.userabout, { color: colors.about }]}>
+                <Text style={styles.userabout}>
                   {item.about}
                 </Text>
               </View>

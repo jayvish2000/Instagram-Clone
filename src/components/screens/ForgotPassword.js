@@ -3,15 +3,13 @@ import React, { useContext, useState } from 'react'
 import { AuthContext } from '../../../navigation/AuthProvider'
 import FormInput from '../FormInput'
 import FormButton from '../FormButton'
-import { useTheme } from '@react-navigation/native'
 
 const ForgotPassword = ({ navigation }) => {
-  const { colors } = useTheme()
   const [email, setEmail] = useState('')
   const { forgotpassword } = useContext(AuthContext)
 
   return (
-    <View style={[styles.container,{bakcgroundColor:colors.background}]}>
+    <View style={styles.container}>
       <View style={styles.formcontainer}>
         <Text style={styles.text}>Trouble with logging in?</Text>
         <Text style={[styles.text, { fontSize: 14, color: '#c0c0c0', fontWeight: '400' }]}>
@@ -36,7 +34,7 @@ const ForgotPassword = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => navigation.navigate('Login')}
           style={{ justifyContent: 'center', alignItems: 'center', marginTop: '5%' }}>
-          <Text style={[styles.navbtntext, { color: '#3897f0', fontWeight: '500' }]}>Go Back</Text>
+          <Text style={[styles.navbtntext, { color: '#3897f1', fontWeight: '500' }]}>Go Back</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -49,7 +47,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
   formcontainer: {
     justifyContent: 'center',
@@ -65,8 +64,8 @@ const styles = StyleSheet.create({
   },
   resttbtn: {
     width: '100%',
-    backgroundColor: '#3897f0',
-    height: '22%',
+    backgroundColor: '#3897f1',
+    height: '20%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 3

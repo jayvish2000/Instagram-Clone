@@ -115,7 +115,7 @@ const ChatScreen = ({ route }) => {
             borderRadius: 15,
           },
           left: {
-            backgroundColor: colors.chatleft
+            backgroundColor: '#ECECEC'
           }
         }}
         textStyle={{
@@ -352,7 +352,7 @@ const ChatScreen = ({ route }) => {
         <InputToolbar
           {...props}
           containerStyle={{
-            backgroundColor: colors.textinput,
+            backgroundColor:'#ECECEC',
             borderTopWidth: 0,
             marginRight: 5,
             marginLeft: 5,
@@ -364,7 +364,7 @@ const ChatScreen = ({ route }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.background }}>
+    <View style={{ flex: 1, backgroundColor: '#fff' }}>
       <GiftedChat
 
         messages={messages}

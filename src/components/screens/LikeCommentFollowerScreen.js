@@ -81,14 +81,14 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
 
     const likecurrentuserpost = () => {
         return (
-            <TouchableOpacity style={[styles.touchcontainer, { backgroundColor: colors.background }]} onPress={() => navigation.navigate("HomeProfile", { uid: like.uid, email: like.email })}>
+            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: like.uid, email: like.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: like.userImg }} />
                     <View style={[styles.textmaincontainer, { width: 260 }]}>
-                        <Text style={[styles.username, { color: colors.username }]}>
+                        <Text style={styles.username}>
                             {like.fname}
                         </Text>
-                        <Text style={[styles.userabout, { color: colors.about }]}>
+                        <Text style={styles.userabout}>
                             like your post.
                         </Text>
                     </View>
@@ -100,14 +100,14 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
 
     const followcurrentuser = () => {
         return (
-            <TouchableOpacity style={[styles.touchcontainer, { backgroundColor: colors.background }]} onPress={() => navigation.navigate("HomeProfile", { uid: follower.uid, email: follower.email })}>
+            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: follower.uid, email: follower.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: follower.userImg }} />
                     <View style={[styles.textmaincontainer, { width: 260 }]}>
-                        <Text style={[styles.username, { color: colors.username }]}>
+                        <Text style={styles.username}>
                             {follower.fname}
                         </Text>
-                        <Text style={[styles.userabout, { color: colors.about }]}>
+                        <Text style={styles.userabout}>
                             started following you.
                         </Text>
                     </View>
@@ -118,14 +118,14 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
 
     const commentcurrentuserpost = () => {
         return (
-            <TouchableOpacity style={[styles.touchcontainer, { backgroundColor: colors.background }]} onPress={() => navigation.navigate("HomeProfile", { uid: comment.uid, email: comment.email })}>
+            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: comment.uid, email: comment.email })}>
                 <View style={styles.usercontainer}>
                     <Image style={styles.userimg} source={{ uri: comment.userImg }} />
                     <View style={[styles.textmaincontainer, { width: 260 }]}>
-                        <Text style={[styles.username, { color: colors.username }]}>
+                        <Text style={styles.username}>
                             {comment.fname}
                         </Text>
-                        <Text style={[styles.userabout, { color: colors.about }]}>
+                        <Text style={styles.userabout}>
                             comment on your post.
                         </Text>
                     </View>
@@ -136,7 +136,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={styles.container}>
             {followcurrentuser()}
             <View style={{ width: '100%', height: '1%' }} />
             {likecurrentuserpost()}

@@ -8,13 +8,13 @@ import firestore from '@react-native-firebase/firestore';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Share from 'react-native-share';
 import { ProgressiveImage, ProgressiveVideo } from './ProgressiveData';
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const PostCard = ({ item, ondelete, onPress }) => {
-  const { colors } = useTheme()
+
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [comments, setComments] = useState(null)
@@ -90,8 +90,8 @@ const PostCard = ({ item, ondelete, onPress }) => {
   }, [])
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View key={item.id} style={[styles.card, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
+      <View key={item.id} style={styles.card}>
         <View style={styles.UserInfo}>
           <View style={styles.UserImg}>
             <Image
@@ -106,16 +106,16 @@ const PostCard = ({ item, ondelete, onPress }) => {
           </View>
           <View style={styles.UserInfoText}>
             <TouchableOpacity onPress={onPress}>
-              <Text style={[styles.UserName, { color: colors.username }]}>
-                {userData ? userData.fname || 'User' : 'User'}
+              <Text style={styles.UserName}>
+                {userData ? userData.fname || '' : ''}
               </Text>
             </TouchableOpacity>
-            <Text style={[styles.PostTime,{color:colors.postTime}]}>
+            <Text style={styles.PostTime}>
               {moment(item.postTime.toDate()).fromNow()}
             </Text>
           </View>
         </View>
-        <Text style={[styles.Posttext,{color:colors.Posttext}]}>{item.post}</Text>
+        <Text style={styles.Posttext}>{item.post}</Text>
 
         {item.postImg != null ? (
           <ProgressiveImage
@@ -141,28 +141,28 @@ const PostCard = ({ item, ondelete, onPress }) => {
             {item.likesbyusers.includes(user.uid) ? (
               <Ionicons name="heart" size={30} color="red" />
             ) : (
-              <Ionicons name="heart-outline" size={30} color={colors.icon} />
+              <Ionicons name="heart-outline" size={30} color='#000' />
             )}
-            <Text style={[styles.InteractionText, { color: colors.interactiontext }]}>
+            <Text style={styles.InteractionText}>
               {item.likesbyusers.length} Likes
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={() => navigation.navigate('comments', item.id)}>
-            <Ionicons name="md-chatbubble-outline" size={24} color={colors.icon} />
+            <Ionicons name="md-chatbubble-outline" size={24} color='#000' />
             <Text style={styles.InteractionText}>
               {comments?.length}
             </Text>
-            <Text style={[styles.InteractionText, { color: colors.interactiontext }]}>Comments</Text>
+            <Text style={styles.InteractionText}>Comments</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.Interaction} onPress={ShareData}>
-            <MaterialCommunityIcons name="share" size={28} color={colors.icon} />
-            <Text style={[styles.InteractionText, { color: colors.interactiontext }]}>Share</Text>
+            <MaterialCommunityIcons name="share" size={28} color='#000' />
+            <Text style={styles.InteractionText}>Share</Text>
           </TouchableOpacity>
           {user.uid === item.userId ? (
             <TouchableOpacity
               style={styles.Interaction}
               onPress={() => ondelete(item.id)}>
-              <Ionicons name="md-trash-bin" size={24} color={colors.icon} />
+              <Ionicons name="md-trash-bin" size={24} color='#000' />
             </TouchableOpacity>
           ) : null}
         </View>

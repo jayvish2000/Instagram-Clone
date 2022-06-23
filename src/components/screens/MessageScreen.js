@@ -1,13 +1,10 @@
-import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, Text,Image, TouchableOpacity } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { styles } from '../../../styles/MessageStyles';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import firestore from '@react-native-firebase/firestore';
-import { useTheme } from '@react-navigation/native'
- 
+
 const MessageScreen = ({ navigation }) => {
-  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
 
@@ -64,13 +61,13 @@ const MessageScreen = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={[styles.container,{backgroundColor:colors.background}]}>
+    <View style={[styles.container, { backgroundColor: '#fff' }]}>
       <View style={styles.Card}>
         {userData ?
           <TouchableOpacity
             style={styles.Card}
             onPress={() =>
-              navigation.navigate('Chats', { userName: userData.fname, uid: userData.id, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })
+              navigation.navigate('Chats', { userName: userData.fname, uid: userData.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })
             }>
             <View style={styles.UserInfo}>
               <View style={styles.UserImgWrapper}>
@@ -80,11 +77,11 @@ const MessageScreen = ({ navigation }) => {
               </View>
               <View style={styles.TextSection}>
                 <View style={styles.UserInfoText}>
-                  <Text style={[styles.UserName,{color:colors.username}]}>
+                  <Text style={styles.UserName}>
                     {userData?.fname}
                   </Text>
                 </View>
-                <Text style={[styles.about,{color:colors.about}]}>
+                <Text style={styles.about}>
                   {userData?.about}
                 </Text>
               </View>

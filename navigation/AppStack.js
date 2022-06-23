@@ -7,7 +7,7 @@ import ProfileScreen from '../src/components/screens/ProfileScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
@@ -19,14 +19,12 @@ import SearchScreen from '../src/components/screens/SearchScreen';
 import LikeCommentFollowerScreen from '../src/components/screens/LikeCommentFollowerScreen';
 import ReelScreen from '../src/components/screens/ReelScreen';
 import PostReelScreen from '../src/components/screens/PostReelScreen'
-import { useTheme } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 function TabBar({ navigation }) {
   const [userProfile, setUserProfile] = useState(null)
-  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
 
   const getuserProfile = async () => {
@@ -46,8 +44,8 @@ function TabBar({ navigation }) {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: colors.tabBarActiveTintColor,
-        tabBarInactiveTintColor: colors.tabBarInactiveTintColor,
+        tabBarActiveTintColor: '#000',
+        tabBarInactiveTintColor: '#949494',
         tabBarStyle: {
           height: 52,
           shadowColor: '#fff'
@@ -64,13 +62,13 @@ function TabBar({ navigation }) {
           headerShown: true,
           headerTitle: 'Instagram',
           headerTitleStyle: {
-            color: colors.title
+            color: '#000'
           },
 
           headerRight: () => (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <AntDesign style={{ marginRight: '4%' }} name="plussquare" color={colors.icon} size={24} onPress={() => navigation.navigate('AddPost')} />
-              <AntDesign style={{ marginRight: '4%' }} name="message1" color={colors.icon} size={24} onPress={() => navigation.navigate('Messages')} />
+              <AntDesign style={{ marginRight: '4%' }} name="plussquare" color='#000' size={24} onPress={() => navigation.navigate('AddPost')} />
+              <AntDesign style={{ marginRight: '4%' }} name="message1" color='#000' size={24} onPress={() => navigation.navigate('Messages')} />
             </View>
           ),
           tabBarLabel: () => null,
@@ -105,7 +103,7 @@ function TabBar({ navigation }) {
           title: '',
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{ width: 33, height: 33, justifyContent: 'center', alignItems: 'center', borderRadius: 5, backgroudColor: colors.primary }}>
+            <View style={{ width: 33, height: 33, justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}>
               {focused ?
                 <Image style={{ width: 24, height: 24 }} source={require('../src/images/reel.png')} />
                 :
@@ -136,13 +134,13 @@ function TabBar({ navigation }) {
         options={{
           headerTitle: () => (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <Ionicons name='lock-closed-outline' size={20} color={colors.lock} />
-              <Text style={{ fontSize: 16, fontWeight: '500', color: colors.username, marginLeft: 4 }}>{userProfile?.email}</Text>
+              <Ionicons name='lock-closed-outline' size={20} color='#000' />
+              <Text style={{ fontSize: 16, fontWeight: '500', color: '#000', marginLeft: 4 }}>{userProfile?.email}</Text>
             </View>
           ),
           tabBarLabel: () => null,
           tabBarIcon: ({ color, size, focused }) => (
-            <View style={{ backgroundColor: focused ? colors.primary : colors.background, width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ backgroundColor: focused ? '#000' : '#fff', width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
               <Image style={{ width: 30, height: 30, borderRadius: 15 }} source={{ uri: userProfile?.userImg }} />
             </View>
           ),
@@ -154,7 +152,6 @@ function TabBar({ navigation }) {
 
 function AppStack({ navigation }) {
   const [userProfile, setUserProfile] = useState(null)
-  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
 
   const getuserProfile = async () => {
@@ -195,9 +192,10 @@ function AppStack({ navigation }) {
         name="HomeProfile"
         component={ProfileScreen}
         options={({ route }) => ({
+          headerShadowVisible: false,
           headerTitle: () => (
             <View style={{ justifyContent: 'center' }}>
-              <Text style={{ fontSize: 18, fontWeight: '500', color: colors.username }}>{route.params.email}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: '#000' }}>{route.params.email}</Text>
             </View>
           ),
         })}
@@ -209,7 +207,7 @@ function AppStack({ navigation }) {
           headerShadowVisible: false,
           title: userProfile?.email,
           headerTitleStyle: {
-            color: colors.username
+            color: '#000'
           },
         }}
       />
@@ -217,15 +215,13 @@ function AppStack({ navigation }) {
         name="Chats"
         component={ChatScreen}
         options={({ route }) => ({
+          headerShadowVisible: false,
           headerTitle: () => (
             <View style={{ flexDirection: 'column' }}>
-              <Text style={{ fontSize: 18, fontWeight: '500', color: colors.username }}>{route.params.userName}</Text>
-              <Text style={{ fontSize: 12, fontWeight: '400', color: colors.about }}>{moment(route.params.status).calendar()}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '500', color: '#000' }}>{route.params.userName}</Text>
+              <Text style={{ fontSize: 12, fontWeight: '400', color: '#949494' }}>{moment(route.params.status).calendar()}</Text>
             </View>
           ),
-          headerTitleStyle: {
-            color: '#2e64e5',
-          },
         })}
       />
       <Stack.Screen
