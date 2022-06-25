@@ -1,14 +1,11 @@
 import { View, TextInput, StyleSheet, Dimensions } from 'react-native';
 import React, { useState } from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { useTheme } from '@react-navigation/native'
 
 const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 const FormInput = ({ iconType, labelValue, placeholderText, ...rest }) => {
-  const { colors } = useTheme()
-
   return (
     <View style={styles.inputContainer}>
       <View style={styles.iconstyle}>

@@ -4,10 +4,12 @@ import {
   TouchableWithoutFeedback,
   Image,
 } from 'react-native';
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import Video from 'react-native-video';
 
-export  const ProgressiveImage = ({  source, defaultImageSource, ...props }) => {
+
+
+export const ProgressiveImage = ({ source, defaultImageSource, ...props }) => {
   return (
     <View style={styles.container}>
       <Image
@@ -20,7 +22,7 @@ export  const ProgressiveImage = ({  source, defaultImageSource, ...props }) => 
 
 }
 
-export const ProgressiveVideo = ({ poster,source, ...props }) => {
+export const ProgressiveVideo = ({ poster, source, ...props }) => {
   const [paused, setPaused] = useState(false);
 
   const playPaused = () => {

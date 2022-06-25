@@ -27,8 +27,6 @@ const ReelCard = ({ currindex, item, index }) => {
     const videoRef = useRef(null)
     const refRBSheet = useRef();
 
-    console.log("users", users)
-
     const onBuffer = (e) => {
         console.log("buffering", e)
     }

@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#fff'
+  },
   userImg: {
     height: 100,
     width: 100,
@@ -28,7 +31,7 @@ export const styles = StyleSheet.create({
   userBtn: {
     borderWidth: 2,
     borderRadius: 3,
-    paddingVertical: 8,
+    paddingVertical: 6,
     paddingHorizontal: 12,
     marginHorizontal: 5,
   },

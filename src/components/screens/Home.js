@@ -10,10 +10,9 @@ import { styles } from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { useNavigation,useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
 const HomeScreen = ({ navigation }) => {
-  const {colors}=useTheme()
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);

@@ -1,19 +1,17 @@
 import { View, Dimensions, StyleSheet, Text, Image } from 'react-native';
 import React from 'react';
-import { useTheme } from '@react-navigation/native'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const SplashScreen = ({ navigation }) => {
-  const { colors } = useTheme()
 
   setTimeout(() => {
     navigation.replace('Login')
   }, 3000);
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <View style={styles.container}>
       <View style={styles.titlecontainer}>
         <Image style={styles.logo} source={require('../../images/instagram.png')} />
       </View>
@@ -22,7 +20,7 @@ const SplashScreen = ({ navigation }) => {
       </Text>
       <View style={styles.metacontainer}>
         <Image style={styles.metaimg} source={require('../../images/meta.png')} />
-        <Text style={[styles.title, { color: colors.title }]}>
+        <Text style={styles.title}>
           meta
         </Text>
       </View>
@@ -36,7 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#fff'
   },
   titlecontainer: {
     justifyContent: 'center',
@@ -69,6 +68,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    fontWeight: '600'
+    fontWeight: '600',
+    color:'#242526'
   }
 })

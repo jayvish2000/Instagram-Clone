@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { Text, View, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import { styles } from '../../../styles/ProfileStyles';
@@ -8,17 +8,21 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import UserPostDataVideo from '../UserPostDataVideo'
 import UserPostData from '../UserPostData'
-import { useTheme } from '@react-navigation/native'
+import SuggestionScreen from '../../components/screens/suggestionScreen'
+
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = ({ navigation, route }) => {
-  const { colors } = useTheme()
+
   const { user, logout } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
   const [follow, setFollow] = useState(null);
+  const [allusers, setAllUsers] = useState(null);
 
   const fetchPosts = async () => {
     try {
@@ -130,10 +134,37 @@ const ProfileScreen = ({ navigation, route }) => {
   }
   useEffect(() => {
     getfollower()
+    getAllUser()
   }, [])
 
+  const getAllUser = async () => {
+    const list = [];
+    try {
+      await firestore()
+        .collection('users')
+        .where('uid', '!=', user.uid)
+        .onSnapshot((snapshot) => {
+          snapshot.docs.forEach(doc => {
+            const { fname, follower, following, uid, email, userImg } = doc.data()
+            list.push({
+              id: doc.id,
+              fname,
+              follower,
+              following,
+              uid,
+              email,
+              userImg
+            })
+          })
+          setAllUsers(list)
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  };
+
   return (
-    <View style={{ backgroundColor: '#fff' }}>
+    <ScrollView style={{ backgroundColor: '#fff' }} showsVerticalScrollIndicator={false}>
       <View
         style={{
           width: '100%',
@@ -161,11 +192,11 @@ const ProfileScreen = ({ navigation, route }) => {
         <View style={styles.userBtnWrapper}>
           {route.params ? (
             <>
-              {route.params.userId  != user.uid ?
+              {route.params.userId != user.uid ?
                 <>
                   <TouchableOpacity
                     style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
-                    onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: user.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
+                    onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: userData.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
                     <Text style={[styles.userBtnTxt, { color: '#000' }]}>Message</Text>
                   </TouchableOpacity>
                   <>
@@ -174,7 +205,7 @@ const ProfileScreen = ({ navigation, route }) => {
                         {userData?.follower.includes(user.uid) ?
                           <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
                             onPress={onfollow}>
-                            <Text style={[styles.userBtnTxt, { color: colors.text }]}>following</Text>
+                            <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
                           </TouchableOpacity>
                           :
                           <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f1', borderColor: '#3897f1' }]}
@@ -217,11 +248,11 @@ const ProfileScreen = ({ navigation, route }) => {
           ) : (
             <>
               <TouchableOpacity
-                style={[styles.userBtn, { borderColor: '#ECECEC'}]}
+                style={[styles.userBtn, { borderColor: '#ECECEC' }]}
                 onPress={() => navigation.navigate('EditProfile')}>
-                <Text style={[styles.userBtnTxt, { color:'#000' }]}>Edit Profile</Text>
+                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Edit Profile</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.userBtn, {borderColor: '#ECECEC' }]} onPress={() => {
+              <TouchableOpacity style={[styles.userBtn, { borderColor: '#ECECEC' }]} onPress={() => {
                 firestore()
                   .collection('users')
                   .doc(user.uid)
@@ -290,15 +321,32 @@ const ProfileScreen = ({ navigation, route }) => {
 
         </View>
       </View>
+      <View style={{ width: width, height: height / 4, justifyContent: 'center' }}>
+        {route.params ?
+          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%' }}>
+            Suggested for you
+          </Text>
+          :
+          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%' }}>
+            Discover people
+          </Text>
+        }
+        <FlatList horizontal
+          data={allusers}
+          renderItem={({ item }) => (
+            <SuggestionScreen item={item} />
+          )}
+        />
+      </View>
 
-      <View style={{ width: '100%', height: '70%' }}>
+      <View style={{ width: width, height: height }}>
         <Tab.Navigator
           screenOptions={{
-            tabBarActiveTintColor:'#000',
+            tabBarActiveTintColor: '#000',
             headerShown: false,
             tabBarInactiveTintColor: '#949494',
             tabBarIndicatorStyle: {
-              width: '50%', height: 1, backgroundColor: '#000'
+              width: '50%', height: 1, backgroundColor: '#ECECEC'
             },
             tabBarStyle: {
               shadowColor: '#fff', marginBottom: 1,
@@ -327,7 +375,7 @@ const ProfileScreen = ({ navigation, route }) => {
           />
         </Tab.Navigator>
       </View>
-    </View >
+    </ScrollView>
   );
 };
 

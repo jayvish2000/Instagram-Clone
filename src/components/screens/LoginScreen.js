@@ -12,10 +12,8 @@ import FormButton from '../FormButton';
 import SocialButton from '../SocialButton';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import FormInputPassword from '../FormInputPassword';
-import { useTheme } from '@react-navigation/native'
 
 const LoginScreen = ({ navigation }) => {
-  const { colors } = useTheme()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -23,7 +21,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 30, fontWeight: '600', color: '#000', textAlign: 'center', marginBottom: '20%' }}>Instagram</Text>
+    <Image style={{width:'60%',height:'8%',marginBottom:'10%'}} source={require('../../images/logo.png')}/>
       <FormInput
         keyboardType="email-address"
         placeholderText="Email"

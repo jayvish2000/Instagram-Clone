@@ -2,7 +2,6 @@ import {View, TextInput, StyleSheet, Pressable,Dimensions} from 'react-native';
 import React, {useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useTheme } from '@react-navigation/native'
  
 const height =Dimensions.get('window').height
 const width = Dimensions.get('window').width
@@ -14,7 +13,6 @@ const FormInputPassword = ({
   secureTextEntry,
   ...rest
 }) => {
-  const { colors } = useTheme()
   const [isSecureEntry, setIsSecureEntry] = useState(false);
   const [rightIcon, setRightIcon] = useState('eye');
 

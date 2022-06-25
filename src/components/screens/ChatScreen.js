@@ -111,8 +111,7 @@ const ChatScreen = ({ route }) => {
         {...props}
         wrapperStyle={{
           right: {
-            backgroundColor: colors.chatright,
-            borderRadius: 15,
+            backgroundColor: '#3897f1'
           },
           left: {
             backgroundColor: '#ECECEC'
@@ -159,14 +158,14 @@ const ChatScreen = ({ route }) => {
             onPress: () => renderSend(text, onSend),
           }}>
           <View style={{ padding: 10, justifyContent: 'center', alignItems: 'center', alignSelf: 'center' }}>
-            <MaterialCommunityIcons name='send' size={25} color={colors.primary} />
+            <MaterialCommunityIcons name='send' size={25} color='#3879f1' />
           </View>
         </Send>
       )
     } else {
       return (
         <TouchableOpacity style={{ padding: 10, justifyContent: 'center', alignItems: 'center' }}>
-          <MaterialCommunityIcons name='microphone' color={colors.primary} size={25} />
+          <MaterialCommunityIcons name='microphone' color='#3879f1' size={25} />
         </TouchableOpacity>
       )
     }
@@ -190,10 +189,11 @@ const ChatScreen = ({ route }) => {
   const renderMessageVideo = (props) => {
     const { video } = props.currentMessage
     return (
-      <Pressable onPress={playPaused} style={{ width: Dimensions.get('window').width / 1.4, height: Dimensions.get('window').height / 4.5, marginTop: '8%', justifyContent: 'center', alignItems: 'center' }}>
-        <Video style={{ height: Dimensions.get('window').height / 4.5 }}
+      <Pressable onPress={playPaused} style={{ width: Dimensions.get('window').width/1.5, height: Dimensions.get('window').height/4.4, justifyContent: 'center', alignItems: 'center' }}>
+        <Video style={{ width: Dimensions.get('window').width/1.5, height: Dimensions.get('window').height / 5.6 }}
           source={{ uri: video }}
           paused={paused}
+          resizeMode="cover"
         />
       </Pressable>
     )
@@ -230,7 +230,6 @@ const ChatScreen = ({ route }) => {
       try {
         await task
         const url = await storageRef.getDownloadURL();
-        // console.log('urlsignup', url)
         setImage(url)
       } catch (e) {
         console.log(e)
@@ -241,7 +240,6 @@ const ChatScreen = ({ route }) => {
 
   const uploadCameraImage = async () => {
     await ImagePicker.openCamera({
-      // cropping: true,
       mediaType: 'any'
     }).then(async (imguri) => {
       const imageUri = Platform.OS === 'ios' ? imguri.sourceURL : imguri.path;
@@ -257,7 +255,6 @@ const ChatScreen = ({ route }) => {
       try {
         await task
         const url = await storageRef.getDownloadURL();
-        console.log('CameraUrl', url)
         setCamera(url)
       } catch (e) {
         console.log(e)
@@ -305,17 +302,18 @@ const ChatScreen = ({ route }) => {
   };
 
   const onDelete = (message) => {
-    // const docid = uid > user.uid ? user.uid + "-" + uid : uid + "-" + user.uid
+    const docid = uid > user.uid ? user.uid + "-" + uid : uid + "-" + user.uid
     // firestore()
     //   .collection('chats')
     //   .doc(docid)
     //   .collection('messages')
-    //   .doc(message)
+    //   .doc(message._id)
     //   .delete()
     //   .then(() => {
     //     Alert.alert("delete successfully")
     //   })
     //   .catch(e => console.log('❌❌❌❌❌', e));
+    setMessages(previousMessages => previousMessages !== message._id)
   }
 
   const onLongPress = (context, _id) => {
@@ -352,7 +350,7 @@ const ChatScreen = ({ route }) => {
         <InputToolbar
           {...props}
           containerStyle={{
-            backgroundColor:'#ECECEC',
+            backgroundColor: '#ECECEC',
             borderTopWidth: 0,
             marginRight: 5,
             marginLeft: 5,

@@ -60,14 +60,12 @@ function TabBar({ navigation }) {
         options={{
           title: '',
           headerShown: true,
-          headerTitle: 'Instagram',
-          headerTitleStyle: {
-            color: '#000'
-          },
-
+          headerLeft: () => (
+            <Image style={{ width: 110, height: 40, marginLeft: '4%' }} source={require('../src/images/logo.png')} />
+          ),
           headerRight: () => (
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-              <AntDesign style={{ marginRight: '4%' }} name="plussquare" color='#000' size={24} onPress={() => navigation.navigate('AddPost')} />
+              <AntDesign style={{ marginRight: '4%' }} name="plussquareo" color='#000' size={24} onPress={() => navigation.navigate('AddPost')} />
               <AntDesign style={{ marginRight: '4%' }} name="message1" color='#000' size={24} onPress={() => navigation.navigate('Messages')} />
             </View>
           ),

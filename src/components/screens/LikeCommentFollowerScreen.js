@@ -3,15 +3,12 @@ import React, { useState, useEffect, useContext } from 'react'
 import styles from '../../../styles/LCFStyles'
 import firestore from '@react-native-firebase/firestore'
 import { AuthContext } from '../../../navigation/AuthProvider';
-import { useTheme } from '@react-navigation/native'
 
 const LikeCommentFollowerScreen = ({ navigation }) => {
-    const { colors } = useTheme()
     const { user } = useContext(AuthContext);
     const [follower, setFollower] = useState([])
     const [comment, setComment] = useState([])
     const [like, setLike] = useState([])
-    const [post, setPosts] = useState([])
     const [commentmsg, setCommentmsg] = useState([])
 
     const fetchFollower = async () => {
@@ -40,7 +37,6 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
             .get()
             .then((documentSnapshot) => {
                 documentSnapshot.docs.forEach((doc) => {
-                    console.log("like", doc.data())
                     const { likesbyusers } = doc.data()
                     likesbyusers.map((item) => {
                         firestore()
@@ -92,7 +88,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
                             like your post.
                         </Text>
                     </View>
-                    {/* <Image style={styles.postimg} source={{ uri: post.postImg }} /> */}
+                    {/* <Image style={styles.postimg} source={{ uri: like.postImg }} /> */}
                 </View>
             </TouchableOpacity>
         )
@@ -114,6 +110,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
                 </View>
             </TouchableOpacity>
         )
+
     }
 
     const commentcurrentuserpost = () => {

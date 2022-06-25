@@ -23,10 +23,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import auth from '@react-native-firebase/auth';
 import FormInputPassword from '../FormInputPassword';
 import { AuthContext } from '../../../navigation/AuthProvider';
-import { useTheme } from '@react-navigation/native'
 
 const SignUpScreen = ({ navigation }) => {
-  const { colors } = useTheme()
   const { googleLogin } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

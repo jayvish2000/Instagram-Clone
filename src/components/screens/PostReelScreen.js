@@ -18,13 +18,11 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
-import { useTheme } from '@react-navigation/native'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
 const PostReelScreen = ({ item, navigation }) => {
-  const { colors } = useTheme()
   const { user } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [video, setVideo] = useState(null);
