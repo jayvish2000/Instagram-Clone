@@ -169,10 +169,9 @@ const ProfileScreen = ({ navigation, route }) => {
         style={{
           width: '100%',
           height: 280,
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: 18,
+          // marginBottom: 18,
         }}>
+          <View style={styles.maincontainer}>
         <Image
           style={styles.userImg}
           source={{
@@ -182,92 +181,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
           }}
         />
-        <Text style={[styles.userName, { color: '#000' }]}>
-          {userData ? userData.fname : ''}
-        </Text>
-        <Text style={[styles.aboutUser, { color: '#9b9b9b' }]}>
-          {userData ? userData.about : ''}
-        </Text>
-
-        <View style={styles.userBtnWrapper}>
-          {route.params ? (
-            <>
-              {route.params.userId != user.uid ?
-                <>
-                  <TouchableOpacity
-                    style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
-                    onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: userData.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
-                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Message</Text>
-                  </TouchableOpacity>
-                  <>
-                    {route.params.userId || route.params.uid != user.uid ?
-                      <>
-                        {userData?.follower.includes(user.uid) ?
-                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
-                            onPress={onfollow}>
-                            <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
-                          </TouchableOpacity>
-                          :
-                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f1', borderColor: '#3897f1' }]}
-                            onPress={onfollow}>
-                            <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
-                          </TouchableOpacity>
-
-                        }
-                      </>
-                      :
-                      null
-
-                    }
-                  </>
-
-                </>
-                :
-                <>
-                  <TouchableOpacity
-                    style={[styles.userBtn, { borderColor: '#ECECEC' }]}
-                    onPress={() => navigation.navigate('EditProfile')}>
-                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Edit Profile</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={[styles.userBtn, { borderColor: '#ECECEC' }]} onPress={() => {
-                    firestore()
-                      .collection('users')
-                      .doc(user.uid)
-                      .update({
-                        status: firestore.FieldValue.serverTimestamp()
-                      }).then(() => {
-                        logout()
-                      })
-                  }}>
-                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Logout</Text>
-                  </TouchableOpacity>
-                </>
-              }
-            </>
-
-          ) : (
-            <>
-              <TouchableOpacity
-                style={[styles.userBtn, { borderColor: '#ECECEC' }]}
-                onPress={() => navigation.navigate('EditProfile')}>
-                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Edit Profile</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.userBtn, { borderColor: '#ECECEC' }]} onPress={() => {
-                firestore()
-                  .collection('users')
-                  .doc(user.uid)
-                  .update({
-                    status: firestore.FieldValue.serverTimestamp()
-                  }).then(() => {
-                    logout()
-                  })
-              }}>
-                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Logout</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-        <View style={styles.userInfoWrapper}>
+            <View style={styles.userInfoWrapper}>
           <View style={styles.userInfoItem}>
             <Text style={[styles.userInfoTitle, { color: '#000' }]}>{posts.length}</Text>
             <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Posts</Text>
@@ -318,16 +232,78 @@ const ProfileScreen = ({ navigation, route }) => {
             }
             <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Following</Text>
           </View>
-
+          </View>
         </View>
+        <Text style={styles.userName}>
+          {userData ? userData.fname : ''}
+        </Text>
+        <Text style={styles.aboutUser}>
+          {userData ? userData.about : ''}
+        </Text>
+
+        <View style={styles.userBtnWrapper}>
+          {route.params ? (
+            <>
+              {route.params.userId != user.uid ?
+                <>
+                  <TouchableOpacity
+                    style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC'}]}
+                    onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: userData.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
+                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Message</Text>
+                  </TouchableOpacity>
+                  <>
+                    {route.params.userId || route.params.uid != user.uid ?
+                      <>
+                        {userData?.follower.includes(user.uid) ?
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
+                            onPress={onfollow}>
+                            <Text style={[styles.userBtnTxt, { color: '#000' }]}>following</Text>
+                          </TouchableOpacity>
+                          :
+                          <TouchableOpacity style={[styles.userBtn, { backgroundColor: '#3897f1', borderColor: '#3897f1' }]}
+                            onPress={onfollow}>
+                            <Text style={[styles.userBtnTxt, { color: '#fff' }]}>follow</Text>
+                          </TouchableOpacity>
+
+                        }
+                      </>
+                      :
+                      null
+
+                    }
+                  </>
+
+                </>
+                :
+                <>
+                  <TouchableOpacity
+                    style={styles.userBtnprofile}
+                    onPress={() => navigation.navigate('EditProfile')}>
+                    <Text style={[styles.userBtnTxt, { color: '#000' }]}>Edit Profile</Text>
+                  </TouchableOpacity>
+                </>
+              }
+            </>
+
+          ) : (
+            <>
+              <TouchableOpacity
+                style={styles.userBtnprofile}
+                onPress={() => navigation.navigate('EditProfile')}>
+                <Text style={[styles.userBtnTxt, { color: '#000' }]}>Edit Profile</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </View>
+    
       </View>
       <View style={{ width: width, height: height / 4, justifyContent: 'center' }}>
         {route.params ?
-          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%' }}>
+          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%',marginBottom:'3%' }}>
             Suggested for you
           </Text>
           :
-          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%' }}>
+          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%' ,marginBottom:'3%'}}>
             Discover people
           </Text>
         }
@@ -375,7 +351,7 @@ const ProfileScreen = ({ navigation, route }) => {
           />
         </Tab.Navigator>
       </View>
-    </ScrollView>
+    </ScrollView >
   );
 };
 

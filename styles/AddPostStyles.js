@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center',
-    backgroundColor:'#fff'
+    justifyContent: 'center',
+    backgroundColor: '#fff'
   },
   InputWrapper: {
     justifyContent: 'center',
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   imageWrapper: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     marginBottom: 10,
   },
   StatusWrapper: {
@@ -39,11 +39,20 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     width: '30%',
-    backgroundColor:'#3897f1'
+    backgroundColor: '#3897f1'
+  },
+  btncontainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    margin: 16,
+    backgroundColor: 'transparent',
+    zIndex: 2,
+    position: 'relative',
   },
   submitbtntext: {
     fontSize: 15,
     fontWeight: 'bold',
-    color:'#fff'
+    color: '#fff'
   },
 });

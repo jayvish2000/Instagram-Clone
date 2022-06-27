@@ -18,6 +18,7 @@ import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import Video from 'react-native-video';
+import Entypo from 'react-native-vector-icons/Entypo'
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -183,57 +184,68 @@ const PostReelScreen = ({ item, navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.InputWrapper}>
+    <View style={{ backgroundColor: '#000', position: 'relative', flex: 1 }}>
+      {uploading ? (
+        <View style={[styles.StatusWrapper, { backgroundColor: 'transparent', position: 'relative', zIndex: 2 }]}>
+          <ActivityIndicator size="large" color="#3897f1" />
+        </View>
+      ) : (
+        <View style={styles.btncontainer}>
+          <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <Entypo name='cross' color='#fff' size={30} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={submitPost}>
+            <Text style={styles.submitbtntext}>Post Reel</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      <View style={[styles.InputWrapper, { height: height }]}>
         {image != null ? (
-          <View style={{ width: width, height: height / 2 }}>
+          <View style={{
+            width: width, height: height, zIndex: 1,
+            position: 'absolute',
+          }}>
             <Image style={styles.imageWrapper} source={{ uri: image }} />
           </View>
         ) : (
           <Video
-            style={{ width: width, height: height / 3.7 }}
+            style={{
+              width: width, height: height, zIndex: 1,
+              position: 'absolute',
+            }}
             source={{ uri: video }}
             resizeMode='cover'
           />
         )}
         <TextInput
-          style={styles.Inputfield}
-          placeholder="What's on your mind?"
+          style={[styles.Inputfield, {
+            backgroundColor: 'transparent',
+            zIndex: 2, color: '#fff', height: height,
+          }]}
+          // placeholder="What's on your mind?"
           multiline
           numberOfLines={4}
           value={post}
           onChangeText={content => setPost(content)}
         />
-        {uploading ? (
-          <View style={styles.StatusWrapper}>
-            <Text style={{ fontSize: 15, color: '#3897f1', fontWeight: '500' }}>
-              {transferred} % Completed
-            </Text>
-            <ActivityIndicator size="large" color="#3897f1" />
-          </View>
-        ) : (
-          <TouchableOpacity style={styles.submitbtn} onPress={submitPost}>
-            <Text style={styles.submitbtntext}>Post Reel</Text>
-          </TouchableOpacity>
-        )}
       </View>
       <ActionButton
-        style={styles.actionButtonIcon}
+        style={[styles.actionButtonIcon, { backgroundColor: 'transparent', zIndex: 2 }]}
         buttonColor="rgba(231,76,60,1)">
         <ActionButton.Item
           buttonColor="#9b59b6"
           title=""
           onPress={takePhotoFromCamera}>
-          <Icon name="camera" style={styles.actionButtonIcon} />
+          <Icon name="camera" style={[styles.actionButtonIcon, { backgroundColor: 'transparent', zIndex: 2 }]} />
         </ActionButton.Item>
         <ActionButton.Item
           buttonColor="#3498db"
           title=""
           onPress={choosePhotoFromLibrary}>
-          <Icon name="md-images" style={styles.actionButtonIcon} />
+          <Icon name="md-images" style={[styles.actionButtonIcon, { backgroundColor: 'transparent', zIndex: 2 }]} />
         </ActionButton.Item>
         <ActionButton.Item buttonColor="#3498db" title="" onPress={videolaunch}>
-          <Icon name="md-videocam-sharp" style={styles.actionButtonIcon} />
+          <Icon name="md-videocam-sharp" style={[styles.actionButtonIcon, { backgroundColor: 'transparent', zIndex: 2 }]} />
         </ActionButton.Item>
       </ActionButton>
     </View>

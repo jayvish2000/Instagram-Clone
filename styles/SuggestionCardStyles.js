@@ -30,11 +30,15 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     userBtn: {
-        borderWidth: 2,
-        borderRadius: 3,
-        paddingVertical: 4,
-        paddingHorizontal: 12,
+        justifyContent: 'center',
+        alignItems:'center',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingVertical: 6,
+        paddingHorizontal:'14%',
         marginHorizontal: 5,
+        borderColor:'#ECECEC',
+        marginTop:'10%'
     },
     userBtnTxt: {
         fontSize: 16,

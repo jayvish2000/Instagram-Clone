@@ -162,7 +162,7 @@ const ReelCard = ({ currindex, item, index }) => {
     }
 
     return (
-        <View style={[styles.container, { height: height - 52, borderBottomWidth: 1, borderBottomColor: '#D4D4D4' }, index % 2 == 0 ? { backgroundColor: "#ADD8E6" } : { backgroundColor: "pink" }]}>
+        <View style={[styles.container, { height: height - 52, borderBottomWidth: 1, borderBottomColor: '#000' }, index % 2 == 0 ? { backgroundColor: "#000" } : { backgroundColor: "#000" }]}>
             <View style={styles.textcontainer}>
                 <Text style={styles.textreel}>Reels</Text>
                 <Feather name="camera" color="#fff" size={26} onPress={() => navigation.navigate('ReelPost')} />

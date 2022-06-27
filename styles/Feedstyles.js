@@ -16,9 +16,9 @@ export const styles = StyleSheet.create({
     padding: 15,
   },
   UserImg: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 35,
+    height: 35,
+    borderRadius: 35/2,
   },
   UserName: {
     fontSize: 15,
