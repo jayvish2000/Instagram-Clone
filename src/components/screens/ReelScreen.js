@@ -1,4 +1,4 @@
-import { View, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator,Alert,ToastAndroid } from 'react-native'
 import React, { useRef, useEffect, useState } from 'react'
 import styles from '../../../styles/ReelStyles'
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
@@ -9,6 +9,7 @@ const ReelScreen = ({ navigation }) => {
     const [currindex, setIndex] = useState(0)
     const [reels, setReels] = useState([])
     const [loading, setLoading] = useState(true);
+    const [deleted, setDeleted] = useState(false);
     const videoRef = useRef(null)
 
     const onChangeIndex = ({ index }) => {
@@ -64,7 +65,70 @@ const ReelScreen = ({ navigation }) => {
     }
     useEffect(() => {
         fetchReels()
-    }, [])
+        setDeleted(false);
+    }, [deleted])
+
+    const deleteReel = reelId => {
+        firestore()
+          .collection('reels')
+          .doc(reelId)
+          .get()
+          .then(documentSnapshot => {
+            if (documentSnapshot.exists) {
+              const { posts } = documentSnapshot.data();
+    
+              if (posts != null) {
+                const storageRef = storage().refFromURL(posts);
+                const filesRef = storage().ref(storageRef.fullPath);
+    
+                filesRef
+                  .delete()
+                  .then(() => {
+                    deleteFirestoreData(reelId);
+                    setDeleted(true);
+                  })
+                  .catch(e => {
+                    console.log('😢😢😢😢', e);
+                  });
+              } else {
+                deleteFirestoreData(reelId);
+              }
+            }
+          });
+      };
+    
+      const deleteFirestoreData = reelId => {
+        firestore()
+          .collection('reels')
+          .doc(reelId)
+          .delete()
+          .then(() => {
+            ToastAndroid.show(
+              'Reel has been deleted successfully',
+              ToastAndroid.SHORT,
+            );
+          })
+          .catch(e => console.log('❌❌❌❌❌', e));
+      };
+    
+      const handledelete = reelId => {
+        Alert.alert(
+          'Delete reel',
+          'Are you sure?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => console.log('cancel Pressed!😊😊😊😊😊😊'),
+              style: 'cancel',
+            },
+            {
+              text: 'Confirm',
+              onPress: () => deleteReel(reelId),
+            },
+          ],
+          { cancelable: false },
+        );
+      };
 
     return (
         <View style={styles.container}>
@@ -83,7 +147,7 @@ const ReelScreen = ({ navigation }) => {
                     data={reels}
                     onRefresh={() => fetchReels()}
                     refreshing={loading}
-                    renderItem={({ item, index }) => <ReelCard item={item} currindex={currindex} index={index} />}
+                    renderItem={({ item, index }) => <ReelCard item={item} currindex={currindex} index={index}  ondelete={handledelete}/>}
                     onChangeIndex={onChangeIndex}
                     keyExtractor={(item, index) => index.toString()}
                 />

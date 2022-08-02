@@ -183,7 +183,7 @@ function TabBar({ navigation }) {
             ),
             headerRight: () => (
               <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <SimpleLineIcons style={{ marginRight: '12%' }} name="menu" color='#000' size={26} onPress={() => refRBSheet.current.open()} />
+                <SimpleLineIcons style={{ marginRight: '12%' }} name="menu" color='#000' size={24} onPress={() => refRBSheet.current.open()} />
               </View>
             ),
           }}

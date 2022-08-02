@@ -169,7 +169,7 @@ const ProfileScreen = ({ navigation, route }) => {
         style={{
           width: '100%',
           height: 280,
-          // marginBottom: 18,
+          marginTop: 14,
         }}>
           <View style={styles.maincontainer}>
         <Image

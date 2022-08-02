@@ -186,19 +186,22 @@ const PostReelScreen = ({ item, navigation }) => {
   return (
     <View style={{ backgroundColor: '#000', position: 'relative', flex: 1 }}>
       {uploading ? (
-        <View style={[styles.StatusWrapper, { backgroundColor: 'transparent', position: 'relative', zIndex: 2 }]}>
-          <ActivityIndicator size="large" color="#3897f1" />
+        <View style={[styles.StatusWrapper, {
+          backgroundColor: 'transparent', position: 'absolute', zIndex: 2, height: height, justifyContent: 'center', alignSelf: 'center'
+        }]}>
+          < ActivityIndicator size="large" color="#3897f1" />
         </View>
       ) : (
         <View style={styles.btncontainer}>
-          <TouchableOpacity onPress={()=>navigation.goBack()}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Entypo name='cross' color='#fff' size={30} />
           </TouchableOpacity>
           <TouchableOpacity onPress={submitPost}>
             <Text style={styles.submitbtntext}>Post Reel</Text>
           </TouchableOpacity>
         </View>
-      )}
+      )
+      }
       <View style={[styles.InputWrapper, { height: height }]}>
         {image != null ? (
           <View style={{
@@ -248,7 +251,7 @@ const PostReelScreen = ({ item, navigation }) => {
           <Icon name="md-videocam-sharp" style={[styles.actionButtonIcon, { backgroundColor: 'transparent', zIndex: 2 }]} />
         </ActionButton.Item>
       </ActionButton>
-    </View>
+    </View >
   );
 };
 

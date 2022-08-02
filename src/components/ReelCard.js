@@ -16,7 +16,7 @@ import auth from '@react-native-firebase/auth';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
-const ReelCard = ({ currindex, item, index }) => {
+const ReelCard = ({ currindex, item, index, ondelete }) => {
     const { user } = useContext(AuthContext);
     const navigation = useNavigation()
     const [users, setUser] = useState(null)
@@ -167,18 +167,22 @@ const ReelCard = ({ currindex, item, index }) => {
                 <Text style={styles.textreel}>Reels</Text>
                 <Feather name="camera" color="#fff" size={26} onPress={() => navigation.navigate('ReelPost')} />
             </View>
-            <Video
-                style={styles.videocontainer}
-                ref={videoRef}
-                onBuffer={onBuffer}
-                onError={onError}
-                source={{ uri: item ? item.reelvideo || 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' : 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
-                resizeMode="cover"
-                repeat
-                rate={1.0}
-                volume={1.0}
-                paused={currindex !== index}
-            />
+            {item.reelImg ?
+                <Image style={[styles.videocontainer, { resizeMode: "contain" }]} source={{ uri: item.reelImg }} />
+                :
+                <Video
+                    style={styles.videocontainer}
+                    ref={videoRef}
+                    onBuffer={onBuffer}
+                    onError={onError}
+                    source={{ uri: item ? item.reelvideo || 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' : 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' }}
+                    resizeMode="cover"
+                    repeat
+                    rate={1.0}
+                    volume={1.0}
+                    paused={currindex !== index}
+                />
+            }
             <View style={styles.bottomcontainer}>
                 <View style={styles.userinfocontainer}>
                     <Image style={styles.userimg} source={{
@@ -237,6 +241,13 @@ const ReelCard = ({ currindex, item, index }) => {
                 <TouchableOpacity style={styles.rightouchcontainer} onPress={ShareData}>
                     <MaterialCommunityIcons name="share" color="#fff" size={30} />
                 </TouchableOpacity>
+                {user.uid === item.userId ?
+                    <TouchableOpacity style={styles.rightouchcontainer} onPress={() => ondelete(item.id)}>
+                        <MaterialCommunityIcons name="delete-outline" color="#fff" size={30} />
+                    </TouchableOpacity>
+                    :
+                    null
+                }
             </View>
             <RBSheet
                 ref={refRBSheet}
