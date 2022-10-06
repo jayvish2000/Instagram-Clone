@@ -7,8 +7,8 @@ import {
   ToastAndroid,
   Image,
   ActivityIndicator,
-  Alert,
-  Appearance
+  ScrollView,
+  Dimensions
 } from 'react-native';
 import React, { useState, useRef, useContext } from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -24,6 +24,8 @@ import auth from '@react-native-firebase/auth';
 import FormInputPassword from '../FormInputPassword';
 import { AuthContext } from '../../../navigation/AuthProvider';
 
+const { width, height } = Dimensions.get('window')
+
 const SignUpScreen = ({ navigation }) => {
   const { googleLogin } = useContext(AuthContext);
   const [email, setEmail] = useState('');
@@ -33,12 +35,7 @@ const SignUpScreen = ({ navigation }) => {
   const [phone, setPhone] = useState('');
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [theme, setTheme] = useState(Appearance.getColorScheme());
   const refRBSheet = useRef();
-
-  Appearance.addChangeListener((scheme) => {
-    setTheme(scheme.colorScheme)
-  })
 
   const uploadImage = async () => {
     if (image == null) {
@@ -137,213 +134,215 @@ const SignUpScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={true}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'transparent',
-          },
-          draggableIcon: {
-            backgroundColor: '#000',
-          },
-        }}
-        height={240}>
-        <Text style={styles.chooseimg}>Choose Picture</Text>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            marginBottom: 20,
-            borderBottomColor: '#D4D4D4',
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ width: width - 40, height: height, justifyContent: 'center', alignItems: 'center' }}>
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={true}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'transparent',
+            },
+            draggableIcon: {
+              backgroundColor: '#000',
+            },
           }}
-        />
-
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 5,
-              marginLeft: 10,
-            }}
-            onPress={takePhotoFromCamera}>
-            <View
-              style={{
-                position: 'relative',
-                borderRadius: 20,
-                elevation: 2,
-                height: 40,
-                width: 40,
-                backgroundColor: '#000',
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#fff'
-              }}>
-              <MaterialCommunityIcons name="camera" size={25} color="#fff" />
-            </View>
-            <Text
-              style={{
-                color: '#000',
-                fontSize: 16,
-                padding: 12,
-              }}>
-              From Camera
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
-              padding: 5,
-              marginLeft: 10,
-            }}
-            onPress={choosePhotoFromLibrary}>
-            <View
-              style={{
-                position: 'relative',
-                borderRadius: 20,
-                overflow: 'hidden',
-                elevation: 2,
-                height: 40,
-                width: 40,
-                backgroundColor: '#000',
-                justifyContent: 'center',
-                alignItems: 'center',
-                shadowColor: '#fff'
-              }}>
-              <MaterialCommunityIcons
-                name="folder-image"
-                size={25}
-                color="#fff"
-              />
-            </View>
-            <Text
-              style={{
-                color: '#000',
-                fontSize: 16,
-                padding: 12,
-              }}>
-              From Gallery
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </RBSheet>
-      <View
-        style={{
-          height: 100,
-          width: 100,
-          borderRadius: 50,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => refRBSheet.current.open()}>
-          {image ? (
-            <Image
-              source={{
-                uri: image,
-              }}
-              style={styles.imgbg}
-              imageStyle={{ borderRadius: 50 }}
-            />
-          ) : (
-            <Image
-              source={{
-                uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
-              }}
-              style={styles.imgbg}
-              imageStyle={{ borderRadius: 50 }}
-            />
-          )}
+          height={240}>
+          <Text style={styles.chooseimg}>Choose Picture</Text>
           <View
             style={{
-              bottom: '25%',
-              left: '75%',
-              backgroundColor: '#fff',
-              width: 26,
-              height: 26,
-              borderRadius: 26 / 2,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <MaterialIcons name="add-circle" size={25} color="#3897f1" />
-          </View>
-        </TouchableOpacity>
-      </View>
-      <FormInput
-        placeholderText="Name"
-        iconType="user"
-        autoCaitalize="none"
-        labelValue={fname}
-        onChangeText={fname => setFname(fname)}
-      />
-      <FormInput
-        keyboardType="email-address"
-        placeholderText="Email"
-        iconType="user"
-        autoCaitalize="none"
-        labelValue={email}
-        onChangeText={userEmail => setEmail(userEmail)}
-      />
-
-      <FormInput
-        placeholderText="Phone"
-        iconType="phone"
-        autoCaitalize="none"
-        value={phone}
-        onChangeText={phone => setPhone(phone)}
-      />
-
-      <FormInputPassword
-        placeholderText="Password"
-        iconType="lock"
-        labelValue={password}
-        secureTextEntry
-        onChangeText={userPassword => setPassword(userPassword)}
-      />
-      <FormInputPassword
-        placeholderText="ConfirmPassword"
-        iconType="lock"
-        labelValue={confirmpassword}
-        secureTextEntry
-        onChangeText={userPassword => setConfirmPassword(userPassword)}
-      />
-      {uploading ? (
-        <View style={styles.StatusWrapper}>
-          <ActivityIndicator size="large" color="#2e64e5" />
-        </View>
-      ) : (
-        <FormButton buttonTitle="Signup" onPress={() => register()} />
-      )}
-      <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
-        <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
-        <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
-      </View>
-      {Platform.OS === 'android' ? (
-        <View>
-          <SocialButton
-            onPress={() => googleLogin()}
+              borderBottomWidth: 1,
+              marginBottom: 20,
+              borderBottomColor: '#D4D4D4',
+            }}
           />
-        </View>
-      ) : null}
 
-      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={styles.navbtntext}>
-         Already have an account?
-        </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Login')}
-          style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
-          <Text style={[styles.navbtntext, { color: '#3897f1', marginLeft: 4 }]}>Log in</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 5,
+                marginLeft: 10,
+              }}
+              onPress={takePhotoFromCamera}>
+              <View
+                style={{
+                  position: 'relative',
+                  borderRadius: 20,
+                  elevation: 2,
+                  height: 40,
+                  width: 40,
+                  backgroundColor: '#000',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#fff'
+                }}>
+                <MaterialCommunityIcons name="camera" size={25} color="#fff" />
+              </View>
+              <Text
+                style={{
+                  color: '#000',
+                  fontSize: 16,
+                  padding: 12,
+                }}>
+                From Camera
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                alignItems: 'center',
+                padding: 5,
+                marginLeft: 10,
+              }}
+              onPress={choosePhotoFromLibrary}>
+              <View
+                style={{
+                  position: 'relative',
+                  borderRadius: 20,
+                  overflow: 'hidden',
+                  elevation: 2,
+                  height: 40,
+                  width: 40,
+                  backgroundColor: '#000',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  shadowColor: '#fff'
+                }}>
+                <MaterialCommunityIcons
+                  name="folder-image"
+                  size={25}
+                  color="#fff"
+                />
+              </View>
+              <Text
+                style={{
+                  color: '#000',
+                  fontSize: 16,
+                  padding: 12,
+                }}>
+                From Gallery
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </RBSheet>
+        <View
+          style={{
+            height: 100,
+            width: 100,
+            borderRadius: 50,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => refRBSheet.current.open()}>
+            {image ? (
+              <Image
+                source={{
+                  uri: image,
+                }}
+                style={styles.imgbg}
+                imageStyle={{ borderRadius: 50 }}
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png',
+                }}
+                style={styles.imgbg}
+                imageStyle={{ borderRadius: 50 }}
+              />
+            )}
+            <View
+              style={{
+                bottom: '25%',
+                left: '75%',
+                backgroundColor: '#fff',
+                width: 26,
+                height: 26,
+                borderRadius: 26 / 2,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <MaterialIcons name="add-circle" size={25} color="#3897f1" />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <FormInput
+          placeholderText="Name"
+          iconType="user"
+          autoCaitalize="none"
+          labelValue={fname}
+          onChangeText={fname => setFname(fname)}
+        />
+        <FormInput
+          keyboardType="email-address"
+          placeholderText="Email"
+          iconType="user"
+          autoCaitalize="none"
+          labelValue={email}
+          onChangeText={userEmail => setEmail(userEmail)}
+        />
+
+        <FormInput
+          placeholderText="Phone"
+          iconType="phone"
+          autoCaitalize="none"
+          value={phone}
+          onChangeText={phone => setPhone(phone)}
+        />
+
+        <FormInputPassword
+          placeholderText="Password"
+          iconType="lock"
+          labelValue={password}
+          secureTextEntry
+          onChangeText={userPassword => setPassword(userPassword)}
+        />
+        <FormInputPassword
+          placeholderText="ConfirmPassword"
+          iconType="lock"
+          labelValue={confirmpassword}
+          secureTextEntry
+          onChangeText={userPassword => setConfirmPassword(userPassword)}
+        />
+        {uploading ? (
+          <View style={styles.StatusWrapper}>
+            <ActivityIndicator size="large" color="#2e64e5" />
+          </View>
+        ) : (
+          <FormButton buttonTitle="Signup" onPress={() => register()} />
+        )}
+        <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
+          <Text style={{ color: '#9b9b9b', fontSize: 14, fontWeight: '500', marginLeft: 12, marginRight: 12 }}>OR</Text>
+          <View style={{ flexDirection: 'row', borderWidth: 0.2, borderColor: '#9b9b9b', width: '42%', height: 0 }} />
+        </View>
+        {Platform.OS === 'android' ? (
+          <View>
+            <SocialButton
+              onPress={() => googleLogin()}
+            />
+          </View>
+        ) : null}
+
+        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={styles.navbtntext}>
+            Already have an account?
+          </Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={[styles.forgotbtn, { justifyContent: 'center', alignItems: 'center', alignSelf: 'center', }]}>
+            <Text style={[styles.navbtntext, { color: '#3897f1', marginLeft: 4 }]}>Log in</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 };

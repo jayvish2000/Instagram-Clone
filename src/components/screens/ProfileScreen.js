@@ -1,4 +1,4 @@
-import { Text, View, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native';
+import { Text, View, Image, TouchableOpacity, FlatList, Dimensions, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../../navigation/AuthProvider';
 import { styles } from '../../../styles/ProfileStyles';
@@ -17,7 +17,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = ({ navigation, route }) => {
 
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState(null);
@@ -171,67 +171,65 @@ const ProfileScreen = ({ navigation, route }) => {
           height: 280,
           marginTop: 14,
         }}>
-          <View style={styles.maincontainer}>
-        <Image
-          style={styles.userImg}
-          source={{
-            uri: userData
-              ? userData.userImg :
-              'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg'
+        <View style={styles.maincontainer}>
+          <Image
+            style={styles.userImg}
+            source={{
+              uri: userData?.userImg
+                ? userData?.userImg :
+                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'
 
-          }}
-        />
-            <View style={styles.userInfoWrapper}>
-          <View style={styles.userInfoItem}>
-            <Text style={[styles.userInfoTitle, { color: '#000' }]}>{posts.length}</Text>
-            <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Posts</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            {route.params ?
-              <>
-                {follow?.follower ?
-                  <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.follower.length}</Text>
-                  :
-                  <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
-                }
-              </>
-              :
-              <>
-                {user.uid ?
-                  <>
-                    {follow?.follower ?
-                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.follower.length}</Text>
-                      :
-                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
-                    }
-                  </>
-                  : null
-                }
-              </>
-            }
-            <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Follower</Text>
-          </View>
-          <View style={styles.userInfoItem}>
-            {route.params ?
-              <>
-                {route.params ?
-                  <>
-                    {follow?.following ?
-                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.following.length}</Text>
-                      :
-                      <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
-                    }
-                  </>
-                  : null
-                }
-              </>
-              :
-              <>
+            }}
+          />
+          <View style={styles.userInfoWrapper}>
+            <View style={styles.userInfoItem}>
+              <Text style={[styles.userInfoTitle, { color: '#000' }]}>{posts.length}</Text>
+              <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Posts</Text>
+            </View>
+            <View style={styles.userInfoItem}>
+              {route.params ?
+                <>
+                  {follow?.follower ?
+                    <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.follower.length}</Text>
+                    :
+                    <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
+                  }
+                </>
+                :
+                <>
+                  {user.uid ?
+                    <>
+                      {follow?.follower ?
+                        <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.follower.length}</Text>
+                        :
+                        <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
+                      }
+                    </>
+                    : null
+                  }
+                </>
+              }
+              <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Follower</Text>
+            </View>
+            <View style={styles.userInfoItem}>
+              {route.params ?
+                <>
+                  {route.params ?
+                    <>
+                      {follow?.following ?
+                        <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.following.length}</Text>
+                        :
+                        <Text style={[styles.userInfoTitle, { color: '#000' }]}>0</Text>
+                      }
+                    </>
+                    : null
+                  }
+                </>
+                :
                 <Text style={[styles.userInfoTitle, { color: '#000' }]}>{follow?.following.length}</Text>
-              </>
-            }
-            <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Following</Text>
-          </View>
+              }
+              <Text style={[styles.userInfoSubTitle, { color: '#000' }]}>Following</Text>
+            </View>
           </View>
         </View>
         <Text style={styles.userName}>
@@ -247,7 +245,7 @@ const ProfileScreen = ({ navigation, route }) => {
               {route.params.userId != user.uid ?
                 <>
                   <TouchableOpacity
-                    style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC'}]}
+                    style={[styles.userBtn, { backgroundColor: '#fff', borderColor: '#ECECEC' }]}
                     onPress={() => navigation.navigate('Chats', { userName: userData.fname, uid: userData.uid, status: typeof (userData.status) == "string" ? userData.status : userData.status.toDate().toString() })}>
                     <Text style={[styles.userBtnTxt, { color: '#000' }]}>Message</Text>
                   </TouchableOpacity>
@@ -295,24 +293,34 @@ const ProfileScreen = ({ navigation, route }) => {
             </>
           )}
         </View>
-    
+
       </View>
       <View style={{ width: width, height: height / 4, justifyContent: 'center' }}>
         {route.params ?
-          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%',marginBottom:'3%' }}>
+          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%', marginBottom: '3%' }}>
             Suggested for you
           </Text>
           :
-          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%' ,marginBottom:'3%'}}>
+          <Text style={{ fontSize: 15, fontWeight: '400', color: '#000', marginLeft: '2%', marginBottom: '3%' }}>
             Discover people
           </Text>
         }
-        <FlatList horizontal
-          data={allusers}
-          renderItem={({ item }) => (
-            <SuggestionScreen item={item} />
-          )}
-        />
+        <>
+          {loading ?
+            <ActivityIndicator size={45} color="#2e64e5" />
+            :
+            <FlatList horizontal
+              data={allusers}
+              onRefresh={() => getAllUser()}
+              refreshing={loading}
+              renderItem={({ item }) => (
+                <SuggestionScreen item={item} />
+              )}
+              keyExtractor={item => item.id}
+            />
+          }
+        </>
+
       </View>
 
       <View style={{ width: width, height: height }}>

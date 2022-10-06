@@ -8,7 +8,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import { View, Text, Image,TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import AddPostScreen from '../src/components/screens/AddPostScreen';
 import ChatScreen from '../src/components/screens/ChatScreen';
 import EditProfileScreen from '../src/components/screens/EditProfileScreen';
@@ -27,7 +27,7 @@ const Stack = createNativeStackNavigator();
 
 function TabBar({ navigation }) {
   const [userProfile, setUserProfile] = useState(null)
-  const { user,logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const refRBSheet = useRef();
 
   const getuserProfile = async () => {
@@ -59,22 +59,22 @@ function TabBar({ navigation }) {
               backgroundColor: '#fff',
             },
           }}
-          height={240}> 
-           <Text style={{ fontSize: 16, fontWeight: '400', color: '#000',textAlign:'center',marginTop:'1%'}}>
-              Login
-            </Text>           
-          <TouchableOpacity activeOpacity={0.7} style={{ justifyContent: 'center', alignItems: 'center',marginTop:'12%' }}
-         onPress={() => {
-          firestore()
-            .collection('users')
-            .doc(user.uid)
-            .update({
-              status: firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-              logout()
-            })
-        }}
-         >
+          height={240}>
+          <Text style={{ fontSize: 16, fontWeight: '400', color: '#000', textAlign: 'center', marginTop: '1%' }}>
+            Login
+          </Text>
+          <TouchableOpacity activeOpacity={0.7} style={{ justifyContent: 'center', alignItems: 'center', marginTop: '12%' }}
+            onPress={() => {
+              firestore()
+                .collection('users')
+                .doc(user.uid)
+                .update({
+                  status: firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                  logout()
+                }).catch((err) => console.log('err', err))
+            }}
+          >
             <Text style={{ fontSize: 16, fontWeight: '400', color: '#3897f1' }}>
               Log out {user.email}
             </Text>
@@ -178,7 +178,7 @@ function TabBar({ navigation }) {
             tabBarLabel: () => null,
             tabBarIcon: ({ color, size, focused }) => (
               <View style={{ backgroundColor: focused ? '#000' : '#fff', width: 35, height: 35, borderRadius: 35 / 2, justifyContent: 'center', alignItems: 'center' }}>
-                <Image style={{ width: 30, height: 30, borderRadius: 15 }} source={{ uri: userProfile?.userImg }} />
+                <Image style={{ width: 30, height: 30, borderRadius: 15 }} source={{ uri: userProfile?.userImg ? userProfile?.userImg : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png' }} />
               </View>
             ),
             headerRight: () => (

@@ -15,6 +15,8 @@ const height = Dimensions.get('window').height
 
 const PostCard = ({ item, ondelete, onPress }) => {
 
+  console.log("item", item)
+
   const { user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [comments, setComments] = useState(null)

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   UserImg: {
     width: 35,
     height: 35,
-    borderRadius: 35/2,
+    borderRadius: 35 / 2,
   },
   UserName: {
     fontSize: 15,
@@ -65,4 +65,10 @@ export const styles = StyleSheet.create({
     marginRight: 5,
     color: '#000'
   },
+  text: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: '#D9D9D9',
+    textAlign: 'center'
+  }
 });

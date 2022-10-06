@@ -30,7 +30,7 @@ const SuggestionScreen = ({ item }) => {
 
     return (
         <View style={styles.card}>
-            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate('HomeProfile', { uid: item.uid , email: item.email })}>
+            <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate('HomeProfile', { uid: item.uid, email: item.email })}>
                 <Image
                     style={styles.userimg}
                     source={{ uri: item ? item.userImg : 'https://1.bp.blogspot.com/-BZbzJ2rdptU/XhWLVBw58CI/AAAAAAAADWI/DnjRkzns2ZQI9LKSRj9aLgB4FyHFiZn_ACEwYBhgL/s1600/yet-not-died-whatsapp-dp.jpg' }} />

@@ -4,52 +4,93 @@ import {
   ToastAndroid,
   Alert,
   ActivityIndicator,
+  Text,
+  Dimensions,
+  ScrollView
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { styles } from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { useNavigation } from '@react-navigation/native'
+import SuggestionScreen from './suggestionScreen';
+import { AuthContext } from '../../../navigation/AuthProvider';
+
+const { width, height } = Dimensions.get('screen')
 
 const HomeScreen = ({ navigation }) => {
+  const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
+  const [discoverpeople, setDiscoverPeople] = useState(null)
+
+  console.log(posts)
 
   const fetchPosts = async () => {
     try {
       const list = [];
+      const lists = [];
+      await
+        firestore()
+          .collection('users')
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach(doc => {
+              const data = doc.data()
+              firestore()
+                .collection('users')
+                .where('uid', '!=', user.uid)
+                .onSnapshot((snapshot) => {
+                  snapshot.docs.forEach(doc => {
+                    const { fname, follower, following, uid, email, userImg } = doc.data()
+                    lists.push({
+                      id: doc.id,
+                      fname,
+                      follower,
+                      following,
+                      uid,
+                      email,
+                      userImg
+                    })
+                  })
+                  setDiscoverPeople(lists)
+                })
 
-      await firestore()
-        .collection('posts')
-        .orderBy('postTime', 'desc')
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            const {
-              userId,
-              email,
-              post,
-              postImg,
-              postTime,
-              likesbyusers,
-              postvideo
-            } = doc.data();
-            list.push({
-              id: doc.id,
-              userId,
-              email,
-              postTime: postTime,
-              post,
-              postvideo,
-              postImg,
-              likesbyusers
-            });
-          });
-        });
+              data.following.map((item) => {
+                firestore()
+                  .collection('posts')
+                  .where("userId", "==", item)
+                  .get()
+                  .then((res) => {
+                    res.forEach((doc) => {
+                      const {
+                        userId,
+                        email,
+                        post,
+                        postImg,
+                        postTime,
+                        likesbyusers,
+                        postvideo
+                      } = doc.data();
 
-      setPosts(list);
+                      list.push({
+                        id: doc.id,
+                        userId,
+                        email,
+                        postTime: postTime,
+                        post,
+                        postvideo,
+                        postImg,
+                        likesbyusers
+                      });
+                    })
+                    setPosts(list)
+                  })
+              })
+            })
+          }).catch((err) => console.log(err))
+
 
       if (loading) {
         setLoading(false);
@@ -58,9 +99,6 @@ const HomeScreen = ({ navigation }) => {
       console.log(e);
     }
   };
-  useEffect(() => {
-    fetchPosts();
-  }, []);
 
   useEffect(() => {
     fetchPosts();
@@ -141,25 +179,34 @@ const HomeScreen = ({ navigation }) => {
           <ActivityIndicator size={45} color="#2e64e5" />
         </View>
       ) : (
-        <View style={styles.container}>
-          <FlatList
-            data={posts}
-            onRefresh={() => fetchPosts()}
-            refreshing={loading}
-            renderItem={({ item }) => (
-              <PostCard
-                item={item}
-                ondelete={handledelete}
-                onPress={() =>
-                  navigation.navigate('HomeProfile', { userId: item.userId, email: item.email })
-                }
-              />
-            )}
-            keyExtractor={item => item.id}
-            showsVerticalScrollIndicator={false}
-          />
+        <>
+          {posts ? (
 
-        </View>
+            <View style={styles.container}>
+              <FlatList
+                data={posts}
+                onRefresh={() => fetchPosts()}
+                refreshing={loading}
+                renderItem={({ item }) => (
+                  <PostCard
+                    item={item}
+                    ondelete={handledelete}
+                    onPress={() =>
+                      navigation.navigate('HomeProfile', { userId: item.userId, email: item.email })
+                    }
+                  />
+                )}
+                keyExtractor={item => item.id}
+                showsVerticalScrollIndicator={false}
+              />
+            </View>
+          )
+            :
+            <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={styles.text}>Follow the people to see their posts</Text>
+            </View>
+          }
+        </>
       )}
     </View>
   );
