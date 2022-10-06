@@ -25,8 +25,6 @@ const HomeScreen = ({ navigation }) => {
   const [deleted, setDeleted] = useState(false);
   const [discoverpeople, setDiscoverPeople] = useState(null)
 
-  console.log(posts)
-
   const fetchPosts = async () => {
     try {
       const list = [];
@@ -62,8 +60,8 @@ const HomeScreen = ({ navigation }) => {
                   .collection('posts')
                   .where("userId", "==", item)
                   .get()
-                  .then((res) => {
-                    res.forEach((doc) => {
+                  .then((snapshot) => {
+                    snapshot.forEach((doc) => {
                       const {
                         userId,
                         email,
