@@ -70,15 +70,20 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
             }).catch(e => console.log(e))
     }
 
-    useEffect(async () => {
+    useEffect(() => {
         fetchFollower()
         fetchLike()
+
+        return () => {
+            fetchFollower()
+            fetchLike()
+        }
     }, [])
 
-    const likecurrentuserpost = () => {
+    const Likecurrentuserpost = () => {
         return (
             <>
-                {like.uid ?
+                {like?.uid ?
                     <TouchableOpacity style={styles.touchcontainer} onPress={() => navigation.navigate("HomeProfile", { uid: like.uid, email: like.email })}>
                         <View style={styles.usercontainer}>
                             <Image style={styles.userimg} source={{ uri: like.userImg }} />
@@ -99,7 +104,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
         )
     }
 
-    const followcurrentuser = () => {
+    const Followcurrentuser = () => {
         return (
             <>
                 {follower.uid ?
@@ -123,7 +128,7 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
 
     }
 
-    const commentcurrentuserpost = () => {
+    const Commentcurrentuserpost = () => {
         return (
             <>
                 {comment.uid ?
@@ -149,11 +154,11 @@ const LikeCommentFollowerScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {followcurrentuser()}
+            <Followcurrentuser />
             <View style={{ width: '100%', height: '1%' }} />
-            {likecurrentuserpost()}
+            <Likecurrentuserpost />
             <View style={{ width: '100%', height: '1%' }} />
-            {commentcurrentuserpost()}
+            <Commentcurrentuserpost />
         </View>
     )
 }

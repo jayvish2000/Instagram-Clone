@@ -13,9 +13,7 @@ import { styles } from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import SuggestionScreen from './suggestionScreen';
 import { AuthContext } from '../../../navigation/AuthProvider';
-import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 
 const { width, height } = Dimensions.get('screen')
 
@@ -24,14 +22,12 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-  const [id, setId] = useState(null)
 
   console.log('posts', posts)
 
   const fetchPosts = async () => {
     try {
       const list = [];
-      const lists = [];
       await
         firestore()
           .collection('users')
@@ -40,34 +36,13 @@ const HomeScreen = ({ navigation }) => {
           .then((snapshot) => {
             snapshot.forEach(doc => {
               const data = doc.data()
-              // firestore()
-              //   .collection('users')
-              //   .where('uid', '!=', user.uid)
-              //   .onSnapshot((snapshot) => {
-              //     snapshot.docs.forEach(doc => {
-              //       const { fname, follower, following, uid, email, userImg } = doc.data()
-              //       lists.push({
-              //         id: doc.id,
-              //         fname,
-              //         follower,
-              //         following,
-              //         uid,
-              //         email,
-              //         userImg
-              //       })
-              //     })
-              //     setDiscoverPeople(lists)
-              //   })
-
               data.following.map((id) => {
-
                 firestore()
                   .collection('posts')
                   .where("userId", "==", id)
                   .get()
                   .then((snapshot) => {
                     snapshot.forEach((doc) => {
-
                       const {
                         userId,
                         email,
@@ -88,8 +63,10 @@ const HomeScreen = ({ navigation }) => {
                         postImg,
                         likesbyusers
                       });
+
                     })
                     setPosts(list)
+
                   })
               })
             })
@@ -107,6 +84,7 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     fetchPosts();
     setDeleted(false);
+
   }, [deleted]);
 
   const deletePost = postId => {
@@ -172,6 +150,7 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
+
     <View style={styles.container}>
       {loading ? (
         <View
@@ -213,6 +192,7 @@ const HomeScreen = ({ navigation }) => {
         </>
       )}
     </View>
+
   );
 };
 
