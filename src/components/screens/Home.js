@@ -4,9 +4,7 @@ import {
   ToastAndroid,
   Alert,
   ActivityIndicator,
-  Text,
-  Dimensions,
-  ScrollView
+  Text
 } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { styles } from '../../../styles/Feedstyles';
@@ -15,15 +13,11 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import { AuthContext } from '../../../navigation/AuthProvider';
 
-const { width, height } = Dimensions.get('screen')
-
 const HomeScreen = ({ navigation }) => {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-
-  console.log('posts', posts)
 
   const fetchPosts = async () => {
     try {
@@ -36,10 +30,11 @@ const HomeScreen = ({ navigation }) => {
           .then((snapshot) => {
             snapshot.forEach(doc => {
               const data = doc.data()
+
               data.following.map((id) => {
                 firestore()
                   .collection('posts')
-                  .where("userId", "==", id)
+                  .where('userId', '==', id)
                   .get()
                   .then((snapshot) => {
                     snapshot.forEach((doc) => {
@@ -50,8 +45,7 @@ const HomeScreen = ({ navigation }) => {
                         postImg,
                         postTime,
                         likesbyusers,
-                        postvideo
-                      } = doc.data();
+                        postvideo } = doc.data()
 
                       list.push({
                         id: doc.id,
@@ -63,9 +57,9 @@ const HomeScreen = ({ navigation }) => {
                         postImg,
                         likesbyusers
                       });
+                      setPosts(list)
 
                     })
-                    setPosts(list)
 
                   })
               })
@@ -84,7 +78,6 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     fetchPosts();
     setDeleted(false);
-
   }, [deleted]);
 
   const deletePost = postId => {
