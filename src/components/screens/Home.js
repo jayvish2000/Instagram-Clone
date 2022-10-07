@@ -15,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import SuggestionScreen from './suggestionScreen';
 import { AuthContext } from '../../../navigation/AuthProvider';
+import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 
 const { width, height } = Dimensions.get('screen')
 
@@ -23,7 +24,9 @@ const HomeScreen = ({ navigation }) => {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
-  const [discoverpeople, setDiscoverPeople] = useState(null)
+  const [id, setId] = useState(null)
+
+  console.log('posts', posts)
 
   const fetchPosts = async () => {
     try {
@@ -32,36 +35,39 @@ const HomeScreen = ({ navigation }) => {
       await
         firestore()
           .collection('users')
+          .where('uid', '==', user.uid)
           .get()
           .then((snapshot) => {
             snapshot.forEach(doc => {
               const data = doc.data()
-              firestore()
-                .collection('users')
-                .where('uid', '!=', user.uid)
-                .onSnapshot((snapshot) => {
-                  snapshot.docs.forEach(doc => {
-                    const { fname, follower, following, uid, email, userImg } = doc.data()
-                    lists.push({
-                      id: doc.id,
-                      fname,
-                      follower,
-                      following,
-                      uid,
-                      email,
-                      userImg
-                    })
-                  })
-                  setDiscoverPeople(lists)
-                })
+              // firestore()
+              //   .collection('users')
+              //   .where('uid', '!=', user.uid)
+              //   .onSnapshot((snapshot) => {
+              //     snapshot.docs.forEach(doc => {
+              //       const { fname, follower, following, uid, email, userImg } = doc.data()
+              //       lists.push({
+              //         id: doc.id,
+              //         fname,
+              //         follower,
+              //         following,
+              //         uid,
+              //         email,
+              //         userImg
+              //       })
+              //     })
+              //     setDiscoverPeople(lists)
+              //   })
 
-              data.following.map((item) => {
+              data.following.map((id) => {
+
                 firestore()
                   .collection('posts')
-                  .where("userId", "==", item)
+                  .where("userId", "==", id)
                   .get()
                   .then((snapshot) => {
                     snapshot.forEach((doc) => {
+
                       const {
                         userId,
                         email,
