@@ -6,15 +6,13 @@ import {
   ActivityIndicator,
   Text
 } from 'react-native';
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styles } from '../../../styles/Feedstyles';
 import PostCard from '../PostCard';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { AuthContext } from '../../../navigation/AuthProvider';
 
 const HomeScreen = ({ navigation }) => {
-  const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(true);
   const [deleted, setDeleted] = useState(false);
@@ -24,45 +22,31 @@ const HomeScreen = ({ navigation }) => {
       const list = [];
       await
         firestore()
-          .collection('users')
-          .where('uid', '==', user.uid)
+          .collection('posts')
           .get()
           .then((snapshot) => {
-            snapshot.forEach(doc => {
-              const data = doc.data()
+            snapshot.forEach((doc) => {
+              const {
+                userId,
+                email,
+                post,
+                postImg,
+                postTime,
+                likesbyusers,
+                postvideo } = doc.data()
 
-              data.following.map((id) => {
-                firestore()
-                  .collection('posts')
-                  .where('userId', '==', id)
-                  .get()
-                  .then((snapshot) => {
-                    snapshot.forEach((doc) => {
-                      const {
-                        userId,
-                        email,
-                        post,
-                        postImg,
-                        postTime,
-                        likesbyusers,
-                        postvideo } = doc.data()
+              list.push({
+                id: doc.id,
+                userId,
+                email,
+                postTime: postTime,
+                post,
+                postvideo,
+                postImg,
+                likesbyusers
+              });
+              setPosts(list)
 
-                      list.push({
-                        id: doc.id,
-                        userId,
-                        email,
-                        postTime: postTime,
-                        post,
-                        postvideo,
-                        postImg,
-                        likesbyusers
-                      });
-                      setPosts(list)
-
-                    })
-
-                  })
-              })
             })
           }).catch((err) => console.log(err))
 
@@ -155,34 +139,24 @@ const HomeScreen = ({ navigation }) => {
           <ActivityIndicator size={45} color="#2e64e5" />
         </View>
       ) : (
-        <>
-          {posts ? (
-
-            <View style={styles.container}>
-              <FlatList
-                data={posts}
-                onRefresh={() => fetchPosts()}
-                refreshing={loading}
-                renderItem={({ item }) => (
-                  <PostCard
-                    item={item}
-                    ondelete={handledelete}
-                    onPress={() =>
-                      navigation.navigate('HomeProfile', { userId: item.userId, email: item.email })
-                    }
-                  />
-                )}
-                keyExtractor={item => item.id}
-                showsVerticalScrollIndicator={false}
+        <View style={styles.container}>
+          <FlatList
+            data={posts}
+            onRefresh={() => fetchPosts()}
+            refreshing={loading}
+            renderItem={({ item }) => (
+              <PostCard
+                item={item}
+                ondelete={handledelete}
+                onPress={() =>
+                  navigation.navigate('HomeProfile', { userId: item.userId, email: item.email })
+                }
               />
-            </View>
-          )
-            :
-            <View style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={styles.text}>Follow the people to see their posts</Text>
-            </View>
-          }
-        </>
+            )}
+            keyExtractor={item => item.id}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
       )}
     </View>
 
