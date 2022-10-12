@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
             await auth().signInWithCredential(googleCradential)
           } catch (error) {
             if (error) {
-              ToastAndroid.show('Network error', ToastAndroid.SHORT)
+              ToastAndroid.show('Something went wrong', ToastAndroid.SHORT)
             } else {
               console.log(error);
             }
